@@ -3,32 +3,35 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CMMS.Models
 {
     public class SeedDB
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async void Initialize(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<IdentityDbContext>();
             var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
             context.Database.EnsureCreated();
+
+            await CreateRoles(serviceProvider);
+
             if (!context.Users.Any())
             {
                 AppUser user = new AppUser()
                 {
-                    Email = "ali@gmail.com",
+                    Email = "admin@gmail.com",
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = "Ali"
+                    UserName = "admin"
                 };
-                userManager.CreateAsync(user, "Ali@123");
+                
+                await userManager.CreateAsync(user, "Admin@123");
+                await userManager.AddToRoleAsync(user, UserRole.Admin);
             }
-
-
-            CreateRoles(serviceProvider);
         }
 
-        private static async void CreateRoles(IServiceProvider serviceProvider)
+        private static async Task CreateRoles(IServiceProvider serviceProvider)
         {
             var roles = new List<AppRole>
             {
