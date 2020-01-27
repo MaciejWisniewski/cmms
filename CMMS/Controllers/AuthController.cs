@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace CMMS.Controllers
             var userName = credentialsDto.UserName;
             var password = credentialsDto.Password;
 
-            AppUser user = await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
             if (!string.IsNullOrWhiteSpace(userName) && !string.IsNullOrWhiteSpace(password) && user != null)
             {
                 var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
@@ -41,18 +42,21 @@ namespace CMMS.Controllers
                 {
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(MvsJwtTokens.Key));
                     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var roles = await _userManager.GetRolesAsync(user);
 
                     var claims = new[]
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, userName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, userName)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, userName),
                     };
+                    var claimsIdentity = new ClaimsIdentity(claims, "Token");
+                    claimsIdentity.AddClaims(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
                     var token = new JwtSecurityToken(
                         issuer: MvsJwtTokens.Issuer, 
                         audience: MvsJwtTokens.Audience, 
-                        claims: claims, 
+                        claims: claimsIdentity.Claims, 
                         expires: DateTime.UtcNow.AddDays(1), 
                         signingCredentials: credentials
                     );

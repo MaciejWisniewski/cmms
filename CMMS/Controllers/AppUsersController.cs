@@ -24,6 +24,7 @@ namespace CMMS.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = UserRole.Admin)]
         public async Task<IActionResult> GetAllAsync()
         {
             var appUsers = await _appUserService.GetAllAsync();
