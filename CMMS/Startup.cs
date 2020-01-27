@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace CMMS
 {
@@ -38,16 +39,23 @@ namespace CMMS
 
             services.AddControllers();
 
-            services.AddIdentity<AppUser, AppRole>(options =>
-            {
-                options.User.RequireUniqueEmail = false;
-            }).AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<AppUser, AppRole>(options => { options.User.RequireUniqueEmail = false; })
+                .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddDbContext<AppDbContext>(cfg =>
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            ConfigureAuthenticationAndAuthorization(services);
+
+            ConfigureAutoMapper(services);
+
+            ConfigureSwagger(services);
+        }
+
+        private static void ConfigureAuthenticationAndAuthorization(IServiceCollection services)
+        {
             services.AddAuthentication()
                 //.AddCookie(cfg => cfg.SlidingExpiration = true)
                 .AddJwtBearer(cfg =>
@@ -66,20 +74,24 @@ namespace CMMS
                 .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                 .Build();
 
-            services.AddMvc(config => 
-                config.Filters
-                    .Add(new AuthorizeFilter(authorizePolicy)))
-                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0
-            );
+            services.AddMvc(config =>
+                    config.Filters
+                        .Add(new AuthorizeFilter(authorizePolicy)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0
+                );
+        }
 
-            // Auto Mapper Configurations
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
+        private static void ConfigureAutoMapper(IServiceCollection services)
+        {
+            var mappingConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
 
             var mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+        }
+
+        private static void ConfigureSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,6 +104,15 @@ namespace CMMS
 
             SeedDB.Initialize(
                 app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
+
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseHttpsRedirection();
 
