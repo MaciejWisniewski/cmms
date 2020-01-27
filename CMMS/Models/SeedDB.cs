@@ -11,24 +11,45 @@ namespace CMMS.Models
     {
         public static async void Initialize(IServiceProvider serviceProvider)
         {
-            var context = serviceProvider.GetRequiredService<IdentityDbContext>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            var context = serviceProvider.GetRequiredService<AppDbContext>();
             context.Database.EnsureCreated();
 
             await CreateRoles(serviceProvider);
 
             if (!context.Users.Any())
+                await CreateUsers(serviceProvider);
+        }
+
+        private static async Task CreateUsers(IServiceProvider serviceProvider)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+
+            var admin = new AppUser()
             {
-                AppUser user = new AppUser()
-                {
-                    Email = "admin@gmail.com",
-                    SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = "admin"
-                };
-                
-                await userManager.CreateAsync(user, "Admin@123");
-                await userManager.AddToRoleAsync(user, UserRole.Admin);
-            }
+                Email = "admin@gmail.com",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = "admin",
+            };
+            await userManager.CreateAsync(admin, "Admin@123");
+            await userManager.AddToRoleAsync(admin, UserRole.Admin);
+
+            var superUser = new AppUser()
+            {
+                Email = "superUser@gmail.com",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = "superUser"
+            };
+            await userManager.CreateAsync(superUser, "superUser@123");
+            await userManager.AddToRoleAsync(superUser, UserRole.SuperUser);
+
+            var user = new AppUser()
+            {
+                Email = "user@gmail.com",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = "user"
+            };
+            await userManager.CreateAsync(user, "User@123");
+            await userManager.AddToRoleAsync(user, UserRole.User);
         }
 
         private static async Task CreateRoles(IServiceProvider serviceProvider)

@@ -1,5 +1,9 @@
 using System.Text;
+using AutoMapper;
+using CMMS.Mappers;
 using CMMS.Models;
+using CMMS.Repositories;
+using CMMS.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -26,14 +30,20 @@ namespace CMMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IAppUserRepository, AppUserRepository>();
+
+            services.AddScoped<IAppUserService, AppUserService>();
+
+            services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
+
             services.AddControllers();
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = false;
-            }).AddEntityFrameworkStores<IdentityDbContext>();
+            }).AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddDbContext<IdentityDbContext>(cfg =>
+            services.AddDbContext<AppDbContext>(cfg =>
             {
                 cfg.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
@@ -56,7 +66,20 @@ namespace CMMS
                 .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                 .Build();
 
-            services.AddMvc(config => config.Filters.Add(new AuthorizeFilter(authorizePolicy))).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc(config => 
+                config.Filters
+                    .Add(new AuthorizeFilter(authorizePolicy)))
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_3_0
+            );
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
