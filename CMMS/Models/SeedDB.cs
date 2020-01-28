@@ -22,6 +22,9 @@ namespace CMMS.Models
             if(!context.Divisions.Any())
                 SeedDivisions(serviceProvider, context);
 
+            if(!context.ExclusionTypes.Any())
+                SeedExclusionTypes(serviceProvider, context);
+
             context.SaveChanges();
         }
 
@@ -85,6 +88,20 @@ namespace CMMS.Models
             };
 
             context.Divisions.AddRange(divisions);
+        }
+
+        private static void SeedExclusionTypes(IServiceProvider serviceProvider, AppDbContext context)
+        {
+            var exclusionTypes = new List<ExclusionType>()
+            {
+                new ExclusionType() {Name = "Awaria silnika"},
+                new ExclusionType() {Name = "Wymiana filtrów"},
+                new ExclusionType() {Name = "Smarowanie"},
+                new ExclusionType() {Name = "Remont"},
+                new ExclusionType() {Name = "Awaria"}
+            };
+
+            context.ExclusionTypes.AddRange(exclusionTypes);
         }
     }
 }

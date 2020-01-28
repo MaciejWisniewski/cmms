@@ -12,9 +12,9 @@ namespace CMMS.Repositories
 
     public class DivisionRepository : IDivisionRepository
     {
-        private readonly AppDbContext _context;
+        private readonly IAppDbContext _context;
 
-        public DivisionRepository(AppDbContext context)
+        public DivisionRepository(IAppDbContext context)
         {
             _context = context;
         }
