@@ -14,10 +14,10 @@ namespace CMMS.Models
             var context = serviceProvider.GetRequiredService<AppDbContext>();
             context.Database.EnsureCreated();
 
-            await CreateRoles(serviceProvider);
+            await CreateRoles(serviceProvider, context);
 
             if (!context.Users.Any())
-                await CreateUsers(serviceProvider);
+                await CreateUsers(serviceProvider, context);
 
             if(!context.Divisions.Any())
                 SeedDivisions(context);
@@ -30,11 +30,9 @@ namespace CMMS.Models
 
             if(!context.Exclusions.Any())
                 SeedExclusions(context);
-
-            context.SaveChanges();
         }
 
-        private static async Task CreateUsers(IServiceProvider serviceProvider)
+        private static async Task CreateUsers(IServiceProvider serviceProvider, AppDbContext context)
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
 
@@ -64,9 +62,11 @@ namespace CMMS.Models
             };
             await userManager.CreateAsync(user, "User@123");
             await userManager.AddToRoleAsync(user, UserRole.User);
+
+            context.SaveChanges();
         }
 
-        private static async Task CreateRoles(IServiceProvider serviceProvider)
+        private static async Task CreateRoles(IServiceProvider serviceProvider, AppDbContext context)
         {
             var roles = new List<AppRole>
             {
@@ -80,9 +80,11 @@ namespace CMMS.Models
             foreach (var role in roles)
                 if (await roleManager.FindByNameAsync(role.Name) == null)
                     await roleManager.CreateAsync(role);
+
+            context.SaveChanges();
         }
 
-        private static void SeedDivisions(IAppDbContext context)
+        private static void SeedDivisions(AppDbContext context)
         {
             var divisions = new List<Division>
             {
@@ -94,9 +96,11 @@ namespace CMMS.Models
             };
 
             context.Divisions.AddRange(divisions);
+
+            context.SaveChanges();
         }
 
-        private static void SeedExclusionTypes(IAppDbContext context)
+        private static void SeedExclusionTypes(AppDbContext context)
         {
             var exclusionTypes = new List<ExclusionType>()
             {
@@ -108,9 +112,11 @@ namespace CMMS.Models
             };
 
             context.ExclusionTypes.AddRange(exclusionTypes);
+
+            context.SaveChanges();
         }
 
-        private static void SeedEntities(IAppDbContext context)
+        private static void SeedEntities(AppDbContext context)
         {
             var divisions = context.Divisions.ToList();
 
@@ -124,9 +130,11 @@ namespace CMMS.Models
             };
 
             context.Entities.AddRange(entities);
+
+            context.SaveChanges();
         }
 
-        private static void SeedExclusions(IAppDbContext context)
+        private static void SeedExclusions(AppDbContext context)
         {
             var entities = context.Entities.ToList();
             var exclusionTypes = context.ExclusionTypes.ToList();
@@ -166,6 +174,8 @@ namespace CMMS.Models
             };
 
             context.Exclusions.AddRange(exclusions);
+
+            context.SaveChanges();
         }
     }
 }
