@@ -35,12 +35,14 @@ namespace CMMS
             services.AddScoped<IDivisionRepository, DivisionRepository>();
             services.AddScoped<IExclusionTypeRepository, ExclusionTypeRepository>();
             services.AddScoped<IEntityRepository, EntityRepository>();
+            services.AddScoped<IExclusionRepository, ExclusionRepository>();
 
             services.AddScoped<IAppUserService, AppUserService>();
             services.AddScoped<IAppRoleService, AppRoleService>();
             services.AddScoped<IDivisionService, DivisionService>();
             services.AddScoped<IExclusionTypeService, ExclusionTypeService>();
             services.AddScoped<IEntityService, EntityService>();
+            services.AddScoped<IExclusionService, ExclusionService>();
 
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 

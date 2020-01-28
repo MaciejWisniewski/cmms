@@ -21,5 +21,12 @@ namespace CMMS.Services
         {
             return _mapper.Map<IEnumerable<EntityDto>>(await _entityRepository.GetAllAsync());
         }
+
+        public async Task<bool> EntityExistsAsync(int id)
+        {
+            var entityInDb = await _entityRepository.GetByIdAsync(id);
+
+            return entityInDb != null;
+        }
     }
 }

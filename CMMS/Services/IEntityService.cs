@@ -7,5 +7,6 @@ namespace CMMS.Services
     public interface IEntityService
     {
         Task<IEnumerable<EntityDto>> GetAllAsync();
+        Task<bool> EntityExistsAsync(int id);
     }
 }

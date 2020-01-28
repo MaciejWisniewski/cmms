@@ -9,6 +9,7 @@ namespace CMMS.Models
         public DbSet<Division> Divisions { get; set; }
         public DbSet<ExclusionType> ExclusionTypes { get; set; }
         public DbSet<Entity> Entities { get; set; }
+        public DbSet<Exclusion> Exclusions { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -19,6 +20,7 @@ namespace CMMS.Models
             builder.ApplyConfiguration(new DivisionConfiguration());
             builder.ApplyConfiguration(new ExclusionTypeConfiguration());
             builder.ApplyConfiguration(new EntityConfiguration());
+            builder.ApplyConfiguration(new ExclusionConfiguration());
 
             base.OnModelCreating(builder);
         }

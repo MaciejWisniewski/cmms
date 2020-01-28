@@ -8,5 +8,6 @@ namespace CMMS.Models
         DbSet<Division> Divisions { get; set; }
         DbSet<ExclusionType> ExclusionTypes { get; set; }
         DbSet<Entity> Entities { get; set; }
+        DbSet<Exclusion> Exclusions { get; set; }
     }
 }

@@ -20,13 +20,16 @@ namespace CMMS.Models
                 await CreateUsers(serviceProvider);
 
             if(!context.Divisions.Any())
-                SeedDivisions(serviceProvider, context);
+                SeedDivisions(context);
 
             if(!context.ExclusionTypes.Any())
-                SeedExclusionTypes(serviceProvider, context);
+                SeedExclusionTypes(context);
 
             if(!context.Entities.Any())
-                SeedEntities(serviceProvider, context);
+                SeedEntities(context);
+
+            if(!context.Exclusions.Any())
+                SeedExclusions(context);
 
             context.SaveChanges();
         }
@@ -79,7 +82,7 @@ namespace CMMS.Models
                     await roleManager.CreateAsync(role);
         }
 
-        private static void SeedDivisions(IServiceProvider serviceProvider, IAppDbContext context)
+        private static void SeedDivisions(IAppDbContext context)
         {
             var divisions = new List<Division>
             {
@@ -93,7 +96,7 @@ namespace CMMS.Models
             context.Divisions.AddRange(divisions);
         }
 
-        private static void SeedExclusionTypes(IServiceProvider serviceProvider, IAppDbContext context)
+        private static void SeedExclusionTypes(IAppDbContext context)
         {
             var exclusionTypes = new List<ExclusionType>()
             {
@@ -107,7 +110,7 @@ namespace CMMS.Models
             context.ExclusionTypes.AddRange(exclusionTypes);
         }
 
-        private static void SeedEntities(IServiceProvider serviceProvider, IAppDbContext context)
+        private static void SeedEntities(IAppDbContext context)
         {
             var divisions = context.Divisions.ToList();
 
@@ -121,6 +124,48 @@ namespace CMMS.Models
             };
 
             context.Entities.AddRange(entities);
+        }
+
+        private static void SeedExclusions(IAppDbContext context)
+        {
+            var entities = context.Entities.ToList();
+            var exclusionTypes = context.ExclusionTypes.ToList();
+
+            var exclusions = new List<Exclusion>()
+            {
+                new Exclusion()
+                {
+                    Entity = entities.ElementAt(0),
+                    ExclusionType = exclusionTypes.ElementAt(0),
+                    StartDateTime = DateTime.Now.AddDays(-2),
+                    EndDateTime = DateTime.Now.AddHours(-3),
+                    Note = "Nocna zmiana zepsuła"
+                },
+                new Exclusion()
+                {
+                    Entity = entities.ElementAt(0),
+                    ExclusionType = exclusionTypes.ElementAt(0),
+                    StartDateTime = DateTime.Now.AddDays(-5),
+                    EndDateTime = DateTime.Now.AddHours(-10),
+                    Note = "Sprzęgło się spaliło "
+                },
+                new Exclusion()
+                {
+                    Entity = entities.ElementAt(1),
+                    ExclusionType = exclusionTypes.ElementAt(0),
+                    StartDateTime = DateTime.Now.AddDays(-2),
+                    EndDateTime = DateTime.Now.AddHours(-7)
+                },
+                new Exclusion()
+                {
+                    Entity = entities.ElementAt(0),
+                    ExclusionType = exclusionTypes.ElementAt(2),
+                    StartDateTime = DateTime.Now.AddDays(-2),
+                    EndDateTime = DateTime.Now.AddHours(-3)
+                }
+            };
+
+            context.Exclusions.AddRange(exclusions);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace CMMS.Repositories
 {
     public interface IEntityRepository
     {
+        Task<Entity> GetByIdAsync(int id);
         Task<IEnumerable<Entity>> GetAllAsync();
     }
 }
