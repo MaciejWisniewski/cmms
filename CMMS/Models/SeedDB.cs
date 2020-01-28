@@ -18,6 +18,11 @@ namespace CMMS.Models
 
             if (!context.Users.Any())
                 await CreateUsers(serviceProvider);
+
+            if(!context.Divisions.Any())
+                SeedDivisions(serviceProvider, context);
+
+            context.SaveChanges();
         }
 
         private static async Task CreateUsers(IServiceProvider serviceProvider)
@@ -66,6 +71,20 @@ namespace CMMS.Models
             foreach (var role in roles)
                 if (await roleManager.FindByNameAsync(role.Name) == null)
                     await roleManager.CreateAsync(role);
+        }
+
+        private static void SeedDivisions(IServiceProvider serviceProvider, AppDbContext context)
+        {
+            var divisions = new List<Division>
+            {
+                new Division() {Name = "Wydział produkcji celulozy"},
+                new Division() {Name = "Maszyna papiernicza nr 1"},
+                new Division() {Name = "Maszyna papiernicza nr 2"},
+                new Division() {Name = "Maszyna papiernicza nr 3"},
+                new Division() {Name = "Korowalnia i rębalnia"}
+            };
+
+            context.Divisions.AddRange(divisions);
         }
     }
 }

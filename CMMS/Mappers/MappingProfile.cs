@@ -10,6 +10,7 @@ namespace CMMS.Mappers
         {
             CreateMap<AppUser, AppUserDto>();
             CreateMap<AppUserDto, AppUser>();
+            CreateMap<Division, DivisionDto>();
         }
     }
 }

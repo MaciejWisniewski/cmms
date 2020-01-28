@@ -32,9 +32,11 @@ namespace CMMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IAppUserRepository, AppUserRepository>();
+            services.AddScoped<IDivisionRepository, DivisionRepository>();
 
             services.AddScoped<IAppUserService, AppUserService>();
             services.AddScoped<IAppRoleService, AppRoleService>();
+            services.AddScoped<IDivisionService, DivisionService>();
 
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
 
