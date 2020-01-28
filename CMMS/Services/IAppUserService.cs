@@ -10,5 +10,6 @@ namespace CMMS.Services
         Task<AppUserDto> GetByUserNameAsync(string userName);
         Task<IEnumerable<AppUserDto>> GetAllAsync();
         Task<IdentityResult> CreateAsync(AppUserDto userDto);
+        Task<IdentityResult> AddToRoleAsync(AppUserDto userDto);
     }
 }

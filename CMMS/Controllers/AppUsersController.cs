@@ -14,10 +14,12 @@ namespace CMMS.Controllers
     public class AppUsersController : ControllerBase
     {
         private readonly IAppUserService _appUserService;
+        private readonly IAppRoleService _appRoleService;
 
-        public AppUsersController(IAppUserService appUserService)
+        public AppUsersController(IAppUserService appUserService, IAppRoleService appRoleService)
         {
             _appUserService = appUserService;
+            _appRoleService = appRoleService;
         }
 
         [HttpGet]
@@ -31,10 +33,18 @@ namespace CMMS.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] AppUserDto userDto)
         {
-            var result = await _appUserService.CreateAsync(userDto);
+            var createResult = await _appUserService.CreateAsync(userDto);
 
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
+            if (!createResult.Succeeded)
+                return BadRequest(createResult.Errors);
+
+            if (!string.IsNullOrWhiteSpace(userDto.Role) && await _appRoleService.RoleExistsAsync(userDto.Role))
+            {
+                var addToRoleResult = await _appUserService.AddToRoleAsync(userDto);
+
+                if (!addToRoleResult.Succeeded)
+                    return BadRequest(addToRoleResult.Errors);
+            }
 
             var createdUserDto = await _appUserService.GetByUserNameAsync(userDto.UserName);
 

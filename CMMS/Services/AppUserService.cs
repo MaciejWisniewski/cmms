@@ -24,7 +24,11 @@ namespace CMMS.Services
 
         public async Task<AppUserDto> GetByUserNameAsync(string userName)
         {
-            return _mapper.Map<AppUserDto>(await _appUserRepository.GetByUserNameAsync((userName)));
+            var user = await _appUserRepository.GetByUserNameAsync(userName);
+            var userDto = _mapper.Map<AppUserDto>(user);
+            userDto.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+            return userDto;
         }
 
         public async Task<IEnumerable<AppUserDto>> GetAllAsync()
@@ -32,7 +36,7 @@ namespace CMMS.Services
             var users = await _appUserRepository.GetAllAsync();
             var userDtos = _mapper.Map<IEnumerable<AppUserDto>>(users);
 
-            //TODO: Dwell on the issue of getting users with their roles, this solution may cause some performance issues
+            //TODO: Create userDtos one by one and append their roles then
             foreach (var userDto in userDtos)
                 userDto.Role = (await _userManager.GetRolesAsync(users.Single(u => u.UserName == userDto.UserName))).FirstOrDefault();
 
@@ -43,6 +47,14 @@ namespace CMMS.Services
         {
             var user = _mapper.Map<AppUser>(userDto);
             var identityResult = await _userManager.CreateAsync(user, userDto.Password);
+
+            return identityResult;
+        }
+
+        public async Task<IdentityResult> AddToRoleAsync(AppUserDto userDto)
+        {
+            var user = await _appUserRepository.GetByUserNameAsync(userDto.UserName);
+            var identityResult = await _userManager.AddToRoleAsync(user, userDto.Role);
 
             return identityResult;
         }
