@@ -22,6 +22,11 @@ namespace CMMS.Services
             _userManager = userManager;
         }
 
+        public async Task<AppUserDto> GetByUserNameAsync(string userName)
+        {
+            return _mapper.Map<AppUserDto>(await _appUserRepository.GetByUserNameAsync((userName)));
+        }
+
         public async Task<IEnumerable<AppUserDto>> GetAllAsync()
         {
             var users = await _appUserRepository.GetAllAsync();
@@ -32,6 +37,14 @@ namespace CMMS.Services
                 userDto.Role = (await _userManager.GetRolesAsync(users.Single(u => u.UserName == userDto.UserName))).FirstOrDefault();
 
             return userDtos;
+        }
+
+        public async Task<IdentityResult> CreateAsync(AppUserDto userDto)
+        {
+            var user = _mapper.Map<AppUser>(userDto);
+            var identityResult = await _userManager.CreateAsync(user, userDto.Password);
+
+            return identityResult;
         }
     }
 }

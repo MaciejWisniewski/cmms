@@ -14,6 +14,11 @@ namespace CMMS.Repositories
             _context = context;
         }
 
+        public async Task<AppUser> GetByUserNameAsync(string userName)
+        {
+            return await _context.Users.SingleAsync(u => u.UserName == userName);
+        }
+
         public async Task<IEnumerable<AppUser>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
