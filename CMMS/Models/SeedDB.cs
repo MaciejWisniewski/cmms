@@ -25,6 +25,9 @@ namespace CMMS.Models
             if(!context.ExclusionTypes.Any())
                 SeedExclusionTypes(serviceProvider, context);
 
+            if(!context.Entities.Any())
+                SeedEntities(serviceProvider, context);
+
             context.SaveChanges();
         }
 
@@ -76,7 +79,7 @@ namespace CMMS.Models
                     await roleManager.CreateAsync(role);
         }
 
-        private static void SeedDivisions(IServiceProvider serviceProvider, AppDbContext context)
+        private static void SeedDivisions(IServiceProvider serviceProvider, IAppDbContext context)
         {
             var divisions = new List<Division>
             {
@@ -90,7 +93,7 @@ namespace CMMS.Models
             context.Divisions.AddRange(divisions);
         }
 
-        private static void SeedExclusionTypes(IServiceProvider serviceProvider, AppDbContext context)
+        private static void SeedExclusionTypes(IServiceProvider serviceProvider, IAppDbContext context)
         {
             var exclusionTypes = new List<ExclusionType>()
             {
@@ -102,6 +105,22 @@ namespace CMMS.Models
             };
 
             context.ExclusionTypes.AddRange(exclusionTypes);
+        }
+
+        private static void SeedEntities(IServiceProvider serviceProvider, IAppDbContext context)
+        {
+            var divisions = context.Divisions.ToList();
+
+            var entities = new List<Entity>()
+            {
+                new Entity() {Name = "Kocioł sodowy", Division = divisions.ElementAt(0)},
+                new Entity() {Name = "Giętarka", Division = divisions.ElementAt(1)},
+                new Entity() {Name = "Wyżynarka", Division = divisions.ElementAt(2)},
+                new Entity() {Name = "Prasa", Division = divisions.ElementAt(3)},
+                new Entity() {Name = "Mieszalnik", Division = divisions.ElementAt(4)}
+            };
+
+            context.Entities.AddRange(entities);
         }
     }
 }

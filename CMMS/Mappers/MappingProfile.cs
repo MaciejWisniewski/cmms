@@ -12,6 +12,8 @@ namespace CMMS.Mappers
             CreateMap<AppUserDto, AppUser>();
             CreateMap<Division, DivisionDto>();
             CreateMap<ExclusionType, ExclusionTypeDto>();
+            CreateMap<Entity, EntityDto>();
+            CreateMap<EntityDto, Entity>();
         }
     }
 }

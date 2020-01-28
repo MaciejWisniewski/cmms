@@ -15,6 +15,7 @@ namespace CMMS.Controllers
             _exclusionTypeService = exclusionTypeService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
             var exclusionTypeDtos = await _exclusionTypeService.GetAllAsync();

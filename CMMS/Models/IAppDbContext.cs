@@ -7,5 +7,6 @@ namespace CMMS.Models
         DbSet<AppUser> Users { get; set; }
         DbSet<Division> Divisions { get; set; }
         DbSet<ExclusionType> ExclusionTypes { get; set; }
+        DbSet<Entity> Entities { get; set; }
     }
 }
