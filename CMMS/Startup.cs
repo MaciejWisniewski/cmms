@@ -61,6 +61,15 @@ namespace CMMS
             ConfigureAutoMapper(services);
 
             ConfigureSwagger(services);
+
+            //CORS
+            services.AddCors(o => o.AddPolicy("DevelopmentPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+                      
+            }));
         }
 
         private static void ConfigureAuthenticationAndAuthorization(IServiceCollection services)
@@ -109,6 +118,8 @@ namespace CMMS
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseCors("DevelopmentPolicy");
             }
 
             SeedDB.Initialize(
