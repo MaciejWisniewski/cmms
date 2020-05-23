@@ -3,7 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMMS", "CMMS\CMMS.csproj", "{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS", "CMMS\CMMS.csproj", "{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS.Domain", "CMMS.Domain\CMMS.Domain.csproj", "{B0C4E286-8257-4254-BB5F-5A0AF1298C99}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS.Infrastructure", "CMMS.Infrastructure\CMMS.Infrastructure.csproj", "{3A24C333-6C86-4681-9CD8-2E7254B27FEB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS.Application", "CMMS.Application\CMMS.Application.csproj", "{7EE008D0-3482-4517-874B-38FB7A633BC1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS.API", "CMMS.API\CMMS.API.csproj", "{49FFA7F3-3E1D-4A88-9BE5-9B7010FFA956}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{877145BF-A178-4ABC-B887-DE0277631067}"
+	ProjectSection(SolutionItems) = preProject
+		InitializeDatabase.sql = InitializeDatabase.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +28,22 @@ Global
 		{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0C4E286-8257-4254-BB5F-5A0AF1298C99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C4E286-8257-4254-BB5F-5A0AF1298C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C4E286-8257-4254-BB5F-5A0AF1298C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C4E286-8257-4254-BB5F-5A0AF1298C99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A24C333-6C86-4681-9CD8-2E7254B27FEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A24C333-6C86-4681-9CD8-2E7254B27FEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A24C333-6C86-4681-9CD8-2E7254B27FEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A24C333-6C86-4681-9CD8-2E7254B27FEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE008D0-3482-4517-874B-38FB7A633BC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE008D0-3482-4517-874B-38FB7A633BC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE008D0-3482-4517-874B-38FB7A633BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE008D0-3482-4517-874B-38FB7A633BC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49FFA7F3-3E1D-4A88-9BE5-9B7010FFA956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49FFA7F3-3E1D-4A88-9BE5-9B7010FFA956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49FFA7F3-3E1D-4A88-9BE5-9B7010FFA956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49FFA7F3-3E1D-4A88-9BE5-9B7010FFA956}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
