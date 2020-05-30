@@ -16,6 +16,7 @@ using CMMS.Application.Configuration.Validation;
 using CMMS.Domain.SeedWork;
 using CMMS.API.SeedWork;
 using CMMS.Infrastructure;
+using CMMS.Domain.Identity;
 
 [assembly: UserSecretsId("52h8sb06-aaa1-4fff-9f05-3ced1cb623c3")]
 namespace CMMS.API
@@ -44,13 +45,18 @@ namespace CMMS.API
 
             services.AddSwaggerDocumentation();
 
+            services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            }).AddEntityFrameworkStores<MaintenanceContext>();
+
             services
                 .AddDbContext<MaintenanceContext>(options =>
                 {
                     options
                         .ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>()
 
-                        .UseSqlServer(this._configuration[MaintenanceConnectionString]);
+                        .UseSqlServer(_configuration[MaintenanceConnectionString]);
                 });
 
             services.AddProblemDetails(x =>
@@ -79,6 +85,8 @@ namespace CMMS.API
             {
                 app.UseProblemDetails();
             }
+
+            app.UseAuthentication();
 
             app.UseRouting();
 
