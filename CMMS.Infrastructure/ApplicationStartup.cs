@@ -29,6 +29,7 @@ namespace CMMS.Infrastructure
             StartQuartz(connectionString);
 
             var serviceProvider = CreateAutofacServiceProvider(services, connectionString, cachingConfiguration);
+            SeedDatabase.Initialize(serviceProvider);
 
             return serviceProvider;
         }
