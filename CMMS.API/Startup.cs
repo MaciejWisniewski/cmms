@@ -17,6 +17,12 @@ using CMMS.Domain.SeedWork;
 using CMMS.API.SeedWork;
 using CMMS.Infrastructure;
 using CMMS.Domain.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 [assembly: UserSecretsId("52h8sb06-aaa1-4fff-9f05-3ced1cb623c3")]
 namespace CMMS.API
@@ -50,6 +56,26 @@ namespace CMMS.API
                 options.User.RequireUniqueEmail = false;
             }).AddEntityFrameworkStores<MaintenanceContext>();
 
+            services.AddAuthentication()
+                //.AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = JwtTokens.Issuer,
+                        ValidAudience = JwtTokens.Audience,
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokens.Key))
+                    };
+                });
+
+            var authorizePolicy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .Build();
+
+            services.AddMvc(config => config.Filters.Add(new AuthorizeFilter(authorizePolicy))).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services
                 .AddDbContext<MaintenanceContext>(options =>
                 {
@@ -65,12 +91,12 @@ namespace CMMS.API
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
             });
 
-            var children = this._configuration.GetSection("Caching").GetChildren();
+            var children = _configuration.GetSection("Caching").GetChildren();
             var cachingConfiguration = children.ToDictionary(child => child.Key, child => TimeSpan.Parse(child.Value));
 
             return ApplicationStartup.Initialize(
                 services,
-                this._configuration[MaintenanceConnectionString],
+                _configuration[MaintenanceConnectionString],
                 cachingConfiguration);
         }
 
