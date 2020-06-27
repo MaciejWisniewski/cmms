@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.Authenticate
 {
-    public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, JwtTokenDto>
+    public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, AuthenticationResult>
     {
         private UserManager<AppUser> _userManager { get; }
         private SignInManager<AppUser> _signInManager { get; }
@@ -22,15 +22,14 @@ namespace CMMS.Application.Identity.Authenticate
             _signInManager = signInManager;
         }
 
-        public async Task<JwtTokenDto> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResult> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
         {
             var userName = request.UserName;
             var password = request.Password;
 
             AppUser user = await _userManager.FindByNameAsync(userName);
-            if (!string.IsNullOrWhiteSpace(userName) && !string.IsNullOrWhiteSpace(password) && user != null)
+            if (user != null)
             {
-
                 var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
                 if (signInResult.Succeeded)
@@ -52,15 +51,13 @@ namespace CMMS.Application.Identity.Authenticate
                         expires: DateTime.UtcNow.AddDays(1),
                         signingCredentials: credentials);
 
-                    return new JwtTokenDto()
-                    {
-                        Token = new JwtSecurityTokenHandler().WriteToken(token),
-                        ExpirationDate = token.ValidTo
-                    };
+                    return new AuthenticationResult(
+                        token: new JwtSecurityTokenHandler().WriteToken(token), 
+                        expirationDate: token.ValidTo);
                 }
             }
 
-            return null;
+            return new AuthenticationResult("Username or password is incorrect");
         }
     }
 }

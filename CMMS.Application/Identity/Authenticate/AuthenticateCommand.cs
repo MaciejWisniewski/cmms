@@ -2,7 +2,7 @@
 
 namespace CMMS.Application.Identity.Authenticate
 {
-    public class AuthenticateCommand : IRequest<JwtTokenDto>
+    public class AuthenticateCommand : IRequest<AuthenticationResult>
     {
         public AuthenticateCommand(string userName, string password)
         {

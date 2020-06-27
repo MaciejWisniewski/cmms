@@ -23,20 +23,16 @@ namespace CMMS.API.Identity.Authenticate
         /// </summary>
         [HttpPost]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(JwtTokenDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AuthenticationResult), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Authenticate([FromBody] UserCredentialsDto credentialsDto)
         {
-            var jwtToken = await _mediator.Send(
+            var result = await _mediator.Send(
                 new AuthenticateCommand(
                     credentialsDto.UserName, 
                     credentialsDto.Password
                     ));
 
-            if(jwtToken == null)
-                return BadRequest("Given username or password is incorrect");
-
-
-            return Ok(jwtToken);
+            return Ok(result);
         }
     }
 }
