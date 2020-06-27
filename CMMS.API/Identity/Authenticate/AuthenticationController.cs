@@ -28,7 +28,7 @@ namespace CMMS.API.Identity.Authenticate
         {
             var jwtToken = await _mediator.Send(
                 new AuthenticateCommand(
-                    credentialsDto.Username, 
+                    credentialsDto.UserName, 
                     credentialsDto.Password
                     ));
 

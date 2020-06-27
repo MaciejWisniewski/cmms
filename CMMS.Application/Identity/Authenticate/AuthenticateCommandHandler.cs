@@ -24,11 +24,11 @@ namespace CMMS.Application.Identity.Authenticate
 
         public async Task<JwtTokenDto> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
         {
-            var username = request.Username;
+            var userName = request.UserName;
             var password = request.Password;
 
-            AppUser user = await _userManager.FindByNameAsync(username);
-            if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password) && user != null)
+            AppUser user = await _userManager.FindByNameAsync(userName);
+            if (!string.IsNullOrWhiteSpace(userName) && !string.IsNullOrWhiteSpace(password) && user != null)
             {
 
                 var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
@@ -40,9 +40,9 @@ namespace CMMS.Application.Identity.Authenticate
 
                     var claims = new[]
                     {
-                        new Claim(JwtRegisteredClaimNames.Sub, username),
+                        new Claim(JwtRegisteredClaimNames.Sub, userName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, username)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, userName)
                     };
 
                     var token = new JwtSecurityToken(
