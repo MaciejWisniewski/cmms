@@ -1,5 +1,9 @@
 ﻿using Autofac;
 using CMMS.Application.Configuration.Data;
+using CMMS.Domain.Identity;
+using CMMS.Domain.SeedWork;
+using CMMS.Infrastructure.Domain;
+using CMMS.Infrastructure.Domain.Identity;
 
 namespace CMMS.Infrastructure.Database
 {
@@ -19,18 +23,13 @@ namespace CMMS.Infrastructure.Database
                 .WithParameter("connectionString", _databaseConnectionString)
                 .InstancePerLifetimeScope();
 
-            //builder.RegisterType<UnitOfWork>()
-            //    .As<IUnitOfWork>()
-            //    .InstancePerLifetimeScope();
+            builder.RegisterType<UnitOfWork>()
+                .As<IUnitOfWork>()
+                .InstancePerLifetimeScope();
 
-            //builder.RegisterType<AreaRepository>()
-            //    .As<IProductRepository>()
-            //    .InstancePerLifetimeScope();
-
-
-            //builder.RegisterType<StronglyTypedIdValueConverterSelector>()
-            //    .As<IValueConverterSelector>()
-            //    .InstancePerLifetimeScope();
+            builder.RegisterType<UserRepository>()
+                .As<IUserRepository>()
+                .InstancePerLifetimeScope();
         }
     }
 }

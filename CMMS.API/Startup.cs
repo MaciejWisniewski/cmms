@@ -53,7 +53,7 @@ namespace CMMS.API
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<MaintenanceContext>();
 
             services.AddAuthentication()
@@ -81,7 +81,6 @@ namespace CMMS.API
                 {
                     options
                         .ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>()
-
                         .UseSqlServer(_configuration[MaintenanceConnectionString]);
                 });
 
@@ -115,6 +114,8 @@ namespace CMMS.API
             app.UseAuthentication();
 
             app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
