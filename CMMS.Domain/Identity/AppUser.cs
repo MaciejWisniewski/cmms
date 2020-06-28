@@ -13,8 +13,17 @@ namespace CMMS.Domain.Identity
             Id = Guid.NewGuid();
         }
 
-        public static AppUser Create(string fullName, string userName, string email, string phoneNumber)
+        public static AppUser Create(
+            string fullName, 
+            string userName, 
+            string email, 
+            string phoneNumber,
+            IUserUniquenessChecker userUniquenessChecker)
         {
+            var isUnique = userUniquenessChecker.IsUnique(userName, email);
+            if (!isUnique)
+                throw new BusinessRuleValidationException("User with the given username or email already exists");
+
             return new AppUser()
             {
                 FullName = fullName,

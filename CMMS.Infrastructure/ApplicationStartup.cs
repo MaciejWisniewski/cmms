@@ -16,6 +16,7 @@ using CMMS.Infrastructure.Processing.InternalCommands;
 using CMMS.Infrastructure.Processing.Outbox;
 using CMMS.Infrastructure.Quartz;
 using CMMS.Infrastructure.SeedWork;
+using CMMS.Infrastructure.Domain;
 
 namespace CMMS.Infrastructure
 {
@@ -45,7 +46,7 @@ namespace CMMS.Infrastructure
 
             container.RegisterModule(new DataAccessModule(connectionString));
             container.RegisterModule(new MediatorModule());
-            //container.RegisterModule(new DomainModule());
+            container.RegisterModule(new DomainModule());
             //container.RegisterModule(new EmailModule());
             container.RegisterModule(new ProcessingModule());
 

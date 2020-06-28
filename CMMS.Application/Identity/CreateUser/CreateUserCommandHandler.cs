@@ -9,11 +9,13 @@ namespace CMMS.Application.Identity.CreateUser
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserDto>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserUniquenessChecker _userUniquenessChecker;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public CreateUserCommandHandler(IUserRepository userRepository, IUserUniquenessChecker userUniquenessChecker, IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
+            _userUniquenessChecker = userUniquenessChecker;
             _unitOfWork = unitOfWork;
         }
 
@@ -24,7 +26,8 @@ namespace CMMS.Application.Identity.CreateUser
                 fullName: request.FullName,
                 userName: request.UserName,
                 email: request.Email,
-                phoneNumber: request.PhoneNumber
+                phoneNumber: request.PhoneNumber,
+                _userUniquenessChecker
                 );
 
             await _userRepository.AddAsync(user, request.Password);
