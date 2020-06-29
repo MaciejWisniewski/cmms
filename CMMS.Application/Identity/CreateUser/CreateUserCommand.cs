@@ -4,13 +4,14 @@ namespace CMMS.Application.Identity.CreateUser
 {
     public class CreateUserCommand : IRequest<UserDto>
     {
-        public CreateUserCommand(string fullName, string userName, string email, string phoneNumber, string password)
+        public CreateUserCommand(string fullName, string userName, string email, string phoneNumber, string password, string role)
         {
             FullName = fullName;
             UserName = userName;
             Email = email;
             PhoneNumber = phoneNumber;
             Password = password;
+            Role = role;
         }
 
         public string FullName { get; }
@@ -22,5 +23,8 @@ namespace CMMS.Application.Identity.CreateUser
         public string PhoneNumber { get; }
 
         public string Password { get; }
+
+        public string Role { get; }
+
     }
 }

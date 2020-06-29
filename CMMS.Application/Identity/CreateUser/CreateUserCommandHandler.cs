@@ -10,12 +10,18 @@ namespace CMMS.Application.Identity.CreateUser
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserUniquenessChecker _userUniquenessChecker;
+        private readonly IRoleValidator _roleValidator;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateUserCommandHandler(IUserRepository userRepository, IUserUniquenessChecker userUniquenessChecker, IUnitOfWork unitOfWork)
+        public CreateUserCommandHandler(
+            IUserRepository userRepository, 
+            IUserUniquenessChecker userUniquenessChecker, 
+            IRoleValidator roleValidator,
+            IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
             _userUniquenessChecker = userUniquenessChecker;
+            _roleValidator = roleValidator;
             _unitOfWork = unitOfWork;
         }
 
@@ -27,10 +33,11 @@ namespace CMMS.Application.Identity.CreateUser
                 userName: request.UserName,
                 email: request.Email,
                 phoneNumber: request.PhoneNumber,
-                _userUniquenessChecker
-                );
+                _userUniquenessChecker);
 
             await _userRepository.AddAsync(user, request.Password);
+
+            await _userRepository.AddToRoleAsync(user, _roleValidator.GetValidOrDefault(request.Role));
 
             await _unitOfWork.CommitAsync(cancellationToken);
 

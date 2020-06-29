@@ -11,6 +11,10 @@ namespace CMMS.Infrastructure.Domain
             builder.RegisterType<UserUniquenessChecker>()
                 .As<IUserUniquenessChecker>()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<RoleValidator>()
+                .As<IRoleValidator>()
+                .InstancePerLifetimeScope();
         }
     }
 }

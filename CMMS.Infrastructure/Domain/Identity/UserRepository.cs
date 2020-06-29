@@ -20,5 +20,9 @@ namespace CMMS.Infrastructure.Domain.Identity
             await _userManager.CreateAsync(user, password);
         }
 
+        public async Task AddToRoleAsync(AppUser user, string role)
+        {
+            await _userManager.AddToRoleAsync(user, role);
+        }
     }
 }

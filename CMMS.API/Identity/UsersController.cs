@@ -32,7 +32,8 @@ namespace CMMS.API.Identity
                     request.UserName,
                     request.Email,
                     request.PhoneNumber,
-                    request.Password
+                    request.Password,
+                    request.Role
                 ));
 
             return Ok(user);
