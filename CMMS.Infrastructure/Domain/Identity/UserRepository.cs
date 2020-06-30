@@ -15,6 +15,11 @@ namespace CMMS.Infrastructure.Domain.Identity
             _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
         }
 
+        public async Task<AppUser> GetByUserNameAsync(string userName)
+        {
+            return await _userManager.FindByNameAsync(userName);
+        }
+
         public async Task AddAsync(AppUser user, string password)
         {
             await _userManager.CreateAsync(user, password);

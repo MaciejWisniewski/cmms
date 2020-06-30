@@ -56,8 +56,13 @@ namespace CMMS.API
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<MaintenanceContext>();
 
-            services.AddAuthentication()
-                //.AddCookie(cfg => cfg.SlidingExpiration = true)
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(cfg =>
                 {
                     cfg.TokenValidationParameters = new TokenValidationParameters()

@@ -13,12 +13,12 @@ namespace CMMS.Application.Identity.Authenticate
 {
     public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, AuthenticationResult>
     {
-        private UserManager<AppUser> _userManager { get; }
+        private readonly IUserRepository _userRepository;
         private SignInManager<AppUser> _signInManager { get; }
 
-        public AuthenticateCommandHandler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public AuthenticateCommandHandler(IUserRepository userRepository, SignInManager<AppUser> signInManager)
         {
-            _userManager = userManager;
+            _userRepository = userRepository;
             _signInManager = signInManager;
         }
 
@@ -27,7 +27,7 @@ namespace CMMS.Application.Identity.Authenticate
             var userName = request.UserName;
             var password = request.Password;
 
-            AppUser user = await _userManager.FindByNameAsync(userName);
+            AppUser user = await _userRepository.GetByUserNameAsync(userName);
             if (user != null)
             {
                 var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
@@ -41,7 +41,8 @@ namespace CMMS.Application.Identity.Authenticate
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, userName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, userName)
+                        new Claim(JwtRegisteredClaimNames.UniqueName, userName),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType, "Admin")
                     };
 
                     var token = new JwtSecurityToken(

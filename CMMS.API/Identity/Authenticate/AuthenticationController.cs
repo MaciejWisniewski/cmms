@@ -24,6 +24,7 @@ namespace CMMS.API.Identity.Authenticate
         [HttpPost]
         [AllowAnonymous]
         [ProducesResponseType(typeof(AuthenticationResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Authenticate([FromBody] UserCredentialsDto credentialsDto)
         {
             var result = await _mediator.Send(

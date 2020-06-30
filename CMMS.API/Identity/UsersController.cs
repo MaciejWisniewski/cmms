@@ -1,10 +1,10 @@
 ﻿using CMMS.Application.Identity.CreateUser;
 using CMMS.Domain.Identity;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
-using AuthorizeAttribute = System.Web.Http.AuthorizeAttribute;
 
 namespace CMMS.API.Identity
 {
@@ -23,8 +23,12 @@ namespace CMMS.API.Identity
         /// Create new user.
         /// </summary>
         [HttpPost]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> CreateUser([FromBody]CreateUserRequest request)
         {
             var user = await _mediator.Send(new CreateUserCommand(
