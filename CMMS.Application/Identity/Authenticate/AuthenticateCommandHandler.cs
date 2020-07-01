@@ -3,7 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading;
@@ -36,14 +38,15 @@ namespace CMMS.Application.Identity.Authenticate
                 {
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokens.Key));
                     var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var roles = await _userRepository.GetRolesAsync(user);
 
-                    var claims = new[]
+                    var claims = new List<Claim>()
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, userName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.UniqueName, userName),
-                        new Claim(ClaimsIdentity.DefaultRoleClaimType, "Admin")
+                        new Claim(JwtRegisteredClaimNames.UniqueName, userName)
                     };
+                    claims.AddRange(roles.Select(r => new Claim(ClaimsIdentity.DefaultRoleClaimType, r)));
 
                     var token = new JwtSecurityToken(
                         JwtTokens.Issuer,

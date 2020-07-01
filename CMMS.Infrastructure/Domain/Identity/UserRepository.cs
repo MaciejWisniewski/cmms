@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CMMS.Infrastructure.Domain.Identity
@@ -18,6 +19,11 @@ namespace CMMS.Infrastructure.Domain.Identity
         public async Task<AppUser> GetByUserNameAsync(string userName)
         {
             return await _userManager.FindByNameAsync(userName);
+        }
+
+        public async Task<IEnumerable<string>> GetRolesAsync(AppUser user)
+        {
+            return await _userManager.GetRolesAsync(user);
         }
 
         public async Task AddAsync(AppUser user, string password)
