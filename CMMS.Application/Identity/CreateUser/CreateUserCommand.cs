@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using System;
 
 namespace CMMS.Application.Identity.CreateUser
 {
-    public class CreateUserCommand : IRequest<UserDto>
+    public class CreateUserCommand : IRequest<Guid>
     {
         public CreateUserCommand(string fullName, string userName, string email, string phoneNumber, string password, string role)
         {

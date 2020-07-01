@@ -1,12 +1,13 @@
 ﻿using CMMS.Domain.Identity;
 using CMMS.Domain.SeedWork;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.CreateUser
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserDto>
+    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserUniquenessChecker _userUniquenessChecker;
@@ -26,7 +27,7 @@ namespace CMMS.Application.Identity.CreateUser
         }
 
 
-        public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var user = AppUser.Create(
                 fullName: request.FullName,
@@ -41,7 +42,7 @@ namespace CMMS.Application.Identity.CreateUser
 
             await _unitOfWork.CommitAsync(cancellationToken);
 
-            return new UserDto() { Id = user.Id };
+            return user.Id;
         }
     }
 }
