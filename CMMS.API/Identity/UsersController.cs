@@ -1,6 +1,7 @@
 ﻿using CMMS.Application.Identity;
 using CMMS.Application.Identity.CreateUser;
 using CMMS.Application.Identity.GetAllUsers;
+using CMMS.Application.Identity.GetUser;
 using CMMS.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CMMS.API.Identity
 {
-    [Route("api/[controller]")]
+    [Route("api/identity/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -21,6 +22,17 @@ namespace CMMS.API.Identity
         public UsersController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("{userName}")]
+        [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetByUserName(string userName)
+        {
+            var user = await _mediator.Send(new GetUserQuery(userName));
+
+            return Ok(user);
         }
 
         /// <summary>

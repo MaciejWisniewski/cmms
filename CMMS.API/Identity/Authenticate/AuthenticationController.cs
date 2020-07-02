@@ -7,7 +7,7 @@ using MediatR;
 
 namespace CMMS.API.Identity.Authenticate
 {
-    [Route("api/[controller]")]
+    [Route("api/identity/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {

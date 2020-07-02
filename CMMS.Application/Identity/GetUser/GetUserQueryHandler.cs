@@ -1,22 +1,23 @@
 ﻿using CMMS.Application.Configuration.Data;
+using CMMS.Application.Configuration.Validation;
 using Dapper;
 using MediatR;
-using System.Collections.Generic;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Identity.GetAllUsers
+namespace CMMS.Application.Identity.GetUser
 {
-    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<UserDto>>
+    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-        public GetAllUsersQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+        public GetUserQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
         {
             _sqlConnectionFactory = sqlConnectionFactory;
         }
 
-        public async Task<List<UserDto>> Handle(GetAllUsersQuery query, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(GetUserQuery query, CancellationToken cancellationToken)
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
             const string sql = "SELECT " +
@@ -29,10 +30,15 @@ namespace CMMS.Application.Identity.GetAllUsers
                                "LEFT JOIN [CMMS].[dbo].[AspNetUserRoles] AS [UserRole] " +
                                "ON [UserRole].UserId = [User].Id " +
                                "LEFT JOIN [CMMS].[dbo].[AspNetRoles] AS [Role] " +
-                               "ON [UserRole].RoleId = [Role].Id";
-            var users = await connection.QueryAsync<UserDto>(sql);
+                               "ON [UserRole].RoleId = [Role].Id " +
+                               "WHERE [User].UserName = @UserName";
+            var user = await connection.QuerySingleOrDefaultAsync<UserDto>(sql, new { query.UserName });
 
-            return users.AsList();
+            if (user == null)
+                throw new NotFoundException("User with the given username hasn't been found", null);
+
+            return user;
+
         }
     }
 }
