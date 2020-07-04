@@ -16,6 +16,11 @@ namespace CMMS.Infrastructure.Domain.Identity
             _userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
         }
 
+        public async Task<AppUser> GetByIdAsync(Guid id)
+        {
+            return await _userManager.FindByIdAsync(id.ToString());
+        }
+
         public async Task<AppUser> GetByUserNameAsync(string userName)
         {
             return await _userManager.FindByNameAsync(userName);
@@ -34,6 +39,11 @@ namespace CMMS.Infrastructure.Domain.Identity
         public async Task AddToRoleAsync(AppUser user, string role)
         {
             await _userManager.AddToRoleAsync(user, role);
+        }
+
+        public async Task RemoveAsync(AppUser user)
+        {
+            await _userManager.DeleteAsync(user);
         }
     }
 }

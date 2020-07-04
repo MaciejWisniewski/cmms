@@ -2,6 +2,7 @@
 using CMMS.Application.Identity.CreateUser;
 using CMMS.Application.Identity.GetAllUsers;
 using CMMS.Application.Identity.GetUser;
+using CMMS.Application.Identity.RemoveUser;
 using CMMS.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -70,6 +71,24 @@ namespace CMMS.API.Identity
                 ));
 
             return Ok(userId);
+        }
+
+        /// <summary>
+        /// Remove user with the given id.
+        /// </summary>
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = UserRole.Admin)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        public async Task<IActionResult> RemoveUser(Guid id)
+        {
+            await _mediator.Send(new RemoveUserCommand(id));
+
+            return Ok();
         }
     }
 }
