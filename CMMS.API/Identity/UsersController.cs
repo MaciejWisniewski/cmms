@@ -25,12 +25,12 @@ namespace CMMS.API.Identity
         }
 
         [HttpGet]
-        [Route("{userName}")]
+        [Route("{id}")]
         [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetByUserName(string userName)
+        public async Task<IActionResult> GetByUserName(Guid id)
         {
-            var user = await _mediator.Send(new GetUserQuery(userName));
+            var user = await _mediator.Send(new GetUserQuery(id));
 
             return Ok(user);
         }

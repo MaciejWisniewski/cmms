@@ -1,14 +1,15 @@
 ﻿using MediatR;
+using System;
 
 namespace CMMS.Application.Identity.GetUser
 {
     public class GetUserQuery : IRequest<UserDto>
     {
-        public string UserName { get; }
+        public Guid Id { get; }
 
-        public GetUserQuery(string userName)
+        public GetUserQuery(Guid id)
         {
-            UserName = userName;
+            Id = id;
         }
     }
 }

@@ -20,11 +20,12 @@ namespace CMMS.Application.Identity.GetAllUsers
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
             const string sql = "SELECT " +
+                               "[User].Id, " +
                                "[User].FullName, " +
                                "[User].UserName, " +
                                "[User].Email, " +
                                "[User].PhoneNumber," +
-                               "[Role].Name " +
+                               "[Role].Name AS Role " +
                                "FROM [CMMS].[dbo].[AspNetUsers] AS [User] " +
                                "LEFT JOIN [CMMS].[dbo].[AspNetUserRoles] AS [UserRole] " +
                                "ON [UserRole].UserId = [User].Id " +
