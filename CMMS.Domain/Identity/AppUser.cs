@@ -32,5 +32,12 @@ namespace CMMS.Domain.Identity
                 PhoneNumber = phoneNumber
             };
         }
+
+        public void Update(string fullName, string email, string phoneNumber)
+        {
+            FullName = fullName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+        }
     }
 }

@@ -3,6 +3,7 @@ using CMMS.Application.Identity.CreateUser;
 using CMMS.Application.Identity.GetAllUsers;
 using CMMS.Application.Identity.GetUser;
 using CMMS.Application.Identity.RemoveUser;
+using CMMS.Application.Identity.UpdateUser;
 using CMMS.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -71,6 +72,28 @@ namespace CMMS.API.Identity
                 ));
 
             return Ok(userId);
+        }
+
+        /// <summary>
+        /// Update user's data.
+        /// </summary>
+        [HttpPut]
+        [Route("{id}")]
+        [Authorize(Roles = UserRole.Admin)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        public async Task<IActionResult> UpdateUser([FromRoute] Guid id,[FromBody]UpdateUserRequest request)
+        {
+            await _mediator.Send(new UpdateUserCommand(
+                    id,
+                    request.FullName,
+                    request.Email,
+                    request.PhoneNumber
+                ));
+
+            return Ok();
         }
 
         /// <summary>
