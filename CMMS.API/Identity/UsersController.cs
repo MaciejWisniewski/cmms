@@ -1,4 +1,5 @@
 ﻿using CMMS.Application.Identity;
+using CMMS.Application.Identity.ChangeUserRole;
 using CMMS.Application.Identity.CreateUser;
 using CMMS.Application.Identity.GetAllUsers;
 using CMMS.Application.Identity.GetUser;
@@ -84,7 +85,8 @@ namespace CMMS.API.Identity
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
-        public async Task<IActionResult> UpdateUser([FromRoute] Guid id,[FromBody]UpdateUserRequest request)
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody]UpdateUserRequest request)
         {
             await _mediator.Send(new UpdateUserCommand(
                     id,
@@ -92,6 +94,24 @@ namespace CMMS.API.Identity
                     request.Email,
                     request.PhoneNumber
                 ));
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Change user's role.
+        /// </summary>
+        [HttpPut]
+        [Route("{userId}/roles/changeUserRole")]
+        [Authorize(Roles = UserRole.Admin)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> ChangeUserRole([FromRoute] Guid userId, [FromBody] ChangeUserRoleRequest request)
+        {
+            await _mediator.Send(new ChangeUserRoleCommand(userId, request.RoleId));
 
             return Ok();
         }
