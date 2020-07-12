@@ -9,7 +9,7 @@ using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
 using CMMS.Application.Configuration.Validation;
-using CMMS.Application.Areas.GetAreas;
+using CMMS.Application.Identity.GetAllRoles;
 
 namespace CMMS.Infrastructure.Processing
 {
@@ -35,7 +35,7 @@ namespace CMMS.Infrastructure.Processing
             foreach (var mediatrOpenType in mediatrOpenTypes)
             {
                 builder
-                    .RegisterAssemblyTypes(typeof(GetAllAreasQuery).GetTypeInfo().Assembly)
+                    .RegisterAssemblyTypes(typeof(GetAllRolesQuery).GetTypeInfo().Assembly)
                     .AsClosedTypesOf(mediatrOpenType)
                     .AsImplementedInterfaces();
             }
