@@ -30,6 +30,10 @@ namespace CMMS.Infrastructure.Database
             builder.RegisterType<UserRepository>()
                 .As<IUserRepository>()
                 .InstancePerLifetimeScope();
+
+            builder.RegisterType<RoleRepository>()
+                .As<IRoleRepository>()
+                .InstancePerLifetimeScope();
         }
     }
 }

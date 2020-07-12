@@ -26,11 +26,6 @@ namespace CMMS.Infrastructure.Domain.Identity
             return await _userManager.FindByNameAsync(userName);
         }
 
-        public async Task<IEnumerable<string>> GetRolesAsync(AppUser user)
-        {
-            return await _userManager.GetRolesAsync(user);
-        }
-
         public async Task AddAsync(AppUser user, string password)
         {
             await _userManager.CreateAsync(user, password);
@@ -45,5 +40,17 @@ namespace CMMS.Infrastructure.Domain.Identity
         {
             await _userManager.DeleteAsync(user);
         }
+
+        public async Task<IEnumerable<string>> GetRolesAsync(AppUser user)
+        {
+            return await _userManager.GetRolesAsync(user);
+        }
+
+        public async Task RemoveFromRolesAsync(AppUser user, IEnumerable<string> roles)
+        {
+            await _userManager.RemoveFromRolesAsync(user, roles);
+        }
+
+
     }
 }

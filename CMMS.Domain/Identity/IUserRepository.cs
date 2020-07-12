@@ -8,9 +8,10 @@ namespace CMMS.Domain.Identity
     {
         Task<AppUser> GetByIdAsync(Guid id);
         Task<AppUser> GetByUserNameAsync(string userName);
-        Task<IEnumerable<string>> GetRolesAsync(AppUser user);
         Task AddAsync(AppUser user, string password);
         Task AddToRoleAsync(AppUser user, string role);
         Task RemoveAsync(AppUser user);
+        Task<IEnumerable<string>> GetRolesAsync(AppUser user);
+        Task RemoveFromRolesAsync(AppUser user, IEnumerable<string> roles);
     }
 }
