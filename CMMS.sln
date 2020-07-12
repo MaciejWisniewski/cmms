@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS", "CMMS\CMMS.csproj", "{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS.Domain", "CMMS.Domain\CMMS.Domain.csproj", "{B0C4E286-8257-4254-BB5F-5A0AF1298C99}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS.Infrastructure", "CMMS.Infrastructure\CMMS.Infrastructure.csproj", "{3A24C333-6C86-4681-9CD8-2E7254B27FEB}"
@@ -24,10 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EEB19B7-0717-4E67-B38D-C5AAD7EBDC81}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0C4E286-8257-4254-BB5F-5A0AF1298C99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B0C4E286-8257-4254-BB5F-5A0AF1298C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0C4E286-8257-4254-BB5F-5A0AF1298C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
