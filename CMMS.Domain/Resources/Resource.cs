@@ -11,10 +11,6 @@ namespace CMMS.Domain.Resources
 
         public ResourceId ParentId { get; private set; }
 
-        public virtual Resource Parent { get; private set; }
-
-        public virtual List<Resource> Children { get; private set; }
-
         public string Name { get; private set; }
 
         public bool? IsArea { get; private set; }
