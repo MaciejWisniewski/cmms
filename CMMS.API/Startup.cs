@@ -23,6 +23,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 [assembly: UserSecretsId("52h8sb06-aaa1-4fff-9f05-3ced1cb623c3")]
 namespace CMMS.API
@@ -45,9 +47,20 @@ namespace CMMS.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(o => o.AddPolicy("CMMSPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
+
             services.AddControllers();
 
             services.AddMemoryCache();
+
+   
 
             services.AddSwaggerDocumentation();
 
@@ -108,6 +121,8 @@ namespace CMMS.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("CMMSPolicy");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -122,6 +137,7 @@ namespace CMMS.API
             app.UseRouting();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

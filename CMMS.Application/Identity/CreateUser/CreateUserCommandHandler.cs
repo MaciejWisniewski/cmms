@@ -34,7 +34,7 @@ namespace CMMS.Application.Identity.CreateUser
                 userName: request.UserName,
                 email: request.Email,
                 phoneNumber: request.PhoneNumber,
-                _userUniquenessChecker);
+                userUniquenessChecker: _userUniquenessChecker);
 
             await _userRepository.AddAsync(user, request.Password);
 

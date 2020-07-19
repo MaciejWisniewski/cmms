@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace CMMS.API.Configuration
@@ -10,32 +14,33 @@ namespace CMMS.API.Configuration
     {
         internal static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
         {
-            services.AddSwaggerGen(options =>
+            //add the Swagger services
+            services.AddOpenApiDocument(document =>
             {
-                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                document.Title = "CMMS API";
+                document.Description = "CMMS system as .NET Core REST API CQRS implementation with raw SQL and DDD using Clean Architecture.";
+                document.Version = "v1";
+                document.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
                 {
-                    Title = "CMMS API",
-                    Version = "v1",
-                    Description = "CMMS system as .NET Core REST API CQRS implementation with raw SQL and DDD using Clean Architecture.",
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Type into the textbox: Bearer {your JWT token}."
                 });
 
-                var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".XML";
-                var commentsFile = Path.Combine(baseDirectory, commentsFileName);
-                options.IncludeXmlComments(commentsFile);
+                document.OperationProcessors.Add(
+                    new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+                //      new OperationSecurityScopeProcessor("JWT"));
             });
-
             return services;
         }
 
         internal static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
         {
-            app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample CQRS API V1");
-            });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             return app;
         }

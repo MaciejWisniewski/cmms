@@ -27,11 +27,11 @@ namespace CMMS.API.Identity
             _mediator = mediator;
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [Authorize]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetByUserName(Guid id)
+        public async Task<IActionResult> GetByUserName([FromRoute]Guid id)
         {
             var user = await _mediator.Send(new GetUserQuery(id));
 
@@ -41,7 +41,8 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Get all users.
         /// </summary>
-        [HttpGet]
+        [Authorize]
+        [HttpGet("GetAll")]
         [ProducesResponseType(typeof(List<UserDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetAllUsers()
@@ -119,15 +120,14 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Remove user with the given id.
         /// </summary>
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
-        public async Task<IActionResult> RemoveUser(Guid id)
+        public async Task<IActionResult> RemoveUser([FromRoute]Guid id)
         {
             await _mediator.Send(new RemoveUserCommand(id));
 
