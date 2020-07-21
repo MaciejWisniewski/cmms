@@ -12,9 +12,11 @@ namespace CMMS.Application.Identity.UpdateUser
             RuleFor(x => x.FullName).NotEmpty().WithMessage("FullName cannot be empty");
             RuleFor(x => x.Email).NotEmpty().WithMessage("Email cannot be empty");
             RuleFor(x => x.PhoneNumber).NotEmpty().WithMessage("PhoneNumber cannot be empty");
+            RuleFor(x => x.RoleName).NotEmpty().WithMessage("RoleName cannot be empty");
 
             RuleFor(x => x.Email).EmailAddress().WithMessage("Email address is not valid");
             RuleFor(x => x.PhoneNumber).PhoneNumber();
+            RuleFor(x => x.Password).Password();
         }
     }
 }
