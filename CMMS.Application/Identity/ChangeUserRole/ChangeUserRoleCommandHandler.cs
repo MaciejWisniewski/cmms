@@ -33,9 +33,7 @@ namespace CMMS.Application.Identity.ChangeUserRole
             var roles = await _userRepository.GetRolesAsync(user);
             await _userRepository.RemoveFromRolesAsync(user, roles);
             await _userRepository.AddToRoleAsync(user, role.Name);
-
             await _unitOfWork.CommitAsync();
-
             return Unit.Value;
         }
     }

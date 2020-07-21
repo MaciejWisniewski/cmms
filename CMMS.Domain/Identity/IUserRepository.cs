@@ -13,5 +13,6 @@ namespace CMMS.Domain.Identity
         Task RemoveAsync(AppUser user);
         Task<IEnumerable<string>> GetRolesAsync(AppUser user);
         Task RemoveFromRolesAsync(AppUser user, IEnumerable<string> roles);
+        Task ChangePasswordAsync(AppUser user, string newPassword);
     }
 }

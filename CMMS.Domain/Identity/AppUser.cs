@@ -37,7 +37,7 @@ namespace CMMS.Domain.Identity
         {
             FullName = fullName;
             Email = email;
-            PhoneNumber = phoneNumber;
+            PhoneNumber = phoneNumber;       
         }
     }
 }

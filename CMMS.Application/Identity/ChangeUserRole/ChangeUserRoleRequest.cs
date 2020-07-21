@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CMMS.API.Identity
+namespace CMMS.Application.Identity
 {
     public class ChangeUserRoleRequest
     {

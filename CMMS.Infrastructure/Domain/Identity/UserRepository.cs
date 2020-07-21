@@ -51,6 +51,10 @@ namespace CMMS.Infrastructure.Domain.Identity
             await _userManager.RemoveFromRolesAsync(user, roles);
         }
 
-
+        public async Task ChangePasswordAsync(AppUser user, string newPassword)
+        {
+            await _userManager.RemovePasswordAsync(user);
+            await _userManager.AddPasswordAsync(user, newPassword);
+        }
     }
 }

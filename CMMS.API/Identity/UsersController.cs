@@ -93,7 +93,9 @@ namespace CMMS.API.Identity
                     id,
                     request.FullName,
                     request.Email,
-                    request.PhoneNumber
+                    request.PhoneNumber,
+                    request.Password,
+                    request.RoleName
                 ));
 
             return Ok();
