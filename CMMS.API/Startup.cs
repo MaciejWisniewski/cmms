@@ -26,7 +26,6 @@ using Microsoft.AspNetCore.Mvc;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
-[assembly: UserSecretsId("52h8sb06-aaa1-4fff-9f05-3ced1cb623c3")]
 namespace CMMS.API
 {
     public class Startup
