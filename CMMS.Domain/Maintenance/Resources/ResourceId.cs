@@ -1,7 +1,7 @@
 ﻿using CMMS.Domain.SeedWork;
 using System;
 
-namespace CMMS.Domain.Resources
+namespace CMMS.Domain.Maintenance.Resources
 {
     public class ResourceId : TypedIdValueBase
     {

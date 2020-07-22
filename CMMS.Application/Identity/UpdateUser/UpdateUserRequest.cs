@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CMMS.Application.Identity.UpdateUser
+﻿namespace CMMS.Application.Identity.UpdateUser
 {
     public class UpdateUserRequest
     {

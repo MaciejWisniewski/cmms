@@ -1,9 +1,9 @@
-﻿using CMMS.Domain.Resources;
+﻿using CMMS.Domain.Maintenance.Resources;
 using CMMS.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CMMS.Infrastructure.Domain.Resources
+namespace CMMS.Infrastructure.Domain.Maintenance.Resources
 {
     internal class ResourceEntityTypeConfiguration : IEntityTypeConfiguration<Resource>
     {

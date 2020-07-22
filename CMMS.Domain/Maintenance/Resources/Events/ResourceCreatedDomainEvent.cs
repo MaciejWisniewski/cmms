@@ -1,6 +1,6 @@
 ﻿using CMMS.Domain.SeedWork;
 
-namespace CMMS.Domain.Resources.Events
+namespace CMMS.Domain.Maintenance.Resources.Events
 {
     public class ResourceCreatedDomainEvent : DomainEventBase
     {

@@ -52,7 +52,7 @@ namespace CMMS.Application.Identity.Authenticate
                         JwtTokens.Issuer,
                         JwtTokens.Audience,
                         claims,
-                        expires: DateTime.UtcNow.AddDays(1),
+                        expires: DateTime.UtcNow.AddDays(90),
                         signingCredentials: credentials);
 
                     return new AuthenticationResult(

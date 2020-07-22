@@ -1,9 +1,8 @@
-﻿using CMMS.Domain.Resources.Events;
+﻿using CMMS.Domain.Maintenance.Resources.Events;
 using CMMS.Domain.SeedWork;
 using System;
-using System.Collections.Generic;
 
-namespace CMMS.Domain.Resources
+namespace CMMS.Domain.Maintenance.Resources
 {
     public class Resource : Entity, IAggregateRoot
     {
