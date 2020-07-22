@@ -11,11 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS.Application", "CMMS.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMMS.API", "CMMS.API\CMMS.API.csproj", "{49FFA7F3-3E1D-4A88-9BE5-9B7010FFA956}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{877145BF-A178-4ABC-B887-DE0277631067}"
-	ProjectSection(SolutionItems) = preProject
-		InitializeDatabase.sql = InitializeDatabase.sql
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

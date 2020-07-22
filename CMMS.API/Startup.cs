@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CMMS.Application.Configuration.Validation;
@@ -23,8 +22,6 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NSwag;
-using NSwag.Generation.Processors.Security;
 
 namespace CMMS.API
 {
@@ -46,7 +43,6 @@ namespace CMMS.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-
             services.AddCors(o => o.AddPolicy("CMMSPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -58,8 +54,6 @@ namespace CMMS.API
             services.AddControllers();
 
             services.AddMemoryCache();
-
-   
 
             services.AddSwaggerDocumentation();
 
@@ -136,7 +130,6 @@ namespace CMMS.API
             app.UseRouting();
 
             app.UseAuthorization();
-
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
