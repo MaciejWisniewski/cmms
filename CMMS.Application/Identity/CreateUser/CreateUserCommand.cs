@@ -5,16 +5,6 @@ namespace CMMS.Application.Identity.CreateUser
 {
     public class CreateUserCommand : IRequest<Guid>
     {
-        public CreateUserCommand(string fullName, string userName, string email, string phoneNumber, string password, string role)
-        {
-            FullName = fullName;
-            UserName = userName;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Password = password;
-            Role = role;
-        }
-
         public string FullName { get; }
 
         public string UserName { get; }
@@ -27,5 +17,14 @@ namespace CMMS.Application.Identity.CreateUser
 
         public string Role { get; }
 
+        public CreateUserCommand(string fullName, string userName, string email, string phoneNumber, string password, string role)
+        {
+            FullName = fullName;
+            UserName = userName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Password = password;
+            Role = role;
+        }
     }
 }

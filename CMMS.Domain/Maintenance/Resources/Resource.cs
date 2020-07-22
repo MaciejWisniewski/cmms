@@ -8,7 +8,7 @@ namespace CMMS.Domain.Maintenance.Resources
     {
         public ResourceId Id { get; private set; }
 
-        public ResourceId ParentId { get; private set; }
+        public ResourceId? ParentId { get; private set; }
 
         public string Name { get; private set; }
 
@@ -20,8 +20,8 @@ namespace CMMS.Domain.Maintenance.Resources
         {
         }
 
-        internal static Resource CreateNew(
-            ResourceId parentId, 
+        public static Resource CreateNew(
+            Guid? parentId, 
             string name,
             bool? isArea,
             bool? isMachine)
@@ -29,10 +29,10 @@ namespace CMMS.Domain.Maintenance.Resources
             return new Resource(parentId, name, isArea, isMachine);
         }
 
-        private Resource(ResourceId parentId, string name, bool? isArea, bool? isMachine)
+        private Resource(Guid? parentId, string name, bool? isArea, bool? isMachine)
         {
             Id = new ResourceId(Guid.NewGuid());
-            ParentId = parentId;
+            ParentId = parentId.HasValue ? new ResourceId(parentId.Value) : null;
             Name = name;
             IsArea = isArea;
             IsMachine = isMachine;
