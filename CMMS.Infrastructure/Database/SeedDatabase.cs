@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,11 +15,15 @@ namespace CMMS.Infrastructure.Database
         public static async void Initialize(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<MaintenanceContext>();
-            context.Database.EnsureCreated();
+            if (!context.Database.CanConnect())
+                return;
 
-            await CreateRoles(serviceProvider, context);
+            var isRolesTableExists = await IsTableExists(context, SchemaNames.Dbo, "AspNetRoles");
+            if(isRolesTableExists)
+                await CreateRoles(serviceProvider, context);
 
-            if(! context.Users.Any())
+            var isUsersTableExists = await IsTableExists(context, SchemaNames.Dbo, "AspNetUsers");
+            if (isUsersTableExists && !context.Users.Any())
                 await CreateUsers(serviceProvider, context);
         }
 
@@ -78,6 +83,24 @@ namespace CMMS.Infrastructure.Database
                     await roleManager.CreateAsync(role);
 
             context.SaveChanges();
+        }
+
+        private static async Task<bool> IsTableExists(DbContext context, string schema, string tableName)
+        {
+            bool exists;
+
+            var connection = context.Database.GetDbConnection();
+            if (connection.State.Equals(ConnectionState.Closed)) await connection.OpenAsync();
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @$"
+                    SELECT 1 FROM sys.tables AS T
+                        INNER JOIN sys.schemas AS S ON T.schema_id = S.schema_id
+                    WHERE S.Name = '{schema}' AND T.Name = '{tableName}'";
+                exists = await command.ExecuteScalarAsync() != null;
+            }
+
+            return exists;
         }
     }
 }
