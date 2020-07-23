@@ -9,11 +9,11 @@ namespace CMMS.Application.Maintenance.Resources.CreateResource
 
         public string Name { get; }
 
-        public bool? IsArea { get; }
+        public bool IsArea { get; }
 
-        public bool? IsMachine { get; }
+        public bool IsMachine { get; }
 
-        public CreateResourceCommand(Guid? parentId, string name, bool? isArea, bool? isMachine)
+        public CreateResourceCommand(Guid? parentId, string name, bool isArea, bool isMachine)
         {
             ParentId = parentId;
             Name = name;

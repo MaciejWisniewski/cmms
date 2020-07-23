@@ -10,8 +10,8 @@ namespace CMMS.Application.Maintenance.Resources.GetAllResources
 
         public string Name { get; set; }
 
-        public bool? IsArea { get; set; }
+        public bool IsArea { get; set; }
 
-        public bool? IsMachine { get; set; }
+        public bool IsMachine { get; set; }
     }
 }
