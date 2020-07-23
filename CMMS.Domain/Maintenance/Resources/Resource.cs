@@ -1,4 +1,5 @@
 ﻿using CMMS.Domain.Maintenance.Resources.Events;
+using CMMS.Domain.Maintenance.Resources.Rules;
 using CMMS.Domain.SeedWork;
 using System;
 
@@ -31,6 +32,8 @@ namespace CMMS.Domain.Maintenance.Resources
 
         private Resource(Guid? parentId, string name, bool isArea, bool isMachine)
         {
+            CheckRule(new ResourceCannotBeAreaAndMachineSimultaneously(isArea, isMachine));
+
             Id = new ResourceId(Guid.NewGuid());
             ParentId = parentId.HasValue ? new ResourceId(parentId.Value) : null;
             Name = name;
