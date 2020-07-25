@@ -2,14 +2,13 @@
 
 namespace CMMS.Domain.Maintenance.Resources.Events
 {
-    public class ResourceCreatedDomainEvent : DomainEventBase
+    public class ResourceRemovedDomainEvent : DomainEventBase
     {
         public ResourceId ResourceId { get; }
 
-        public ResourceCreatedDomainEvent(ResourceId resourceId)
+        public ResourceRemovedDomainEvent(ResourceId resourceId)
         {
             ResourceId = resourceId;
         }
-
     }
 }

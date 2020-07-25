@@ -1,4 +1,5 @@
-﻿using CMMS.Domain.Maintenance.Resources;
+﻿using CMMS.Application.Configuration.Validation;
+using CMMS.Domain.Maintenance.Resources;
 using CMMS.Domain.SeedWork;
 using MediatR;
 using System;
@@ -23,6 +24,9 @@ namespace CMMS.Application.Maintenance.Resources.CreateResource
             var parentResource = request.ParentId.HasValue ?
                 await _resourceRepository.GetByIdAsync(new ResourceId(request.ParentId.Value)) :
                 null;
+
+            if (request.ParentId.HasValue && parentResource == null)
+                throw new NotFoundException("Resource with the given parentId hasn't been found", null);
 
             var resource = Resource.CreateNew(
                 parentResource,
