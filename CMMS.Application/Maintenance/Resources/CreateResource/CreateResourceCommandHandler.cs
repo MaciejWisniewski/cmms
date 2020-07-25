@@ -20,8 +20,12 @@ namespace CMMS.Application.Maintenance.Resources.CreateResource
 
         public async Task<Guid> Handle(CreateResourceCommand request, CancellationToken cancellationToken)
         {
+            var parentResource = request.ParentId.HasValue ?
+                await _resourceRepository.GetByIdAsync(new ResourceId(request.ParentId.Value)) :
+                null;
+
             var resource = Resource.CreateNew(
-                request.ParentId,
+                parentResource,
                 request.Name,
                 request.IsArea,
                 request.IsMachine);

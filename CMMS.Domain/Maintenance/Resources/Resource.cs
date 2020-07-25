@@ -22,20 +22,22 @@ namespace CMMS.Domain.Maintenance.Resources
         }
 
         public static Resource CreateNew(
-            Guid? parentId, 
+            Resource parent, 
             string name,
             bool isArea,
             bool isMachine)
         {
-            return new Resource(parentId, name, isArea, isMachine);
+            return new Resource(parent, name, isArea, isMachine);
         }
 
-        private Resource(Guid? parentId, string name, bool isArea, bool isMachine)
+        private Resource(Resource parent, string name, bool isArea, bool isMachine)
         {
             CheckRule(new ResourceCannotBeAreaAndMachineSimultaneously(isArea, isMachine));
+            CheckRule(new MachineMustHaveAnAreaParent(isMachine, parent));
+            CheckRule(new ParentCannotBeAMachine(parent));
 
             Id = new ResourceId(Guid.NewGuid());
-            ParentId = parentId.HasValue ? new ResourceId(parentId.Value) : null;
+            ParentId = parent?.Id; 
             Name = name;
             IsArea = isArea;
             IsMachine = isMachine;
