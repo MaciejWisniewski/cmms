@@ -5,7 +5,7 @@ namespace CMMS.Domain.SeedWork
     /// <summary>
     /// Base class for entities.
     /// </summary>
-    public abstract class Entity
+    public abstract class Entity : IEntity
     {
         private List<IDomainEvent> _domainEvents;
 

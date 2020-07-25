@@ -31,11 +31,11 @@ namespace CMMS.Application.Identity.UpdateUser
             if (role == null)
                 throw new NotFoundException("Role with the given name hasn't been found", null);
 
-            user.Update(request.FullName, request.Email, request.PhoneNumber);
             var roles = await _userRepository.GetRolesAsync(user);
             await _userRepository.RemoveFromRolesAsync(user, roles);
             await _userRepository.AddToRoleAsync(user, role.Name);
             await _userRepository.ChangePasswordAsync(user, request.Password);
+            user.Update(request.FullName, request.Email, request.PhoneNumber);
 
             await _unitOfWork.CommitAsync(cancellationToken);
 
