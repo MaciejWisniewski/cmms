@@ -20,9 +20,9 @@ namespace CMMS.Infrastructure.Processing
 
         public async Task<Unit> Handle(T command, CancellationToken cancellationToken)
         {
-            await this._decorated.Handle(command, cancellationToken);
+            await _decorated.Handle(command, cancellationToken);
 
-            await this._unitOfWork.CommitAsync(cancellationToken);
+            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
         }

@@ -50,6 +50,17 @@ namespace CMMS.Domain.Maintenance.Resources
             AddDomainEvent(new ResourceCreatedDomainEvent(Id));
         }
 
+        public void Edit(Resource parent, string name)
+        {
+            CheckRule(new MachineMustHaveAnAreaParent(IsMachine, parent));
+            CheckRule(new ParentCannotBeAMachine(parent));
+
+            ParentId = parent?.Id;
+            Name = name;
+
+            AddDomainEvent(new ResourceEditedDomainEvent(Id));
+        }
+
         public void Remove(Action<Resource> removeMethod)
         {
             CheckRule(new ParentResourceCannotBeRemoved(this));

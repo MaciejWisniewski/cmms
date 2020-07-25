@@ -1,4 +1,5 @@
 ﻿using CMMS.Application.Maintenance.Resources.CreateResource;
+using CMMS.Application.Maintenance.Resources.EditResource;
 using CMMS.Application.Maintenance.Resources.GetAllResources;
 using CMMS.Application.Maintenance.Resources.RemoveResource;
 using CMMS.Domain.Identity;
@@ -48,7 +49,7 @@ namespace CMMS.API.Maintenance
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> CreateUser([FromBody] CreateResourceRequest request)
+        public async Task<IActionResult> CreateUser([FromBody]CreateResourceRequest request)
         {
             var resourceId = await _mediator.Send(new CreateResourceCommand(
                     request.ParentId,
@@ -61,7 +62,25 @@ namespace CMMS.API.Maintenance
         }
 
         /// <summary>
-        /// Remove the resource with the given id.
+        /// Edit resource with the given id.
+        /// </summary>
+        [HttpPut("{resourceId}")]
+        [Authorize(Roles = UserRole.Leader)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> EditResourceAsync([FromRoute]Guid resourceId, [FromBody]EditResourceRequest request)
+        {
+            await _mediator.Send(new EditResourceCommand(resourceId, request.ParentId, request.Name));
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Remove resource with the given id.
         /// </summary>
         [HttpDelete("{resourceId}")]
         [Authorize(Roles = UserRole.Leader)]
@@ -77,6 +96,5 @@ namespace CMMS.API.Maintenance
 
             return Ok();
         }
-
     }
 }
