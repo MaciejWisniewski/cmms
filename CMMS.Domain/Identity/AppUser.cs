@@ -1,4 +1,5 @@
 ﻿using CMMS.Domain.Identity.Events;
+using CMMS.Domain.Identity.Rules;
 using CMMS.Domain.SeedWork;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -17,7 +18,7 @@ namespace CMMS.Domain.Identity
             Id = Guid.NewGuid();
         }
 
-        protected void AddDomainEvent(IDomainEvent domainEvent)
+        private void AddDomainEvent(IDomainEvent domainEvent)
         {
             _domainEvents ??= new List<IDomainEvent>();
             _domainEvents.Add(domainEvent);
@@ -35,9 +36,7 @@ namespace CMMS.Domain.Identity
             string phoneNumber,
             IUserUniquenessChecker userUniquenessChecker)
         {
-            var isUnique = userUniquenessChecker.IsUnique(userName, email);
-            if (!isUnique)
-                throw new BusinessRuleValidationException("User with the given username or email already exists");
+            CheckRule(new UserMustHaveUniqueUsernameAndEmail(userUniquenessChecker, userName, email));
 
             return new AppUser(fullName, userName, email, phoneNumber);
         }
@@ -65,6 +64,14 @@ namespace CMMS.Domain.Identity
         public void ChangeRole(AppRole role)
         {
             AddDomainEvent(new ChangedUserRoleDomainEvent(Id, role.Name));
+        }
+
+        private static void CheckRule(IBusinessRule rule)
+        {
+            if (rule.IsBroken())
+            {
+                throw new BusinessRuleValidationException(rule);
+            }
         }
     }
 }
