@@ -5,25 +5,25 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Identity.RemoveUser
+namespace CMMS.Application.Identity.DeactivateUser
 {
-    public class RemoveUserCommandHandler : ICommandHandler<RemoveUserCommand>
+    public class DeactivateUserCommandHandler : ICommandHandler<DeactivateUserCommand>
     {
         private readonly IUserRepository _userRepository;
 
-        public RemoveUserCommandHandler(IUserRepository userRepository)
+        public DeactivateUserCommandHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task<Unit> Handle(RemoveUserCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeactivateUserCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(command.Id);
+            var user = await _userRepository.GetByIdAsync(command.UserId);
 
             if (user == null)
                 throw new NotFoundException("User with the given id hasn't been found", null);
 
-            await _userRepository.RemoveAsync(user);
+            user.Deactivate();
 
             return Unit.Value;
         }

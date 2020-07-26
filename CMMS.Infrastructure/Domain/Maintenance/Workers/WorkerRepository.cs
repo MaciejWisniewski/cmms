@@ -23,5 +23,10 @@ namespace CMMS.Infrastructure.Domain.Maintenance.Workers
         {
             await _context.Workers.AddAsync(worker);
         }
+
+        public void Remove(Worker worker)
+        {
+            _context.Workers.Remove(worker);
+        }
     }
 }

@@ -40,5 +40,12 @@ namespace CMMS.Domain.Maintenance.Workers
 
             AddDomainEvent(new WorkerUpdatedDomainEvent(Id));
         }
+
+        public void Remove(Action<Worker> removeMethod)
+        {
+            removeMethod(this);
+
+            AddDomainEvent(new WorkerRemovedDomainEvent(Id));
+        }
     }
 }

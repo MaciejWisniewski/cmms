@@ -70,6 +70,15 @@ namespace CMMS.Domain.Identity
             AddDomainEvent(new ChangedUserRoleDomainEvent(Id, role.Name));
         }
 
+        public void Deactivate()
+        {
+            CheckRule(new CannotDeactivateAlreadyInactiveUser(this));
+
+            IsActive = false;
+
+            AddDomainEvent(new UserDeactivatedDomainEvent(Id));
+        }
+
         private static void CheckRule(IBusinessRule rule)
         {
             if (rule.IsBroken())

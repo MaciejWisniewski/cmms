@@ -1,9 +1,9 @@
 ﻿using CMMS.Application.Identity;
 using CMMS.Application.Identity.ChangeUserRole;
 using CMMS.Application.Identity.CreateUser;
+using CMMS.Application.Identity.DeactivateUser;
 using CMMS.Application.Identity.GetAllUsers;
 using CMMS.Application.Identity.GetUser;
-using CMMS.Application.Identity.RemoveUser;
 using CMMS.Application.Identity.UpdateUser;
 using CMMS.Domain.Identity;
 using MediatR;
@@ -118,18 +118,18 @@ namespace CMMS.API.Identity
         }
 
         /// <summary>
-        /// Remove user with the given id.
+        /// Deactivate user with the given id.
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}/deactivate")]
         [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> RemoveUser([FromRoute]Guid id)
+        public async Task<IActionResult> DeactivateUser([FromRoute]Guid id)
         {
-            await _mediator.Send(new RemoveUserCommand(id));
+            await _mediator.Send(new DeactivateUserCommand(id));
 
             return Ok();
         }

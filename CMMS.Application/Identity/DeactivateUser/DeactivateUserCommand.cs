@@ -1,13 +1,13 @@
 ﻿using CMMS.Application.Configuration.Commands;
 using System;
 
-namespace CMMS.Application.Identity.RemoveUser
+namespace CMMS.Application.Identity.DeactivateUser
 {
-    public class RemoveUserCommand : CommandBase
+    public class DeactivateUserCommand : CommandBase
     {
         public Guid UserId { get; }
 
-        public RemoveUserCommand(Guid userId)
+        public DeactivateUserCommand(Guid userId)
         {
             UserId = userId;
         }
