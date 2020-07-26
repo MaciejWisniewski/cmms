@@ -36,9 +36,11 @@ namespace CMMS.Domain.Identity
             string userName, 
             string email, 
             string phoneNumber,
+            string roleName,
             IUserUniquenessChecker userUniquenessChecker)
         {
             CheckRule(new UserMustHaveUniqueUsernameAndEmail(userUniquenessChecker, userName, email));
+            CheckRule(new CannotSetAnAdminRole(roleName));
 
             return new AppUser(fullName, userName, email, phoneNumber);
         }
@@ -55,8 +57,10 @@ namespace CMMS.Domain.Identity
             AddDomainEvent(new UserCreatedDomainEvent(Id, UserName, Email, FullName, PhoneNumber));
         }
 
-        public void Update(string fullName, string email, string phoneNumber)
+        public void Update(string fullName, string email, string phoneNumber, string roleName)
         {
+            CheckRule(new CannotSetAnAdminRole(roleName));
+
             FullName = fullName;
             Email = email;
             NormalizedEmail = email.Normalize().ToUpperInvariant();
@@ -67,6 +71,8 @@ namespace CMMS.Domain.Identity
 
         public void ChangeRole(AppRole role)
         {
+            CheckRule(new CannotSetAnAdminRole(role.Name));
+
             AddDomainEvent(new ChangedUserRoleDomainEvent(Id, role.Name));
         }
 

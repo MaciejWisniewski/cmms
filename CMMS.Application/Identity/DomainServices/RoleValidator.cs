@@ -13,14 +13,14 @@ namespace CMMS.Application.Identity.DomainServices
             _sqlConnectionFactory = sqlConnectionFactory;
         }
 
-        public string GetValidOrDefault(string role)
+        public string GetValidOrDefault(string roleName)
         {
-            return IsValid(role) ? role : UserRole.Default;
+            return IsValid(roleName) ? roleName : UserRole.Default;
         }
 
-        private bool IsValid(string role)
+        private bool IsValid(string roleName)
         {
-            if (string.IsNullOrWhiteSpace(role))
+            if (string.IsNullOrWhiteSpace(roleName))
                 return false;
 
             var connection = _sqlConnectionFactory.GetOpenConnection();
@@ -28,7 +28,7 @@ namespace CMMS.Application.Identity.DomainServices
             const string sql = "SELECT TOP 1 1 " +
                                "FROM [CMMS].[dbo].[AspNetRoles] as [Role] " +
                                "WHERE [Role].NormalizedName = @NormalizedName";
-            var rolesCount = connection.QuerySingleOrDefault<int?>(sql, new { NormalizedName = role.Normalize().ToUpperInvariant() });
+            var rolesCount = connection.QuerySingleOrDefault<int?>(sql, new { NormalizedName = roleName.Normalize().ToUpperInvariant() });
 
             return rolesCount.HasValue;
         }

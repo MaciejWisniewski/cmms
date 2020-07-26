@@ -29,10 +29,10 @@ namespace CMMS.Application.Identity.UpdateUser
                 throw new NotFoundException("Role with the given name hasn't been found", null);
 
             var roles = await _userRepository.GetRolesAsync(user);
+            user.Update(command.FullName, command.Email, command.PhoneNumber, role.Name);
             await _userRepository.RemoveFromRolesAsync(user, roles);
             await _userRepository.AddToRoleAsync(user, role.Name);
             await _userRepository.ChangePasswordAsync(user, command.Password);
-            user.Update(command.FullName, command.Email, command.PhoneNumber);
 
             return Unit.Value;
         }

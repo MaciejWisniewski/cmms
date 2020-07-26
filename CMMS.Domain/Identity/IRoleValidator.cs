@@ -2,6 +2,6 @@
 {
     public interface IRoleValidator
     {
-        string GetValidOrDefault(string role);
+        string GetValidOrDefault(string roleName);
     }
 }

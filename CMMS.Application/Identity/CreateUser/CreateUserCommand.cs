@@ -15,16 +15,16 @@ namespace CMMS.Application.Identity.CreateUser
 
         public string Password { get; }
 
-        public string Role { get; }
+        public string RoleName { get; }
 
-        public CreateUserCommand(string fullName, string userName, string email, string phoneNumber, string password, string role)
+        public CreateUserCommand(string fullName, string userName, string email, string phoneNumber, string password, string roleName)
         {
             FullName = fullName;
             UserName = userName;
             Email = email;
             PhoneNumber = phoneNumber;
             Password = password;
-            Role = role;
+            RoleName = roleName;
         }
     }
 }

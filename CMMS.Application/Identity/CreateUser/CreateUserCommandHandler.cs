@@ -25,15 +25,17 @@ namespace CMMS.Application.Identity.CreateUser
 
         public async Task<Guid> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
+            var roleName = _roleValidator.GetValidOrDefault(command.RoleName);
             var user = AppUser.Create(
                 fullName: command.FullName,
                 userName: command.UserName,
                 email: command.Email,
                 phoneNumber: command.PhoneNumber,
+                roleName: roleName,
                 userUniquenessChecker: _userUniquenessChecker);
 
             await _userRepository.AddAsync(user, command.Password);
-            await _userRepository.AddToRoleAsync(user, _roleValidator.GetValidOrDefault(command.Role));
+            await _userRepository.AddToRoleAsync(user, roleName);
 
             return user.Id;
         }

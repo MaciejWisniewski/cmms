@@ -70,7 +70,7 @@ namespace CMMS.API.Identity
                     request.Email,
                     request.PhoneNumber,
                     request.Password,
-                    request.Role
+                    request.RoleName
                 ));
 
             return Ok(userId);
