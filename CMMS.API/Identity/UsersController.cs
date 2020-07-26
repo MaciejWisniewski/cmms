@@ -27,8 +27,8 @@ namespace CMMS.API.Identity
             _mediator = mediator;
         }
 
-        [Authorize]
         [HttpGet("{id}")]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetByUserName([FromRoute]Guid id)
@@ -41,8 +41,8 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Get all users.
         /// </summary>
-        [Authorize]
         [HttpGet("GetAll")]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType(typeof(List<UserDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetAllUsers()
@@ -79,8 +79,7 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Update user's data.
         /// </summary>
-        [HttpPut]
-        [Route("{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -104,8 +103,7 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Change user's role.
         /// </summary>
-        [HttpPut]
-        [Route("{userId}/roles/changeUserRole")]
+        [HttpPut("{userId}/roles/changeUserRole")]
         [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

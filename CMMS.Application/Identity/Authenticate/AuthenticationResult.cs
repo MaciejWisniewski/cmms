@@ -4,6 +4,11 @@ namespace CMMS.Application.Identity.Authenticate
 {
     public class AuthenticationResult
     {
+        public bool IsAuthenticated { get; }
+        public string AuthenticationError { get; }
+        public string Token { get; }
+        public DateTime ExpirationDate { get; }
+
         public AuthenticationResult(string authenticationError)
         {
             IsAuthenticated = false;
@@ -16,13 +21,5 @@ namespace CMMS.Application.Identity.Authenticate
             Token = token;
             ExpirationDate = expirationDate;
         }
-
-        public bool IsAuthenticated { get; }
-
-        public string AuthenticationError { get; }
-
-        public string Token { get; }
-
-        public DateTime ExpirationDate { get; }
     }
 }

@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using CMMS.Application.Configuration.Queries;
 using System.Collections.Generic;
 
 namespace CMMS.Application.Identity.GetAllRoles
 {
-    public class GetAllRolesQuery : IRequest<List<RoleDto>>
+    public class GetAllRolesQuery : IQuery<List<RoleDto>>
     {
     }
 }

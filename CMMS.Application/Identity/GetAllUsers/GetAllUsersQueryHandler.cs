@@ -1,13 +1,13 @@
 ﻿using CMMS.Application.Configuration.Data;
+using CMMS.Application.Configuration.Queries;
 using Dapper;
-using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.GetAllUsers
 {
-    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<UserDto>>
+    public class GetAllUsersQueryHandler : IQueryHandler<GetAllUsersQuery, List<UserDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

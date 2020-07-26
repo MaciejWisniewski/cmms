@@ -1,13 +1,13 @@
 ﻿using CMMS.Application.Configuration.Data;
+using CMMS.Application.Configuration.Queries;
 using CMMS.Application.Configuration.Validation;
 using Dapper;
-using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.GetUser
 {
-    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
+    public class GetUserQueryHandler : IQueryHandler<GetUserQuery, UserDto>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
@@ -38,7 +38,6 @@ namespace CMMS.Application.Identity.GetUser
                 throw new NotFoundException("User with the given id hasn't been found", null);
 
             return user;
-
         }
     }
 }

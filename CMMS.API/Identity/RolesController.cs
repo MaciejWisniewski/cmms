@@ -3,7 +3,9 @@ using System.Net;
 using System.Threading.Tasks;
 using CMMS.Application.Identity;
 using CMMS.Application.Identity.GetAllRoles;
+using CMMS.Domain.Identity;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMMS.API.Identity
@@ -22,7 +24,8 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Get all roles.
         /// </summary>
-        [HttpGet]
+        [HttpGet("GetAll")]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType(typeof(List<RoleDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetAllRoles()

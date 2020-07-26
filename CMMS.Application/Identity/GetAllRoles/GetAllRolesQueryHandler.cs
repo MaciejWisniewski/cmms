@@ -1,13 +1,13 @@
 ﻿using CMMS.Application.Configuration.Data;
+using CMMS.Application.Configuration.Queries;
 using Dapper;
-using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.GetAllRoles
 {
-    public class GetAllRolesQueryHandler : IRequestHandler<GetAllRolesQuery, List<RoleDto>>
+    public class GetAllRolesQueryHandler : IQueryHandler<GetAllRolesQuery, List<RoleDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

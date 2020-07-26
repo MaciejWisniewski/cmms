@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using CMMS.Application.Configuration.Queries;
 using System;
 
 namespace CMMS.Application.Identity.GetUser
 {
-    public class GetUserQuery : IRequest<UserDto>
+    public class GetUserQuery : IQuery<UserDto>
     {
         public Guid Id { get; }
 

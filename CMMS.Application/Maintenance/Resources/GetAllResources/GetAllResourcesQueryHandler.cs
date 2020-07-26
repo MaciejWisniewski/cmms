@@ -1,13 +1,13 @@
 ﻿using CMMS.Application.Configuration.Data;
+using CMMS.Application.Configuration.Queries;
 using Dapper;
-using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Maintenance.Resources.GetAllResources
 {
-    public class GetAllResourcesQueryHandler : IRequestHandler<GetAllResourcesQuery, List<ResourceDto>>
+    public class GetAllResourcesQueryHandler : IQueryHandler<GetAllResourcesQuery, List<ResourceDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 

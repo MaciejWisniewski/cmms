@@ -27,8 +27,8 @@ namespace CMMS.API.Maintenance
         /// <summary>
         /// Get all resources.
         /// </summary>
-        [Authorize]
         [HttpGet("GetAll")]
+        [Authorize]
         [ProducesResponseType(typeof(List<ResourceDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetAllResources()
@@ -49,7 +49,7 @@ namespace CMMS.API.Maintenance
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> CreateUser([FromBody]CreateResourceRequest request)
+        public async Task<IActionResult> CreateResource([FromBody]CreateResourceRequest request)
         {
             var resourceId = await _mediator.Send(new CreateResourceCommand(
                     request.ParentId,
@@ -72,7 +72,7 @@ namespace CMMS.API.Maintenance
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> EditResourceAsync([FromRoute]Guid resourceId, [FromBody]EditResourceRequest request)
+        public async Task<IActionResult> EditResource([FromRoute]Guid resourceId, [FromBody]EditResourceRequest request)
         {
             await _mediator.Send(new EditResourceCommand(resourceId, request.ParentId, request.Name));
 
@@ -90,7 +90,7 @@ namespace CMMS.API.Maintenance
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> RemoveResourceAsync(Guid resourceId)
+        public async Task<IActionResult> RemoveResource(Guid resourceId)
         {
             await _mediator.Send(new RemoveResourceCommand(resourceId));
 

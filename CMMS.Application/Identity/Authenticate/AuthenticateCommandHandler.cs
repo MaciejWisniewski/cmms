@@ -1,5 +1,5 @@
-﻿using CMMS.Domain.Identity;
-using MediatR;
+﻿using CMMS.Application.Configuration.Commands;
+using CMMS.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.Authenticate
 {
-    public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, AuthenticationResult>
+    public class AuthenticateCommandHandler : ICommandHandler<AuthenticateCommand, AuthenticationResult>
     {
         private readonly IUserRepository _userRepository;
         private SignInManager<AppUser> _signInManager { get; }
