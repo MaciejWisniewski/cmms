@@ -1,4 +1,5 @@
 ﻿using CMMS.Domain.Identity;
+using CMMS.Domain.Maintenance.Operators;
 using CMMS.Domain.Maintenance.Resources;
 using CMMS.Domain.SeedWork;
 using CMMS.Infrastructure.Processing.InternalCommands;
@@ -14,6 +15,7 @@ namespace CMMS.Infrastructure.Database
         public DbSet<OutboxMessage> OutboxMessages { get; set; }
         public DbSet<InternalCommand> InternalCommands { get; set; }
         public DbSet<Resource> Resources { get; set; }
+        public DbSet<Operator> Operators { get; set; }
 
         public MaintenanceContext(DbContextOptions<MaintenanceContext> options) : base(options)
         {

@@ -11,7 +11,7 @@ namespace CMMS.Domain.Identity
     {
         private List<IDomainEvent> _domainEvents;
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
-        public string FullName { get; private set; }
+        public string FullName { get; set; }
 
         public AppUser()
         {
@@ -49,7 +49,7 @@ namespace CMMS.Domain.Identity
             Email = email;
             PhoneNumber = phoneNumber;
 
-            AddDomainEvent(new UserCreatedDomainEvent(Id));
+            AddDomainEvent(new UserCreatedDomainEvent(Id, UserName, Email, FullName, PhoneNumber));
         }
 
         public void Update(string fullName, string email, string phoneNumber)

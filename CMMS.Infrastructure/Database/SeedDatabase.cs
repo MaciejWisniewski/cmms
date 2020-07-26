@@ -36,6 +36,8 @@ namespace CMMS.Infrastructure.Database
                 Email = "admin@gmail.com",
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = "admin",
+                FullName = "admin",
+                PhoneNumber = "111111111"
             };
             await userManager.CreateAsync(admin, "Admin@123");
             await userManager.AddToRoleAsync(admin, UserRole.Admin);
@@ -46,7 +48,9 @@ namespace CMMS.Infrastructure.Database
                 {
                     Email = $"leader{i}@gmail.com",
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = $"leader{i}"
+                    UserName = $"leader{i}",
+                    FullName = $"leader{i}",
+                    PhoneNumber = "111111111"
                 };
                 await userManager.CreateAsync(leader, $"Leader{i}@123");
                 await userManager.AddToRoleAsync(leader, UserRole.Leader);
@@ -58,7 +62,9 @@ namespace CMMS.Infrastructure.Database
                 {
                     Email = $"user{i}@gmail.com",
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = $"user{i}"
+                    UserName = $"user{i}",
+                    FullName = $"user{i}",
+                    PhoneNumber = "111111111"
                 };
                 await userManager.CreateAsync(user, $"User{i}@123");
                 await userManager.AddToRoleAsync(user, UserRole.User);

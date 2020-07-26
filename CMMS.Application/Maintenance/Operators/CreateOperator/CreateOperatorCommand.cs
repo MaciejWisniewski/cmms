@@ -1,19 +1,19 @@
-﻿using CMMS.Domain.SeedWork;
+﻿using MediatR;
 using System;
 
-namespace CMMS.Domain.Identity.Events
+namespace CMMS.Application.Maintenance.Operators.CreateOperator
 {
-    public class UserCreatedDomainEvent : DomainEventBase
+    public class CreateOperatorCommand : IRequest
     {
-        public Guid UserId { get; }
+        public Guid Id { get; }
         public string UserName { get; }
         public string Email { get; }
         public string FullName { get; }
         public string PhoneNumber { get; }
 
-        public UserCreatedDomainEvent(Guid userId, string userName, string email, string fullName, string phoneNumber)
+        public CreateOperatorCommand(Guid id, string userName, string email, string fullName, string phoneNumber)
         {
-            UserId = userId;
+            Id = id;
             UserName = userName;
             Email = email;
             FullName = fullName;
