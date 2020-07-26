@@ -20,6 +20,18 @@ namespace CMMS.Domain.Identity
             IsActive = true;
         }
 
+        private AppUser(string fullName, string userName, string email, string phoneNumber)
+        {
+            Id = Guid.NewGuid();
+            FullName = fullName;
+            UserName = userName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            IsActive = true;
+
+            AddDomainEvent(new UserCreatedDomainEvent(Id, UserName, Email, FullName, PhoneNumber));
+        }
+
         private void AddDomainEvent(IDomainEvent domainEvent)
         {
             _domainEvents ??= new List<IDomainEvent>();
@@ -43,18 +55,6 @@ namespace CMMS.Domain.Identity
             CheckRule(new CannotSetAnAdminRole(roleName));
 
             return new AppUser(fullName, userName, email, phoneNumber);
-        }
-
-        private AppUser(string fullName, string userName, string email, string phoneNumber)
-        {
-            Id = Guid.NewGuid();
-            FullName = fullName;
-            UserName = userName;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            IsActive = true;
-
-            AddDomainEvent(new UserCreatedDomainEvent(Id, UserName, Email, FullName, PhoneNumber));
         }
 
         public void Update(string fullName, string email, string phoneNumber, string roleName)

@@ -19,6 +19,14 @@ namespace CMMS.Infrastructure.Domain.Maintenance.Resources
             builder.HasOne<Resource>()
                 .WithMany(r => r.Children)
                 .HasForeignKey(r => r.ParentId);
+
+            builder.OwnsMany(r => r.Accesses, a =>
+            {
+                a.WithOwner().HasForeignKey(a => a.ResourceId);
+                a.ToTable("ResourceAccesses", SchemaNames.Maintenance);
+                a.HasKey(a => new { a.ResourceId, a.WorkerId });
+                a.HasOne(a => a.Worker).WithMany().HasForeignKey(a => a.WorkerId);
+            });
         }
     }
 }

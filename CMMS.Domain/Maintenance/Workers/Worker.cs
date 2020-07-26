@@ -16,11 +16,6 @@ namespace CMMS.Domain.Maintenance.Workers
         {
         }
 
-        public static Worker Create(Guid id, string userName, string email, string fullName, string phoneNumber)
-        {
-            return new Worker(id, userName, email, fullName, phoneNumber);
-        }
-
         private Worker(Guid id, string userName, string email, string fullName, string phoneNumber)
         {
             Id = new WorkerId(id);
@@ -30,6 +25,11 @@ namespace CMMS.Domain.Maintenance.Workers
             PhoneNumber = phoneNumber;
 
             AddDomainEvent(new WorkerCreatedDomainEvent(Id));
+        }
+
+        public static Worker Create(Guid id, string userName, string email, string fullName, string phoneNumber)
+        {
+            return new Worker(id, userName, email, fullName, phoneNumber);
         }
 
         public void Update(string fullName, string email, string phoneNumber)

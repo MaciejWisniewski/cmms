@@ -9,29 +9,17 @@ namespace CMMS.Domain.Maintenance.Resources
     public class Resource : Entity, IAggregateRoot
     {
         public ResourceId Id { get; private set; }
-
         public ResourceId? ParentId { get; private set; }
-
         public List<Resource> Children { get; private set; }
-
         public string Name { get; private set; }
-
         public bool IsArea { get; private set; }
-
         public bool IsMachine { get; private set; }
+        public List<ResourceAccess> Accesses { get; private set; }
 
         private Resource()
         {
             Children = new List<Resource>();
-        }
-
-        public static Resource CreateNew(
-            Resource parent, 
-            string name,
-            bool isArea,
-            bool isMachine)
-        {
-            return new Resource(parent, name, isArea, isMachine);
+            Accesses = new List<ResourceAccess>();
         }
 
         private Resource(Resource parent, string name, bool isArea, bool isMachine)
@@ -46,8 +34,18 @@ namespace CMMS.Domain.Maintenance.Resources
             Name = name;
             IsArea = isArea;
             IsMachine = isMachine;
+            Accesses = new List<ResourceAccess>();
 
             AddDomainEvent(new ResourceCreatedDomainEvent(Id));
+        }
+
+        public static Resource CreateNew(
+            Resource parent, 
+            string name,
+            bool isArea,
+            bool isMachine)
+        {
+            return new Resource(parent, name, isArea, isMachine);
         }
 
         public void Edit(Resource parent, string name)
