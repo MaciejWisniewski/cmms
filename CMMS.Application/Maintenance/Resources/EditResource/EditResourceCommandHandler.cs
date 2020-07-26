@@ -16,19 +16,19 @@ namespace CMMS.Application.Maintenance.Resources.EditResource
             _resourceRepository = resourceRepository;
         }
 
-        public async Task<Unit> Handle(EditResourceCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(EditResourceCommand command, CancellationToken cancellationToken)
         {
-            var resource = await _resourceRepository.GetByIdAsync(new ResourceId(request.ResourceId));
+            var resource = await _resourceRepository.GetByIdAsync(new ResourceId(command.ResourceId));
             if (resource == null)
                 throw new NotFoundException("Resource with the given id hasn't been found", null);
 
-            var parentResource = request.ParentId.HasValue ?
-                await _resourceRepository.GetByIdAsync(new ResourceId(request.ParentId.Value)) :
+            var parentResource = command.ParentId.HasValue ?
+                await _resourceRepository.GetByIdAsync(new ResourceId(command.ParentId.Value)) :
                 null;
-            if (request.ParentId.HasValue && parentResource == null)
+            if (command.ParentId.HasValue && parentResource == null)
                 throw new NotFoundException("Resource with the given parentId hasn't been found", null);
 
-            resource.Edit(parentResource, request.Name);
+            resource.Edit(parentResource, command.Name);
 
             return Unit.Value;
         }

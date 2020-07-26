@@ -16,9 +16,9 @@ namespace CMMS.Application.Maintenance.Resources.RemoveResource
             _resourceRepository = resourceRepository;
         }
 
-        public async Task<Unit> Handle(RemoveResourceCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveResourceCommand command, CancellationToken cancellationToken)
         {
-            var resource = await _resourceRepository.GetByIdAsync(new ResourceId(request.ResourceId));
+            var resource = await _resourceRepository.GetByIdAsync(new ResourceId(command.ResourceId));
 
             if (resource == null)
                 throw new NotFoundException("Resource with the given id hasn't been found", null);

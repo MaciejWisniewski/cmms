@@ -16,7 +16,7 @@ namespace CMMS.Application.Identity.GetAllRoles
             _sqlConnectionFactory = sqlConnectionFactory;
         }
 
-        public async Task<List<RoleDto>> Handle(GetAllRolesQuery request, CancellationToken cancellationToken)
+        public async Task<List<RoleDto>> Handle(GetAllRolesQuery query, CancellationToken cancellationToken)
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
             const string sql = "SELECT " +

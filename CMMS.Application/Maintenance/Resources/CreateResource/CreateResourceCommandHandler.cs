@@ -16,20 +16,20 @@ namespace CMMS.Application.Maintenance.Resources.CreateResource
             _resourceRepository = resourceRepository;
         }
 
-        public async Task<Guid> Handle(CreateResourceCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateResourceCommand command, CancellationToken cancellationToken)
         {
-            var parentResource = request.ParentId.HasValue ?
-                await _resourceRepository.GetByIdAsync(new ResourceId(request.ParentId.Value)) :
+            var parentResource = command.ParentId.HasValue ?
+                await _resourceRepository.GetByIdAsync(new ResourceId(command.ParentId.Value)) :
                 null;
 
-            if (request.ParentId.HasValue && parentResource == null)
+            if (command.ParentId.HasValue && parentResource == null)
                 throw new NotFoundException("Resource with the given parentId hasn't been found", null);
 
             var resource = Resource.CreateNew(
                 parentResource,
-                request.Name,
-                request.IsArea,
-                request.IsMachine);
+                command.Name,
+                command.IsArea,
+                command.IsMachine);
 
             await _resourceRepository.AddAsync(resource);
 

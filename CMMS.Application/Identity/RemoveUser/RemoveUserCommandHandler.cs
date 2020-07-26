@@ -16,9 +16,9 @@ namespace CMMS.Application.Identity.RemoveUser
             _userRepository = userRepository;
         }
 
-        public async Task<Unit> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RemoveUserCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
+            var user = await _userRepository.GetByIdAsync(command.Id);
 
             if (user == null)
                 throw new NotFoundException("User with the given id hasn't been found", null);

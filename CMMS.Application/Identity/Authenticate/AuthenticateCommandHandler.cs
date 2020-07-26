@@ -24,10 +24,10 @@ namespace CMMS.Application.Identity.Authenticate
             _signInManager = signInManager;
         }
 
-        public async Task<AuthenticationResult> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
+        public async Task<AuthenticationResult> Handle(AuthenticateCommand command, CancellationToken cancellationToken)
         {
-            var userName = request.UserName;
-            var password = request.Password;
+            var userName = command.UserName;
+            var password = command.Password;
 
             AppUser user = await _userRepository.GetByUserNameAsync(userName);
             if (user != null)

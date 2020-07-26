@@ -23,17 +23,17 @@ namespace CMMS.Application.Identity.CreateUser
         }
 
 
-        public async Task<Guid> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
             var user = AppUser.Create(
-                fullName: request.FullName,
-                userName: request.UserName,
-                email: request.Email,
-                phoneNumber: request.PhoneNumber,
+                fullName: command.FullName,
+                userName: command.UserName,
+                email: command.Email,
+                phoneNumber: command.PhoneNumber,
                 userUniquenessChecker: _userUniquenessChecker);
 
-            await _userRepository.AddAsync(user, request.Password);
-            await _userRepository.AddToRoleAsync(user, _roleValidator.GetValidOrDefault(request.Role));
+            await _userRepository.AddAsync(user, command.Password);
+            await _userRepository.AddToRoleAsync(user, _roleValidator.GetValidOrDefault(command.Role));
 
             return user.Id;
         }

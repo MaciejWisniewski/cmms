@@ -18,13 +18,13 @@ namespace CMMS.Application.Identity.ChangeUserRole
             _roleRepository = roleRepository;
         }
 
-        public async Task<Unit> Handle(ChangeUserRoleCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ChangeUserRoleCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.UserId);
+            var user = await _userRepository.GetByIdAsync(command.UserId);
             if (user == null)
                 throw new NotFoundException("User with the given id hasn't been found", null);
 
-            var role = await _roleRepository.GetByIdAsync(request.RoleId);
+            var role = await _roleRepository.GetByIdAsync(command.RoleId);
             if (role == null)
                 throw new NotFoundException("Role with the given id hasn't been found", null);
 

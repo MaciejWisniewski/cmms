@@ -15,14 +15,14 @@ namespace CMMS.Application.Maintenance.Workers.CreateWorker
             _workerRepository = workerRepository;
         }
 
-        public async Task<Unit> Handle(CreateWorkerCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateWorkerCommand command, CancellationToken cancellationToken)
         {
             var worker = Worker.Create(
-                    request.WorkerId,
-                    request.UserName,
-                    request.Email,
-                    request.FullName,
-                    request.PhoneNumber
+                    command.WorkerId,
+                    command.UserName,
+                    command.Email,
+                    command.FullName,
+                    command.PhoneNumber
                 );
 
             await _workerRepository.AddAsync(worker);
