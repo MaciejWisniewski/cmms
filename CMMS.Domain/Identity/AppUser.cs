@@ -56,9 +56,10 @@ namespace CMMS.Domain.Identity
         {
             FullName = fullName;
             Email = email;
+            NormalizedEmail = email.Normalize().ToUpperInvariant();
             PhoneNumber = phoneNumber;
 
-            AddDomainEvent(new UserUpdatedDomainEvent(Id));
+            AddDomainEvent(new UserUpdatedDomainEvent(Id, FullName, Email, PhoneNumber));
         }
 
         public void ChangeRole(AppRole role)

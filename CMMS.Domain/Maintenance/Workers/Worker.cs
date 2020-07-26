@@ -31,5 +31,14 @@ namespace CMMS.Domain.Maintenance.Workers
 
             AddDomainEvent(new WorkerCreatedDomainEvent(Id));
         }
+
+        public void Update(string fullName, string email, string phoneNumber)
+        {
+            FullName = fullName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+
+            AddDomainEvent(new WorkerUpdatedDomainEvent(Id));
+        }
     }
 }

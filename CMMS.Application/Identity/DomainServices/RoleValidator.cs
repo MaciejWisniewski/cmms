@@ -28,7 +28,7 @@ namespace CMMS.Application.Identity.DomainServices
             const string sql = "SELECT TOP 1 1 " +
                                "FROM [CMMS].[dbo].[AspNetRoles] as [Role] " +
                                "WHERE [Role].NormalizedName = @NormalizedName";
-            var rolesCount = connection.QuerySingleOrDefault<int?>(sql, new { NormalizedName = role.Normalize() });
+            var rolesCount = connection.QuerySingleOrDefault<int?>(sql, new { NormalizedName = role.Normalize().ToUpperInvariant() });
 
             return rolesCount.HasValue;
         }

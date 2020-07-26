@@ -25,8 +25,8 @@ namespace CMMS.Application.Identity.DomainServices
             var customersCount = connection.QuerySingleOrDefault<int?>(sql,
                             new
                             {
-                                NormalizedUserName = userName.Normalize(),
-                                NormalizedEmail = email.Normalize()
+                                NormalizedUserName = userName.Normalize().ToUpperInvariant(),
+                                NormalizedEmail = email.Normalize().ToUpperInvariant()
                             });
 
             return !customersCount.HasValue;

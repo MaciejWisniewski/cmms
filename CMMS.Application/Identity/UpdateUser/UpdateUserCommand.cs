@@ -5,7 +5,7 @@ namespace CMMS.Application.Identity.UpdateUser
 {
     public class UpdateUserCommand : CommandBase
     {
-        public Guid UserId { get; set; }
+        public Guid UserId { get; }
         public string FullName { get; }
         public string Email { get; }
         public string PhoneNumber { get; }

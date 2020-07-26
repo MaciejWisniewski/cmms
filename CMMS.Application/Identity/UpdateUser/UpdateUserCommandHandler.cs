@@ -18,22 +18,21 @@ namespace CMMS.Application.Identity.UpdateUser
             _roleRepository = roleRepository;
         }
 
-        public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateUserCommand command, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.Id);
-
+            var user = await _userRepository.GetByIdAsync(command.UserId);
             if (user == null)
                 throw new NotFoundException("User with the given id hasn't been found", null);
 
-            var role = await _roleRepository.GetByNameAsync(request.RoleName);
+            var role = await _roleRepository.GetByNameAsync(command.RoleName);
             if (role == null)
                 throw new NotFoundException("Role with the given name hasn't been found", null);
 
             var roles = await _userRepository.GetRolesAsync(user);
             await _userRepository.RemoveFromRolesAsync(user, roles);
             await _userRepository.AddToRoleAsync(user, role.Name);
-            await _userRepository.ChangePasswordAsync(user, request.Password);
-            user.Update(request.FullName, request.Email, request.PhoneNumber);
+            await _userRepository.ChangePasswordAsync(user, command.Password);
+            user.Update(command.FullName, command.Email, command.PhoneNumber);
 
             return Unit.Value;
         }
