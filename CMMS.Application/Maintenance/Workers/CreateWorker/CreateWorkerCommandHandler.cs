@@ -1,20 +1,18 @@
-﻿using CMMS.Domain.Maintenance.Workers;
-using CMMS.Domain.SeedWork;
+﻿using CMMS.Application.Configuration.Commands;
+using CMMS.Domain.Maintenance.Workers;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Maintenance.Workers.CreateWorker
 {
-    public class CreateWorkerCommandHandler : IRequestHandler<CreateWorkerCommand>
+    public class CreateWorkerCommandHandler : ICommandHandler<CreateWorkerCommand>
     {
         private readonly IWorkerRepository _workerRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateWorkerCommandHandler(IWorkerRepository workerRepository, IUnitOfWork unitOfWork)
+        public CreateWorkerCommandHandler(IWorkerRepository workerRepository)
         {
             _workerRepository = workerRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(CreateWorkerCommand request, CancellationToken cancellationToken)
@@ -28,8 +26,6 @@ namespace CMMS.Application.Maintenance.Workers.CreateWorker
                 );
 
             await _workerRepository.AddAsync(worker);
-
-            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
         }

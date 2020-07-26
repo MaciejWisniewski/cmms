@@ -1,23 +1,21 @@
-﻿using CMMS.Application.Configuration.Validation;
+﻿using CMMS.Application.Configuration.Commands;
+using CMMS.Application.Configuration.Validation;
 using CMMS.Domain.Identity;
-using CMMS.Domain.SeedWork;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.UpdateUser
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
+    public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateUserCommandHandler(IUserRepository userRepository, IRoleRepository roleRepository, IUnitOfWork unitOfWork)
+        public UpdateUserCommandHandler(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -36,8 +34,6 @@ namespace CMMS.Application.Identity.UpdateUser
             await _userRepository.AddToRoleAsync(user, role.Name);
             await _userRepository.ChangePasswordAsync(user, request.Password);
             user.Update(request.FullName, request.Email, request.PhoneNumber);
-
-            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
         }

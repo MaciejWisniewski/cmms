@@ -1,31 +1,26 @@
-﻿using MediatR;
+﻿using CMMS.Application.Configuration.Commands;
 using System;
 
 namespace CMMS.Application.Identity.UpdateUser
 {
-    public class UpdateUserCommand : IRequest
+    public class UpdateUserCommand : CommandBase
     {
-        public UpdateUserCommand(Guid id, string fullName, string email, string phoneNumber,
-        string password, string roleName)
+        public Guid UserId { get; set; }
+        public string FullName { get; }
+        public string Email { get; }
+        public string PhoneNumber { get; }
+        public string Password { get; }
+        public string RoleName { get; }
+
+        public UpdateUserCommand(Guid userId, string fullName, string email, string phoneNumber,
+            string password, string roleName)
         {
-            Id = id;
+            UserId = userId;
             FullName = fullName;
             Email = email;
             PhoneNumber = phoneNumber;
             Password = password;
             RoleName = roleName;
         }
-
-        public Guid Id { get; set; }
-
-        public string FullName { get; }
-
-        public string Email { get; }
-
-        public string PhoneNumber { get; }
-
-        public string Password { get; }
-
-        public string RoleName { get; }
     }
 }

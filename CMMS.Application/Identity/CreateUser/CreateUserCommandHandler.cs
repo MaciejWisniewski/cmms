@@ -1,29 +1,25 @@
-﻿using CMMS.Domain.Identity;
-using CMMS.Domain.SeedWork;
-using MediatR;
+﻿using CMMS.Application.Configuration.Commands;
+using CMMS.Domain.Identity;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.CreateUser
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
+    public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Guid>
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserUniquenessChecker _userUniquenessChecker;
         private readonly IRoleValidator _roleValidator;
-        private readonly IUnitOfWork _unitOfWork;
 
         public CreateUserCommandHandler(
             IUserRepository userRepository, 
             IUserUniquenessChecker userUniquenessChecker, 
-            IRoleValidator roleValidator,
-            IUnitOfWork unitOfWork)
+            IRoleValidator roleValidator)
         {
             _userRepository = userRepository;
             _userUniquenessChecker = userUniquenessChecker;
             _roleValidator = roleValidator;
-            _unitOfWork = unitOfWork;
         }
 
 
@@ -37,10 +33,7 @@ namespace CMMS.Application.Identity.CreateUser
                 userUniquenessChecker: _userUniquenessChecker);
 
             await _userRepository.AddAsync(user, request.Password);
-
             await _userRepository.AddToRoleAsync(user, _roleValidator.GetValidOrDefault(request.Role));
-
-            await _unitOfWork.CommitAsync(cancellationToken);
 
             return user.Id;
         }

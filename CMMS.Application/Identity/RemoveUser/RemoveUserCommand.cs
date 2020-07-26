@@ -1,15 +1,15 @@
-﻿using MediatR;
+﻿using CMMS.Application.Configuration.Commands;
 using System;
 
 namespace CMMS.Application.Identity.RemoveUser
 {
-    public class RemoveUserCommand : IRequest
+    public class RemoveUserCommand : CommandBase
     {
-        public Guid Id { get; }
+        public Guid UserId { get; }
 
-        public RemoveUserCommand(Guid id)
+        public RemoveUserCommand(Guid userId)
         {
-            Id = id;
+            UserId = userId;
         }
     }
 }

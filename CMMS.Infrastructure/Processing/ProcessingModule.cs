@@ -1,11 +1,8 @@
 ﻿using Autofac;
-using CMMS.Application.Configuration.DomainEvents;
+using CMMS.Application.Configuration.Commands;
 using CMMS.Application.Configuration.Processing;
 using CMMS.Infrastructure.Processing.InternalCommands;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CMMS.Infrastructure.Processing
 {
@@ -17,7 +14,6 @@ namespace CMMS.Infrastructure.Processing
                 .As<IDomainEventsDispatcher>()
                 .InstancePerLifetimeScope();
 
-            //TODO: delete after tests
             //builder.RegisterAssemblyTypes(typeof(PaymentCreatedNotification).GetTypeInfo().Assembly)
             //    .AsClosedTypesOf(typeof(IDomainEventNotification<>)).InstancePerDependency();
 
@@ -26,8 +22,12 @@ namespace CMMS.Infrastructure.Processing
                 typeof(INotificationHandler<>));
 
             builder.RegisterGenericDecorator(
-                typeof(DomainEventsDispatcherCommandHandlerDecorator<>),
-                typeof(IRequestHandler<,>));
+                typeof(UnitOfWorkCommandHandlerDecorator<>),
+                typeof(ICommandHandler<>));
+
+            builder.RegisterGenericDecorator(
+                typeof(UnitOfWorkCommandHandlerWithResultDecorator<,>),
+                typeof(ICommandHandler<,>));
 
             builder.RegisterType<CommandsDispatcher>()
                 .As<ICommandsDispatcher>()
@@ -36,6 +36,14 @@ namespace CMMS.Infrastructure.Processing
             builder.RegisterType<CommandsScheduler>()
                 .As<ICommandsScheduler>()
                 .InstancePerLifetimeScope();
+
+            //builder.RegisterGenericDecorator(
+            //    typeof(LoggingCommandHandlerDecorator<>),
+            //    typeof(ICommandHandler<>));
+
+            //builder.RegisterGenericDecorator(
+            //    typeof(LoggingCommandHandlerWithResultDecorator<,>),
+            //    typeof(ICommandHandler<,>));
         }
     }
 }

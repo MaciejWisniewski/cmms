@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using CMMS.Application.Configuration.Commands;
 using System;
 
 namespace CMMS.Application.Maintenance.Resources.CreateResource
 {
-    public class CreateResourceCommand : IRequest<Guid>
+    public class CreateResourceCommand : CommandBase<Guid>
     {
         public Guid? ParentId { get; }
 

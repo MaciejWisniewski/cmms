@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using CMMS.Application.Configuration.Commands;
 using System;
 
 namespace CMMS.Application.Maintenance.Workers.CreateWorker
 {
-    public class CreateWorkerCommand : IRequest
+    public class CreateWorkerCommand : CommandBase
     {
         public Guid WorkerId { get; }
         public string UserName { get; }

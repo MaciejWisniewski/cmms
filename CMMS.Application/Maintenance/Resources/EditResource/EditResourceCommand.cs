@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using CMMS.Application.Configuration.Commands;
 using System;
 
 namespace CMMS.Application.Maintenance.Resources.EditResource
 {
-    public class EditResourceCommand : IRequest
+    public class EditResourceCommand : CommandBase
     {
         public Guid ResourceId { get;  }
 

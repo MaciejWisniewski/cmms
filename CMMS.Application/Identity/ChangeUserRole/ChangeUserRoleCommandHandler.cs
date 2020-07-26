@@ -1,23 +1,21 @@
-﻿using CMMS.Application.Configuration.Validation;
+﻿using CMMS.Application.Configuration.Commands;
+using CMMS.Application.Configuration.Validation;
 using CMMS.Domain.Identity;
-using CMMS.Domain.SeedWork;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Application.Identity.ChangeUserRole
 {
-    public class ChangeUserRoleCommandHandler : IRequestHandler<ChangeUserRoleCommand>
+    public class ChangeUserRoleCommandHandler : ICommandHandler<ChangeUserRoleCommand>
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public ChangeUserRoleCommandHandler(IUserRepository userRepository, IRoleRepository roleRepository, IUnitOfWork unitOfWork)
+        public ChangeUserRoleCommandHandler(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(ChangeUserRoleCommand request, CancellationToken cancellationToken)
@@ -34,8 +32,6 @@ namespace CMMS.Application.Identity.ChangeUserRole
             await _userRepository.RemoveFromRolesAsync(user, roles);
             await _userRepository.AddToRoleAsync(user, role.Name);
             user.ChangeRole(role);
-
-            await _unitOfWork.CommitAsync(cancellationToken);
 
             return Unit.Value;
         }

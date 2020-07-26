@@ -1,9 +1,9 @@
-﻿using MediatR;
+﻿using CMMS.Application.Configuration.Commands;
 using System;
 
 namespace CMMS.Application.Identity.CreateUser
 {
-    public class CreateUserCommand : IRequest<Guid>
+    public class CreateUserCommand : CommandBase<Guid>
     {
         public string FullName { get; }
 
