@@ -12,10 +12,12 @@ namespace CMMS.Domain.Identity
         private List<IDomainEvent> _domainEvents;
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly();
         public string FullName { get; set; }
+        public bool IsActive { get; private set; }
 
         public AppUser()
         {
             Id = Guid.NewGuid();
+            IsActive = true;
         }
 
         private void AddDomainEvent(IDomainEvent domainEvent)
@@ -48,6 +50,7 @@ namespace CMMS.Domain.Identity
             UserName = userName;
             Email = email;
             PhoneNumber = phoneNumber;
+            IsActive = true;
 
             AddDomainEvent(new UserCreatedDomainEvent(Id, UserName, Email, FullName, PhoneNumber));
         }

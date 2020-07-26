@@ -4,14 +4,16 @@ using CMMS.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CMMS.Infrastructure.Migrations
 {
     [DbContext(typeof(MaintenanceContext))]
-    partial class MaintenanceContextModelSnapshot : ModelSnapshot
+    [Migration("20200726180139_AddIsActivePropertyToAppUser")]
+    partial class AddIsActivePropertyToAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

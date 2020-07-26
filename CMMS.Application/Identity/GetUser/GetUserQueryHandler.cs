@@ -25,6 +25,7 @@ namespace CMMS.Application.Identity.GetUser
                                "[User].UserName, " +
                                "[User].Email, " +
                                "[User].PhoneNumber," +
+                               "[User].IsActive, " +
                                "[Role].Name AS Role " +
                                "FROM [CMMS].[dbo].[AspNetUsers] AS [User] " +
                                "LEFT JOIN [CMMS].[dbo].[AspNetUserRoles] AS [UserRole] " +
