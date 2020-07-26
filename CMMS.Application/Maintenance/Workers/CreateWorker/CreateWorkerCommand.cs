@@ -1,19 +1,19 @@
 ﻿using MediatR;
 using System;
 
-namespace CMMS.Application.Maintenance.Operators.CreateOperator
+namespace CMMS.Application.Maintenance.Workers.CreateWorker
 {
-    public class CreateOperatorCommand : IRequest
+    public class CreateWorkerCommand : IRequest
     {
-        public Guid Id { get; }
+        public Guid WorkerId { get; }
         public string UserName { get; }
         public string Email { get; }
         public string FullName { get; }
         public string PhoneNumber { get; }
 
-        public CreateOperatorCommand(Guid id, string userName, string email, string fullName, string phoneNumber)
+        public CreateWorkerCommand(Guid workerId, string userName, string email, string fullName, string phoneNumber)
         {
-            Id = id;
+            WorkerId = workerId;
             UserName = userName;
             Email = email;
             FullName = fullName;

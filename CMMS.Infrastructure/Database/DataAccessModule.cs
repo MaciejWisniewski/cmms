@@ -1,12 +1,12 @@
 ﻿using Autofac;
 using CMMS.Application.Configuration.Data;
 using CMMS.Domain.Identity;
-using CMMS.Domain.Maintenance.Operators;
+using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.Maintenance.Resources;
 using CMMS.Domain.SeedWork;
 using CMMS.Infrastructure.Domain;
 using CMMS.Infrastructure.Domain.Identity;
-using CMMS.Infrastructure.Domain.Maintenance.Operators;
+using CMMS.Infrastructure.Domain.Maintenance.Workers;
 using CMMS.Infrastructure.Domain.Maintenance.Resources;
 
 namespace CMMS.Infrastructure.Database
@@ -43,8 +43,8 @@ namespace CMMS.Infrastructure.Database
                 .As<IResourceRepository>()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterType<OperatorRepository>()
-                .As<IOperatorRepository>()
+            builder.RegisterType<WorkerRepository>()
+                .As<IWorkerRepository>()
                 .InstancePerLifetimeScope();
         }
     }

@@ -1,4 +1,4 @@
-﻿using CMMS.Application.Maintenance.Operators.CreateOperator;
+﻿using CMMS.Application.Maintenance.Workers.CreateWorker;
 using CMMS.Domain.Identity.Events;
 using MediatR;
 using System.Threading;
@@ -17,7 +17,7 @@ namespace CMMS.Application.Identity.CreateUser
 
         public async Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
         {
-            await _mediator.Send(new CreateOperatorCommand(
+            await _mediator.Send(new CreateWorkerCommand(
                     notification.UserId,
                     notification.UserName,
                     notification.Email,
