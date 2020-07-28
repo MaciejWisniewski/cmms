@@ -39,7 +39,7 @@ namespace CMMS.Infrastructure.Database
                 FullName = "admin",
                 PhoneNumber = "111111111"
             };
-            await userManager.CreateAsync(admin, "Admin@123");
+            await userManager.CreateAsync(admin, "Haslo1!");
             await userManager.AddToRoleAsync(admin, UserRole.Admin);
 
             for (int i = 1; i < 3; i++)
@@ -52,7 +52,7 @@ namespace CMMS.Infrastructure.Database
                     FullName = $"leader{i}",
                     PhoneNumber = "111111111"
                 };
-                await userManager.CreateAsync(leader, $"Leader{i}@123");
+                await userManager.CreateAsync(leader, $"Haslo1!");
                 await userManager.AddToRoleAsync(leader, UserRole.Leader);
             }
 
@@ -66,7 +66,7 @@ namespace CMMS.Infrastructure.Database
                     FullName = $"user{i}",
                     PhoneNumber = "111111111"
                 };
-                await userManager.CreateAsync(user, $"User{i}@123");
+                await userManager.CreateAsync(user, $"Haslo1!");
                 await userManager.AddToRoleAsync(user, UserRole.User);
             }
 

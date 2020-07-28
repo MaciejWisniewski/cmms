@@ -31,7 +31,8 @@ namespace CMMS.Application.Identity.GetAllUsers
                                "LEFT JOIN [CMMS].[dbo].[AspNetUserRoles] AS [UserRole] " +
                                "ON [UserRole].UserId = [User].Id " +
                                "LEFT JOIN [CMMS].[dbo].[AspNetRoles] AS [Role] " +
-                               "ON [UserRole].RoleId = [Role].Id";
+                               "ON [UserRole].RoleId = [Role].Id " +
+                               "WHERE [User].[IsActive] = 1";
             var users = await connection.QueryAsync<UserDto>(sql);
 
             return users.AsList();
