@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CMMS.API.Maintenance
+namespace CMMS.API.Maintenance.Resources
 {
     [Route("api/maintenance/[controller]")]
     [ApiController]
