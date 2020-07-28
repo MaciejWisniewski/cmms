@@ -6,6 +6,8 @@ namespace CMMS.Domain.Maintenance.Resources
     {
         Task<Resource> GetByIdAsync(ResourceId id);
 
+        Task<Resource> GetByIdWithAllDescendantsAndAncestorsAsync(ResourceId id);
+
         Task AddAsync(Resource resource);
 
         void Remove(Resource resource);

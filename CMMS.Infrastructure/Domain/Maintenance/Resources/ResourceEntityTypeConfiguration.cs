@@ -16,7 +16,7 @@ namespace CMMS.Infrastructure.Domain.Maintenance.Resources
             builder.Property(r => r.Name)
                 .HasMaxLength(255);
 
-            builder.HasOne<Resource>()
+            builder.HasOne(r => r.Parent)
                 .WithMany(r => r.Children)
                 .HasForeignKey(r => r.ParentId);
 
