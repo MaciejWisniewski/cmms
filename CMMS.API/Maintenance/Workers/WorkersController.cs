@@ -23,7 +23,7 @@ namespace CMMS.API.Maintenance.Workers
         /// <summary>
         /// Get workers having access to the resource with the given id.
         /// </summary>
-        [HttpGet("{resourceId}")]
+        [HttpGet("all/{resourceId}")]
         [Authorize]
         [ProducesResponseType(typeof(List<WorkerDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]

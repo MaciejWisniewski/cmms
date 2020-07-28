@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 namespace CMMS.Application.Maintenance.Workers.GetWorkersHavingAccessTo
 {
     public class GetWorkersHavingAccessToQueryHandler : IQueryHandler<GetWorkersHavingAccessToQuery, List<WorkerDto>>
-    {        private readonly ISqlConnectionFactory _sqlConnectionFactory;
+    {        
+        private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
         public GetWorkersHavingAccessToQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
         {
             _sqlConnectionFactory = sqlConnectionFactory;
         }
+
         public async Task<List<WorkerDto>> Handle(GetWorkersHavingAccessToQuery query, CancellationToken cancellationToken)
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();

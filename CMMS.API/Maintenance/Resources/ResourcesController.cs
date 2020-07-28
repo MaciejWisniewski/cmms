@@ -41,6 +41,20 @@ namespace CMMS.API.Maintenance.Resources
         }
 
         /// <summary>
+        /// Get all resources worker has access to.
+        /// </summary>
+        [HttpGet("all/{workerId}")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<ResourceDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetResourcesWorkerHasAccessTo(Guid workerId)
+        {
+            var resources = await _mediator.Send(new GetResourcesWorkerHasAccessToQuery(workerId));
+
+            return Ok(resources);
+        }
+
+        /// <summary>
         /// Create new resource.
         /// </summary>
         [HttpPost]
