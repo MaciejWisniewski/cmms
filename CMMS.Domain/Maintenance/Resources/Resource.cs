@@ -51,12 +51,8 @@ namespace CMMS.Domain.Maintenance.Resources
             return new Resource(parent, name, isArea, isMachine);
         }
 
-        public void Edit(Resource parent, string name)
+        public void Edit(string name)
         {
-            CheckRule(new MachineMustHaveAnAreaParent(IsMachine, parent));
-            CheckRule(new ParentCannotBeAMachine(parent));
-
-            ParentId = parent?.Id;
             Name = name;
 
             AddDomainEvent(new ResourceEditedDomainEvent(Id));

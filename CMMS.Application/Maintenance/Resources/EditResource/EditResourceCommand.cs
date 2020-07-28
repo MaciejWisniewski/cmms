@@ -7,14 +7,11 @@ namespace CMMS.Application.Maintenance.Resources.EditResource
     {
         public Guid ResourceId { get;  }
 
-        public Guid? ParentId { get; }
-
         public string Name { get; }
 
-        public EditResourceCommand(Guid resourceId, Guid? parentId, string name)
+        public EditResourceCommand(Guid resourceId, string name)
         {
             ResourceId = resourceId;
-            ParentId = parentId;
             Name = name;
         }
     }

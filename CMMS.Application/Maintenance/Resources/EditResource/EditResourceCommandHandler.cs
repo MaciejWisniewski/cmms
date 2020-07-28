@@ -22,13 +22,7 @@ namespace CMMS.Application.Maintenance.Resources.EditResource
             if (resource == null)
                 throw new NotFoundException("Resource with the given id hasn't been found", null);
 
-            var parentResource = command.ParentId.HasValue ?
-                await _resourceRepository.GetByIdAsync(new ResourceId(command.ParentId.Value)) :
-                null;
-            if (command.ParentId.HasValue && parentResource == null)
-                throw new NotFoundException("Resource with the given parentId hasn't been found", null);
-
-            resource.Edit(parentResource, command.Name);
+            resource.Edit(command.Name);
 
             return Unit.Value;
         }

@@ -1,6 +1,7 @@
 ﻿using CMMS.Application.Maintenance.Resources.CreateResource;
 using CMMS.Application.Maintenance.Resources.EditResource;
 using CMMS.Application.Maintenance.Resources.GetAllResources;
+using CMMS.Application.Maintenance.Resources.GetResourcesWorkerHasAccessTo;
 using CMMS.Application.Maintenance.Resources.GiveResourceAccess;
 using CMMS.Application.Maintenance.Resources.RemoveResource;
 using CMMS.Domain.Identity;
@@ -93,7 +94,7 @@ namespace CMMS.API.Maintenance.Resources
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> EditResource([FromRoute]Guid resourceId, [FromBody]EditResourceRequest request)
         {
-            await _mediator.Send(new EditResourceCommand(resourceId, request.ParentId, request.Name));
+            await _mediator.Send(new EditResourceCommand(resourceId, request.Name));
 
             return Ok();
         }
