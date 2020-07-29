@@ -1,6 +1,7 @@
 ﻿using CMMS.Application.Maintenance.Resources.CreateResource;
 using CMMS.Application.Maintenance.Resources.EditResource;
 using CMMS.Application.Maintenance.Resources.GetAllResources;
+using CMMS.Application.Maintenance.Resources.GiveResourceAccess;
 using CMMS.Application.Maintenance.Resources.RemoveResource;
 using CMMS.Domain.Identity;
 using MediatR;
@@ -11,7 +12,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CMMS.API.Maintenance
+namespace CMMS.API.Maintenance.Resources
 {
     [Route("api/maintenance/[controller]")]
     [ApiController]
@@ -62,6 +63,24 @@ namespace CMMS.API.Maintenance
         }
 
         /// <summary>
+        /// Give resource access to the worker with the given id.
+        /// </summary>
+        [HttpPost("{resourceId}/resourceAccesses")]
+        [Authorize(Roles = UserRole.Leader)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> GiveAccess([FromRoute]Guid resourceId, [FromBody]GiveResourceAccessRequest request)
+        {
+            await _mediator.Send(new GiveResourceAccessCommand(resourceId, request.WorkerId));
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Edit resource with the given id.
         /// </summary>
         [HttpPut("{resourceId}")]
@@ -74,7 +93,7 @@ namespace CMMS.API.Maintenance
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> EditResource([FromRoute]Guid resourceId, [FromBody]EditResourceRequest request)
         {
-            await _mediator.Send(new EditResourceCommand(resourceId, request.ParentId, request.Name));
+            await _mediator.Send(new EditResourceCommand(resourceId, request.Name));
 
             return Ok();
         }

@@ -10,7 +10,7 @@ namespace CMMS.Domain.Maintenance.Resources
         public ResourceId ResourceId { get; private set; }
         public WorkerId WorkerId { get; private set; }
         public DateTime GivenOn { get; private set; }
-        public Worker Worker { get; } //Only for EF configuration purposes
+        public virtual Worker Worker { get; } //Only for EF configuration purposes
 
         private ResourceAccess()
         {
