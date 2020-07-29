@@ -1,7 +1,6 @@
 ﻿using CMMS.Domain.Identity;
 using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.Maintenance.Resources;
-using CMMS.Domain.SeedWork;
 using CMMS.Infrastructure.Processing.InternalCommands;
 using CMMS.Infrastructure.Processing.Outbox;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

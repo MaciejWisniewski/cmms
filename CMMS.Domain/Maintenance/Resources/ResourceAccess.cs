@@ -30,6 +30,5 @@ namespace CMMS.Domain.Maintenance.Resources
         {
             return new ResourceAccess(resourceId, workerId);
         }
-        
     }
 }

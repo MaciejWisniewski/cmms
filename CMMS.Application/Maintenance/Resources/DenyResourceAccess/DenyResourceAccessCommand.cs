@@ -1,14 +1,14 @@
 ﻿using CMMS.Application.Configuration.Commands;
 using System;
 
-namespace CMMS.Application.Maintenance.Resources.GiveResourceAccess
+namespace CMMS.Application.Maintenance.Resources.DenyResourceAccess
 {
-    public class GiveResourceAccessCommand : CommandBase
+    public class DenyResourceAccessCommand : CommandBase
     {
         public Guid ResourceId { get; }
         public Guid WorkerId { get; }
 
-        public GiveResourceAccessCommand(Guid resourceId, Guid workerId)
+        public DenyResourceAccessCommand(Guid resourceId, Guid workerId)
         {
             ResourceId = resourceId;
             WorkerId = workerId;
