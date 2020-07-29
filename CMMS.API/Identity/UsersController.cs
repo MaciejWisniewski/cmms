@@ -41,7 +41,7 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Get all users.
         /// </summary>
-        [HttpGet("GetAll")]
+        [HttpGet("all")]
         [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType(typeof(List<UserDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -103,7 +103,7 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Change user's role.
         /// </summary>
-        [HttpPut("{userId}/roles/changeUserRole")]
+        [HttpPut("{userId}/roles")]
         [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]

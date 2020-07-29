@@ -2,12 +2,12 @@
 
 namespace CMMS.Domain.Maintenance.Resources.Rules
 {
-    public class ResourceCannotBeAreaAndMachineSimultaneously : IBusinessRule
+    public class ResourceCannotBeAreaAndMachineSimultaneouslyRule : IBusinessRule
     {
         private readonly bool _isArea;
         private readonly bool _isMachine;
 
-        public ResourceCannotBeAreaAndMachineSimultaneously(bool isArea, bool isMachine)
+        public ResourceCannotBeAreaAndMachineSimultaneouslyRule(bool isArea, bool isMachine)
         {
             _isArea = isArea;
             _isMachine = isMachine;

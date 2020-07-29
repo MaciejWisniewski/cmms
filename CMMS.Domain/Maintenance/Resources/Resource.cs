@@ -27,9 +27,9 @@ namespace CMMS.Domain.Maintenance.Resources
 
         private Resource(Resource parent, string name, bool isArea, bool isMachine)
         {
-            CheckRule(new ResourceCannotBeAreaAndMachineSimultaneously(isArea, isMachine));
-            CheckRule(new MachineMustHaveAnAreaParent(isMachine, parent));
-            CheckRule(new ParentCannotBeAMachine(parent));
+            CheckRule(new ResourceCannotBeAreaAndMachineSimultaneouslyRule(isArea, isMachine));
+            CheckRule(new MachineMustHaveAnAreaParentRule(isMachine, parent));
+            CheckRule(new ParentResourceCannotBeAMachineRule(parent));
 
             Id = new ResourceId(Guid.NewGuid());
             ParentId = parent?.Id;
@@ -60,7 +60,7 @@ namespace CMMS.Domain.Maintenance.Resources
 
         public void GiveAccess(WorkerId workerId)
         {
-            CheckRule(new ResourceAccessCannotBeGivenTwice(this, workerId));
+            CheckRule(new ResourceAccessCannotBeGivenTwiceRule(this, workerId));
 
             GiveAccessTo(this, workerId);
             GiveAccessToAllDescendants(workerId);
@@ -69,7 +69,7 @@ namespace CMMS.Domain.Maintenance.Resources
 
         public void DenyAccess(WorkerId workerId)
         {
-            CheckRule(new OnlyExistingAccessCanBeDenied(this, workerId));
+            CheckRule(new OnlyExistingAccessCanBeDeniedRule(this, workerId));
 
             DenyAccessTo(this, workerId);
             DenyAccessToAllDescendants(workerId);
@@ -78,7 +78,7 @@ namespace CMMS.Domain.Maintenance.Resources
 
         public void Remove(Action<Resource> removeMethod)
         {
-            CheckRule(new ParentResourceCannotBeRemoved(this));
+            CheckRule(new ParentResourceCannotBeRemovedRule(this));
 
             removeMethod(this);
 

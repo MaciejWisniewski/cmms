@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace CMMS.Domain.Maintenance.Resources.Rules
 {
-    public class OnlyExistingAccessCanBeDenied : IBusinessRule
+    public class OnlyExistingAccessCanBeDeniedRule : IBusinessRule
     {
         private readonly Resource _resource;
         private readonly WorkerId _workerId;
 
-        public OnlyExistingAccessCanBeDenied(Resource resource, WorkerId workerId)
+        public OnlyExistingAccessCanBeDeniedRule(Resource resource, WorkerId workerId)
         {
             _resource = resource;
             _workerId = workerId;

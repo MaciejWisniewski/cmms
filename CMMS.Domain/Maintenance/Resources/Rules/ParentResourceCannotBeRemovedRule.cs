@@ -1,13 +1,12 @@
 ﻿using CMMS.Domain.SeedWork;
-using System;
 
 namespace CMMS.Domain.Maintenance.Resources.Rules
 {
-    public class ParentResourceCannotBeRemoved : IBusinessRule
+    public class ParentResourceCannotBeRemovedRule : IBusinessRule
     {
         private readonly Resource _resource;
 
-        public ParentResourceCannotBeRemoved(Resource resource)
+        public ParentResourceCannotBeRemovedRule(Resource resource)
         {
             _resource = resource;
         }

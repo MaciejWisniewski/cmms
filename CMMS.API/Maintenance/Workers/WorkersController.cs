@@ -23,6 +23,20 @@ namespace CMMS.API.Maintenance.Workers
         }
 
         /// <summary>
+        /// Get all workers
+        /// </summary>
+        [HttpGet("all")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<WorkerDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetAllWorkers()
+        {
+            var workers = await _mediator.Send(new GetAllWorkersQuery());
+
+            return Ok(workers);
+        }
+
+        /// <summary>
         /// Get workers having access to the resource with the given id.
         /// </summary>
         [HttpGet("all/{resourceId}")]
@@ -33,17 +47,6 @@ namespace CMMS.API.Maintenance.Workers
         {
             var workers = await _mediator.Send(new GetWorkersHavingAccessToQuery(resourceId));
 
-            return Ok(workers);
-        }
-
-
-        [HttpGet("getAll")]
-        [Authorize]
-        [ProducesResponseType(typeof(List<WorkerDto>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetAllWorkers()
-        {
-            var workers = await _mediator.Send(new GetAllWorkersQuery());
             return Ok(workers);
         }
     }

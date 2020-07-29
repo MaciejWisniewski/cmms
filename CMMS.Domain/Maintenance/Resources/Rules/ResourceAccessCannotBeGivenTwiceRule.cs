@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace CMMS.Domain.Maintenance.Resources.Rules
 {
-    public class ResourceAccessCannotBeGivenTwice : IBusinessRule
+    public class ResourceAccessCannotBeGivenTwiceRule : IBusinessRule
     {
         private readonly Resource _resource;
         private readonly WorkerId _workerId;
 
-        public ResourceAccessCannotBeGivenTwice(Resource resource, WorkerId workerId)
+        public ResourceAccessCannotBeGivenTwiceRule(Resource resource, WorkerId workerId)
         {
             _resource = resource;
             _workerId = workerId;

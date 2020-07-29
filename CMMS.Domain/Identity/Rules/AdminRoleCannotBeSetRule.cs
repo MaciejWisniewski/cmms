@@ -2,11 +2,11 @@
 
 namespace CMMS.Domain.Identity.Rules
 {
-    public class CannotSetAnAdminRole : IBusinessRule
+    public class AdminRoleCannotBeSetRule : IBusinessRule
     {
         private readonly string _roleName;
 
-        public CannotSetAnAdminRole(string roleName)
+        public AdminRoleCannotBeSetRule(string roleName)
         {
             _roleName = roleName;
         }
