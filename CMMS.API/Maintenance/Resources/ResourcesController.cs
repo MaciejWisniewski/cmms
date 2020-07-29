@@ -1,6 +1,7 @@
 ﻿using CMMS.Application.Maintenance.Resources.CreateResource;
 using CMMS.Application.Maintenance.Resources.EditResource;
 using CMMS.Application.Maintenance.Resources.GetAllResources;
+using CMMS.Application.Maintenance.Resources.GetResourcesWorkerHasAccessTo;
 using CMMS.Application.Maintenance.Resources.GiveResourceAccess;
 using CMMS.Application.Maintenance.Resources.RemoveResource;
 using CMMS.Domain.Identity;
@@ -35,6 +36,20 @@ namespace CMMS.API.Maintenance.Resources
         public async Task<IActionResult> GetAllResources()
         {
             var resources = await _mediator.Send(new GetAllResourcesQuery());
+
+            return Ok(resources);
+        }
+
+        /// <summary>
+        /// Get all resources worker has access to.
+        /// </summary>
+        [HttpGet("all/{workerId}")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<ResourceDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetResourcesWorkerHasAccessTo(Guid workerId)
+        {
+            var resources = await _mediator.Send(new GetResourcesWorkerHasAccessToQuery(workerId));
 
             return Ok(resources);
         }

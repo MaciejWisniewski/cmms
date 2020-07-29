@@ -1,22 +1,24 @@
 ﻿using CMMS.Application.Configuration.Data;
 using CMMS.Application.Configuration.Queries;
 using Dapper;
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Maintenance.Workers.GetWorkersHavingAccessTo
+namespace CMMS.Application.Maintenance.Workers.GetAllWorkres
 {
-    public class GetWorkersHavingAccessToQueryHandler : IQueryHandler<GetWorkersHavingAccessToQuery, List<WorkerDto>>
-    {        
+    public class GetAllWorkersQueryHandler : IQueryHandler<GetAllWorkersQuery, List<WorkerDto>>
+    {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-        public GetWorkersHavingAccessToQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+        public GetAllWorkersQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
         {
             _sqlConnectionFactory = sqlConnectionFactory;
         }
 
-        public async Task<List<WorkerDto>> Handle(GetWorkersHavingAccessToQuery query, CancellationToken cancellationToken)
+        public async Task<List<WorkerDto>> Handle(GetAllWorkersQuery request, CancellationToken cancellationToken)
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
             string sql = "SELECT " +
@@ -26,12 +28,9 @@ namespace CMMS.Application.Maintenance.Workers.GetWorkersHavingAccessTo
                          $"[Worker].[FullName] AS [{nameof(WorkerDto.FullName)}], " +
                          $"[Worker].[PhoneNumber] AS [{nameof(WorkerDto.PhoneNumber)}]" +
                          "FROM [CMMS].[maintenance].[Workers] AS [Worker] " +
-                         "JOIN [CMMS].[maintenance].[ResourceAccesses] AS [Access] " +
-                         "ON [Worker].[Id] = [Access].[WorkerId] " +
-                         "WHERE [Access].[ResourceId] = @ResourceId " +
                          "ORDER BY [Worker].[FullName] ASC";
 
-            var resources = await connection.QueryAsync<WorkerDto>(sql, new { query.ResourceId });
+            var resources = await connection.QueryAsync<WorkerDto>(sql);
 
             return resources.AsList();
         }
