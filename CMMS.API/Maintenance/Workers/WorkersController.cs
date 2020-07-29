@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using CMMS.Application.Maintenance.Workers;
+using CMMS.Application.Maintenance.Workers.GetAllWorkres;
 using CMMS.Application.Maintenance.Workers.GetWorkersHavingAccessTo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +33,17 @@ namespace CMMS.API.Maintenance.Workers
         {
             var workers = await _mediator.Send(new GetWorkersHavingAccessToQuery(resourceId));
 
+            return Ok(workers);
+        }
+
+
+        [HttpGet("getAll")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<WorkerDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetAllWorkers()
+        {
+            var workers = await _mediator.Send(new GetAllWorkersQuery());
             return Ok(workers);
         }
     }

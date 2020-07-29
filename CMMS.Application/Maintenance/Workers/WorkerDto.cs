@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CMMS.Application.Maintenance.Workers.GetWorkersHavingAccessTo
+namespace CMMS.Application.Maintenance.Workers
 {
     public class WorkerDto
     {
