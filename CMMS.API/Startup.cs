@@ -22,6 +22,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CMMS.Infrastructure.Domain.Maintenance.Failures;
+using CMMS.Domain.Failures;
 
 namespace CMMS.API
 {
@@ -45,13 +47,18 @@ namespace CMMS.API
         {
             services.AddCors(o => o.AddPolicy("CMMSPolicy", builder =>
             {
-                builder.AllowAnyOrigin()
+                builder
                        .AllowAnyMethod()
-                       .AllowAnyHeader();
+                       .SetIsOriginAllowed((host) => true)
+                       .AllowAnyHeader()
+                       .AllowCredentials();
+                        
             }));
 
 
             services.AddControllers();
+
+            services.AddSignalR();
 
             services.AddMemoryCache();
 
@@ -116,6 +123,11 @@ namespace CMMS.API
         {
             app.UseCors("CMMSPolicy");
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<FailureHub>("/hub/failures");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -131,6 +143,8 @@ namespace CMMS.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

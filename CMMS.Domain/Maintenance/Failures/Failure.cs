@@ -29,7 +29,7 @@ namespace CMMS.Domain.Maintenance.Failures
             State = FailureState.Detected;
             OccuredOn = DateTime.UtcNow;
 
-            AddDomainEvent(new FailureRegisteredDomainEvent(Id));
+            AddDomainEvent(new FailureRegisteredDomainEvent(Id, ResourceId, State, ProblemDescription, OccuredOn));
         }
 
         public static Failure CreateNew(ResourceId resourceId, string problemDescription)

@@ -59,7 +59,7 @@ namespace CMMS.API.Maintenance.Resources
         /// Create new resource.
         /// </summary>
         [HttpPost]
-        [Authorize(Roles = UserRole.Leader)]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -82,7 +82,7 @@ namespace CMMS.API.Maintenance.Resources
         /// Give resource access to the worker with the given id.
         /// </summary>
         [HttpPost("{resourceId}/resourceAccesses")]
-        [Authorize(Roles = UserRole.Leader)]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -100,7 +100,7 @@ namespace CMMS.API.Maintenance.Resources
         /// Deny resource access for the worker with the given id.
         /// </summary>
         [HttpDelete("{resourceId}/resourceAccesses")]
-        [Authorize(Roles = UserRole.Leader)]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -118,7 +118,7 @@ namespace CMMS.API.Maintenance.Resources
         /// Edit resource with the given id.
         /// </summary>
         [HttpPut("{resourceId}")]
-        [Authorize(Roles = UserRole.Leader)]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
@@ -136,7 +136,7 @@ namespace CMMS.API.Maintenance.Resources
         /// Remove resource with the given id.
         /// </summary>
         [HttpDelete("{resourceId}")]
-        [Authorize(Roles = UserRole.Leader)]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
