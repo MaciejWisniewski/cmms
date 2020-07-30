@@ -8,6 +8,8 @@ using CMMS.Infrastructure.Domain;
 using CMMS.Infrastructure.Domain.Identity;
 using CMMS.Infrastructure.Domain.Maintenance.Workers;
 using CMMS.Infrastructure.Domain.Maintenance.Resources;
+using CMMS.Infrastructure.Domain.Maintenance.Failures;
+using CMMS.Domain.Maintenance.Failures;
 
 namespace CMMS.Infrastructure.Database
 {
@@ -45,6 +47,10 @@ namespace CMMS.Infrastructure.Database
 
             builder.RegisterType<WorkerRepository>()
                 .As<IWorkerRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<FailureRepository>()
+                .As<IFailureRepository>()
                 .InstancePerLifetimeScope();
         }
     }

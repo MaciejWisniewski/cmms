@@ -1,4 +1,5 @@
-﻿using CMMS.Domain.Maintenance.Resources;
+﻿using CMMS.Domain.Maintenance.Failures.Events;
+using CMMS.Domain.Maintenance.Resources;
 using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.SeedWork;
 using System;
@@ -18,6 +19,22 @@ namespace CMMS.Domain.Maintenance.Failures
 
         private Failure()
         {
+        }
+
+        private Failure(ResourceId resourceId, string problemDescription)
+        {
+            Id = new FailureId(Guid.NewGuid());
+            ResourceId = resourceId;
+            ProblemDescription = problemDescription;
+            State = FailureState.Detected;
+            OccuredOn = DateTime.UtcNow;
+
+            AddDomainEvent(new FailureRegisteredDomainEvent(Id));
+        }
+
+        public static Failure CreateNew(ResourceId resourceId, string problemDescription)
+        {
+            return new Failure(resourceId, problemDescription);
         }
     }
 }
