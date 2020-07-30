@@ -2,12 +2,12 @@
 
 namespace CMMS.Domain.Maintenance.Resources.Rules
 {
-    public class MachineMustHaveAnAreaParent : IBusinessRule
+    public class MachineMustHaveAnAreaParentRule : IBusinessRule
     {
         private readonly bool _isResourceAMachine;
         private readonly Resource _parent;
 
-        public MachineMustHaveAnAreaParent(bool isResourceAMachine, Resource parent)
+        public MachineMustHaveAnAreaParentRule(bool isResourceAMachine, Resource parent)
         {
             _isResourceAMachine = isResourceAMachine;
             _parent = parent;

@@ -51,15 +51,15 @@ namespace CMMS.Domain.Identity
             string roleName,
             IUserUniquenessChecker userUniquenessChecker)
         {
-            CheckRule(new UserMustHaveUniqueUsernameAndEmail(userUniquenessChecker, userName, email));
-            CheckRule(new CannotSetAnAdminRole(roleName));
+            CheckRule(new UserMustHaveUniqueUsernameAndEmailRule(userUniquenessChecker, userName, email));
+            CheckRule(new AdminRoleCannotBeSetRule(roleName));
 
             return new AppUser(fullName, userName, email, phoneNumber);
         }
 
         public void Update(string fullName, string email, string phoneNumber, string roleName)
         {
-            CheckRule(new CannotSetAnAdminRole(roleName));
+            CheckRule(new AdminRoleCannotBeSetRule(roleName));
 
             FullName = fullName;
             Email = email;
@@ -71,14 +71,14 @@ namespace CMMS.Domain.Identity
 
         public void ChangeRole(AppRole role)
         {
-            CheckRule(new CannotSetAnAdminRole(role.Name));
+            CheckRule(new AdminRoleCannotBeSetRule(role.Name));
 
             AddDomainEvent(new ChangedUserRoleDomainEvent(Id, role.Name));
         }
 
         public void Deactivate()
         {
-            CheckRule(new CannotDeactivateAlreadyInactiveUser(this));
+            CheckRule(new CannotDeactivateAlreadyInactiveUserRule(this));
 
             IsActive = false;
 

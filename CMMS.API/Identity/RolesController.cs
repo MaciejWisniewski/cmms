@@ -24,7 +24,7 @@ namespace CMMS.API.Identity
         /// <summary>
         /// Get all roles.
         /// </summary>
-        [HttpGet("GetAll")]
+        [HttpGet("all")]
         [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType(typeof(List<RoleDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]

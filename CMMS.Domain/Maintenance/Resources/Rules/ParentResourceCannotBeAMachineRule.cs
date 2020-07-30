@@ -2,11 +2,11 @@
 
 namespace CMMS.Domain.Maintenance.Resources.Rules
 {
-    public class ParentCannotBeAMachine : IBusinessRule
+    public class ParentResourceCannotBeAMachineRule : IBusinessRule
     {
         private readonly Resource _parent;
 
-        public ParentCannotBeAMachine(Resource parent)
+        public ParentResourceCannotBeAMachineRule(Resource parent)
         {
             _parent = parent;
         }

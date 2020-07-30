@@ -2,13 +2,13 @@
 
 namespace CMMS.Domain.Identity.Rules
 {
-    public class UserMustHaveUniqueUsernameAndEmail : IBusinessRule
+    public class UserMustHaveUniqueUsernameAndEmailRule : IBusinessRule
     {
         private readonly IUserUniquenessChecker _userUniquenessChecker;
         private readonly string _userName;
         private readonly string _email;
 
-        public UserMustHaveUniqueUsernameAndEmail(
+        public UserMustHaveUniqueUsernameAndEmailRule(
             IUserUniquenessChecker userUniquenessChecker,
             string userName,
             string email)

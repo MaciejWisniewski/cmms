@@ -2,11 +2,11 @@
 
 namespace CMMS.Domain.Identity.Rules
 {
-    public class CannotDeactivateAlreadyInactiveUser : IBusinessRule
+    public class CannotDeactivateAlreadyInactiveUserRule : IBusinessRule
     {
         private readonly AppUser _user;
 
-        public CannotDeactivateAlreadyInactiveUser(AppUser user)
+        public CannotDeactivateAlreadyInactiveUserRule(AppUser user)
         {
             _user = user;
         }

@@ -27,9 +27,9 @@ namespace CMMS.Domain.Maintenance.Resources
 
         private Resource(Resource parent, string name, bool isArea, bool isMachine)
         {
-            CheckRule(new ResourceCannotBeAreaAndMachineSimultaneously(isArea, isMachine));
-            CheckRule(new MachineMustHaveAnAreaParent(isMachine, parent));
-            CheckRule(new ParentCannotBeAMachine(parent));
+            CheckRule(new ResourceCannotBeAreaAndMachineSimultaneouslyRule(isArea, isMachine));
+            CheckRule(new MachineMustHaveAnAreaParentRule(isMachine, parent));
+            CheckRule(new ParentResourceCannotBeAMachineRule(parent));
 
             Id = new ResourceId(Guid.NewGuid());
             ParentId = parent?.Id;
@@ -60,45 +60,87 @@ namespace CMMS.Domain.Maintenance.Resources
 
         public void GiveAccess(WorkerId workerId)
         {
-            CheckRule(new ResourceAccessCannotBeGivenTwice(this, workerId));
+            CheckRule(new ResourceAccessCannotBeGivenTwiceRule(this, workerId));
 
-            Accesses.Add(ResourceAccess.CreateNew(Id, workerId));
+            GiveAccessTo(this, workerId);
             GiveAccessToAllDescendants(workerId);
-            UpdateAncestorsAccesses(Parent, workerId);
+            UpdateAccessesToAncestorsOnGive(Parent, workerId);
+        }
+
+        public void DenyAccess(WorkerId workerId)
+        {
+            CheckRule(new OnlyExistingAccessCanBeDeniedRule(this, workerId));
+
+            DenyAccessTo(this, workerId);
+            DenyAccessToAllDescendants(workerId);
+            UpdateAccessesToAncestorsOnDeny(Parent, workerId);
+        }
+
+        public void Remove(Action<Resource> removeMethod)
+        {
+            CheckRule(new ParentResourceCannotBeRemovedRule(this));
+
+            removeMethod(this);
+
+            AddDomainEvent(new ResourceRemovedDomainEvent(Id));
         }
 
         private void GiveAccessToAllDescendants(WorkerId workerId)
         {
             foreach (var resource in this.Descendants())
                 if (!HasAccess(resource, workerId))
-                    resource.Accesses.Add(ResourceAccess.CreateNew(resource.Id, workerId));
+                    GiveAccessTo(resource, workerId);
         }
 
-        private void UpdateAncestorsAccesses(Resource parent, WorkerId workerId)
+        private void DenyAccessToAllDescendants(WorkerId workerId)
+        {
+            foreach (var resource in this.Descendants())
+                if (HasAccess(resource, workerId))
+                    DenyAccessTo(resource, workerId);
+        }
+
+        private void UpdateAccessesToAncestorsOnGive(Resource parent, WorkerId workerId)
         {
             bool hasAccessToAllChildren;
             do
             {
                 hasAccessToAllChildren = parent != null && parent.Children.All(c => HasAccess(c, workerId));
                 if (hasAccessToAllChildren)
-                    parent.Accesses.Add(ResourceAccess.CreateNew(parent.Id, workerId));
+                    GiveAccessTo(parent, workerId);
 
                 parent = parent?.Parent;
             } while (hasAccessToAllChildren);
         }
 
-        private bool HasAccess(Resource resource, WorkerId workerId)
+        private void UpdateAccessesToAncestorsOnDeny(Resource parent, WorkerId workerId)
         {
-            return resource.Accesses.FirstOrDefault(a => a.WorkerId == workerId) != null;
+            bool hasAccess;
+            do
+            {
+                hasAccess = HasAccess(parent, workerId);
+                if (hasAccess)
+                    DenyAccessTo(parent, workerId);
+
+                parent = parent?.Parent;
+            } while (hasAccess);
         }
 
-        public void Remove(Action<Resource> removeMethod)
+        private bool HasAccess(Resource resource, WorkerId workerId)
         {
-            CheckRule(new ParentResourceCannotBeRemoved(this));
+            return resource != null && 
+                resource.Accesses.FirstOrDefault(a => a.WorkerId == workerId) != null;
+        }
 
-            removeMethod(this);
+        private void GiveAccessTo(Resource resource, WorkerId workerId)
+        {
+            resource.Accesses.Add(ResourceAccess.CreateNew(resource.Id, workerId));
+        }
 
-            AddDomainEvent(new ResourceRemovedDomainEvent(Id));
+        private void DenyAccessTo(Resource resource, WorkerId workerId)
+        {
+            resource.Accesses.RemoveAll(a => a.WorkerId == workerId);
+
+            AddDomainEvent(new DeniedResourceAccessDomainEvent(resource.Id, workerId));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CMMS.Application.Maintenance.Resources.CreateResource;
+using CMMS.Application.Maintenance.Resources.DenyResourceAccess;
 using CMMS.Application.Maintenance.Resources.EditResource;
 using CMMS.Application.Maintenance.Resources.GetAllResources;
 using CMMS.Application.Maintenance.Resources.GetResourcesWorkerHasAccessTo;
@@ -88,9 +89,27 @@ namespace CMMS.API.Maintenance.Resources
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> GiveAccess([FromRoute]Guid resourceId, [FromBody]GiveResourceAccessRequest request)
+        public async Task<IActionResult> GiveResourceAccess([FromRoute]Guid resourceId, [FromBody]GiveResourceAccessRequest request)
         {
             await _mediator.Send(new GiveResourceAccessCommand(resourceId, request.WorkerId));
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Deny resource access for the worker with the given id.
+        /// </summary>
+        [HttpDelete("{resourceId}/resourceAccesses")]
+        [Authorize(Roles = UserRole.Leader)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> DenyResourceAccess([FromRoute] Guid resourceId, [FromBody] DenyResourceAccessRequest request)
+        {
+            await _mediator.Send(new DenyResourceAccessCommand(resourceId, request.WorkerId));
 
             return Ok();
         }
