@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace CMMS.Domain.SeedWork
 {
-    public abstract class TypedIdValueBase : IEquatable<TypedIdValueBase>
+    public abstract class TypedIdValueBase : IEquatable<TypedIdValueBase>, IComparable<TypedIdValueBase>
     {
         public Guid Value { get; }
 
@@ -25,6 +26,11 @@ namespace CMMS.Domain.SeedWork
         public bool Equals(TypedIdValueBase other)
         {
             return this.Value == other.Value;
+        }
+
+        public int CompareTo([AllowNull] TypedIdValueBase other)
+        {
+            return -1;
         }
 
         public static bool operator ==(TypedIdValueBase obj1, TypedIdValueBase obj2)

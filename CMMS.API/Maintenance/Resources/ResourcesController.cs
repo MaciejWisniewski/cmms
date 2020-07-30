@@ -29,7 +29,7 @@ namespace CMMS.API.Maintenance.Resources
         /// <summary>
         /// Get all resources.
         /// </summary>
-        [HttpGet("GetAll")]
+        [HttpGet("all")]
         [Authorize]
         [ProducesResponseType(typeof(List<ResourceDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]

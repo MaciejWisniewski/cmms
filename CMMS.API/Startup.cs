@@ -118,8 +118,8 @@ namespace CMMS.API
 
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
-                app.UseProblemDetails();
+                app.UseDeveloperExceptionPage();
+                //app.UseProblemDetails();
             }
             else
             {

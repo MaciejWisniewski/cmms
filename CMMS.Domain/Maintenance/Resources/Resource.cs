@@ -83,7 +83,7 @@ namespace CMMS.Domain.Maintenance.Resources
                 if (hasAccessToAllChildren)
                     parent.Accesses.Add(ResourceAccess.CreateNew(parent.Id, workerId));
 
-                parent = parent.Parent;
+                parent = parent?.Parent;
             } while (hasAccessToAllChildren);
         }
 
