@@ -14,14 +14,13 @@ namespace CMMS.Domain.Maintenance.Resources
 
         private ResourceAccess()
         {
-            GivenOn = DateTime.Now;
         }
 
         private ResourceAccess(ResourceId resourceId, WorkerId workerId)
         {
             ResourceId = resourceId;
             WorkerId = workerId;
-            GivenOn = DateTime.Now;
+            GivenOn = DateTime.UtcNow;
 
             AddDomainEvent(new GaveResourceAccessDomainEvent(ResourceId, WorkerId));
         }
