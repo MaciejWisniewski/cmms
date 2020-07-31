@@ -11,16 +11,16 @@ namespace CMMS.Domain.Maintenance.Failures.Events
         public ResourceId ResourceId { get; }
         public FailureState FailureState { get;  }
         public string ProblemDescription { get; }
-        public DateTime OccuredOn { get;  }
+        public DateTime OccurredOn { get;  }
 
 
-        public FailureRegisteredDomainEvent(FailureId failureId, ResourceId resourceId, FailureState failureState, string problemDescription, DateTime occuredOn)
+        public FailureRegisteredDomainEvent(FailureId failureId, ResourceId resourceId, FailureState failureState, string problemDescription, DateTime occurredOn)
         {
             FailureId = failureId;
             ResourceId = resourceId;
             FailureState = failureState;
             ProblemDescription = problemDescription;
-            OccuredOn = occuredOn;
+            OccurredOn = occurredOn;
         }
     }
 }

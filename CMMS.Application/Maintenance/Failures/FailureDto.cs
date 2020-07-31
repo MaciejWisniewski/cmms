@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CMMS.Application.Maintenance.Failures
 {
@@ -12,7 +10,7 @@ namespace CMMS.Application.Maintenance.Failures
         public string State { get; set; }
         public string ProblemDescription { get; set; }
         public string Note { get; set; }
-        public DateTime OccuredOn { get; set; }
+        public DateTime OccurredOn { get; set; }
         public DateTime ResolvedOn { get; set; }
     }
 }

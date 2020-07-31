@@ -2,7 +2,6 @@
 using CMMS.Domain.Maintenance.Failures.Events;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +23,7 @@ namespace CMMS.Application.Maintenance.Failures.RegisterFailure
                 ResourceId = notification.ResourceId.Value,
                 State = notification.FailureState.Value,
                 ProblemDescription = notification.ProblemDescription,
-                OccuredOn = notification.OccuredOn
+                OccurredOn = notification.OccurredOn
             });
         }
     }

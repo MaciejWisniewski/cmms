@@ -14,7 +14,7 @@ namespace CMMS.Domain.Maintenance.Failures
         public FailureState State { get; private set; }
         public string ProblemDescription { get; private set; }
         public string Note { get; private set; }
-        public DateTime OccuredOn { get; private set; }
+        public DateTime OccurredOn { get; private set; }
         public DateTime? ResolvedOn { get; private set; }
 
         private Failure()
@@ -27,9 +27,14 @@ namespace CMMS.Domain.Maintenance.Failures
             ResourceId = resourceId;
             ProblemDescription = problemDescription;
             State = FailureState.Detected;
-            OccuredOn = DateTime.UtcNow;
+            OccurredOn = DateTime.UtcNow;
 
-            AddDomainEvent(new FailureRegisteredDomainEvent(Id, ResourceId, State, ProblemDescription, OccuredOn));
+            AddDomainEvent(new FailureRegisteredDomainEvent(
+                Id, 
+                ResourceId, 
+                State, 
+                ProblemDescription, 
+                OccurredOn));
         }
 
         public static Failure CreateNew(ResourceId resourceId, string problemDescription)
