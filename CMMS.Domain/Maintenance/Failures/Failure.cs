@@ -1,4 +1,5 @@
 ﻿using CMMS.Domain.Maintenance.Failures.Events;
+using CMMS.Domain.Maintenance.Failures.Rules;
 using CMMS.Domain.Maintenance.Resources;
 using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.SeedWork;
@@ -41,6 +42,33 @@ namespace CMMS.Domain.Maintenance.Failures
         public static Failure CreateNew(Resource resource, string problemDescription)
         {
             return new Failure(resource, problemDescription);
+        }
+
+        public void ChangeState(FailureState newfailureState, Worker worker, string note)
+        {
+             
+
+            CheckRule(new StateCannotBeTheSameRule(State, newfailureState));
+            State = newfailureState;
+            WorkerId = worker.Id;
+            Note = note;
+
+            if(newfailureState == FailureState.Resolved)
+            {
+                ResolvedOn = DateTime.UtcNow;
+            }
+
+            AddDomainEvent(new FailureStateChangedDomainEvent(
+                   Id,
+                   ResourceId,
+                   WorkerId,
+                   worker.UserName,
+                   State,
+                   ProblemDescription,
+                   Note,
+                   OccurredOn,
+                   ResolvedOn
+                ));
         }
     }
 }

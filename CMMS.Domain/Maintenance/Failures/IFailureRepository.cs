@@ -5,5 +5,6 @@ namespace CMMS.Domain.Maintenance.Failures
     public interface IFailureRepository
     {
         Task AddAsync(Failure failure);
+        Task<Failure> GetByIdAsync(FailureId failureId);
     }
 }

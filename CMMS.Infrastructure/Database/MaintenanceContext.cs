@@ -6,6 +6,7 @@ using CMMS.Infrastructure.Processing.Outbox;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
+using CMMS.Domain.Maintenance.Failures;
 
 namespace CMMS.Infrastructure.Database
 {
@@ -15,6 +16,7 @@ namespace CMMS.Infrastructure.Database
         public DbSet<InternalCommand> InternalCommands { get; set; }
         public DbSet<Resource> Resources { get; set; }
         public DbSet<Worker> Workers { get; set; }
+        public DbSet<Failure> Failures { get; set; }
 
         public MaintenanceContext(DbContextOptions<MaintenanceContext> options) : base(options)
         {

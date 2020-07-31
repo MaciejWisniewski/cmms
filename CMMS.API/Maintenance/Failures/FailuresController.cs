@@ -1,6 +1,8 @@
 ﻿using CMMS.Application.Maintenance.Failures;
+using CMMS.Application.Maintenance.Failures.ChangeFailureState;
 using CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo;
 using CMMS.Application.Maintenance.Failures.RegisterFailure;
+using CMMS.Domain.Maintenance.Failures;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,5 +55,22 @@ namespace CMMS.API.Maintenance.Failures
 
             return Ok(failureId);
         }
+
+
+        [HttpPut("{failureId}")]
+        [Authorize]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> ChangeFailureState([FromRoute]Guid failureId, [FromBody]ChangeFailureStateRequest changeFailureStateRequest)
+        {
+            await _mediator.Send(new ChangeFailureStateCommand(
+                failureId,
+                changeFailureStateRequest.WorkerId,
+                changeFailureStateRequest.Note,
+                changeFailureStateRequest.FailureState));
+            return NoContent();
+        }
+
     }
 }
