@@ -16,6 +16,9 @@ namespace CMMS.Infrastructure.Domain.Maintenance.ServiceTypes
             builder.Property(st => st.Name)
                 .HasMaxLength(80)
                 .IsRequired();
+
+            builder.HasIndex(st => st.Name)
+                .IsUnique();
         }
     }
 }

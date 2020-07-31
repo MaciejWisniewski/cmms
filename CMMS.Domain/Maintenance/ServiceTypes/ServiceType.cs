@@ -1,4 +1,7 @@
-﻿using CMMS.Domain.SeedWork;
+﻿using CMMS.Domain.Maintenance.ServiceTypes.Events;
+using CMMS.Domain.Maintenance.ServiceTypes.Rules;
+using CMMS.Domain.SeedWork;
+using System;
 
 namespace CMMS.Domain.Maintenance.ServiceTypes
 {
@@ -9,6 +12,21 @@ namespace CMMS.Domain.Maintenance.ServiceTypes
 
         private ServiceType()
         {
+        }
+
+        private ServiceType(string name)
+        {
+            Id = new ServiceTypeId(Guid.NewGuid());
+            Name = name;
+
+            AddDomainEvent(new ServiceTypeAddedDomainEvent(Id));
+        }
+
+        public static ServiceType CreateNew(string name, IServiceTypeUniquenessChecker uniquenessChecker)
+        {
+            CheckRule(new ServiceTypeMustHaveUniqueNameRule(name, uniquenessChecker));
+
+            return new ServiceType(name);
         }
     }
 }
