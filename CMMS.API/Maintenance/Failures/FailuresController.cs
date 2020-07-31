@@ -29,7 +29,7 @@ namespace CMMS.API.Maintenance.Failures
         [Authorize]
         [ProducesResponseType(typeof(List<FailureDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetFailuresWorkerHasAccessTo(Guid workerId)
+        public async Task<IActionResult> GetFailuresWorkerHasAccessTo([FromRoute]Guid workerId)
         {
             var resources = await _mediator.Send(new GetFailuresWorkerHasAccessToQuery(workerId));
 
