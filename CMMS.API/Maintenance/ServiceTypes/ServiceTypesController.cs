@@ -1,9 +1,11 @@
 ﻿using CMMS.Application.Maintenance.ServiceTypes.AddServiceType;
+using CMMS.Application.Maintenance.ServiceTypes.GetAllServiceTypes;
 using CMMS.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -18,6 +20,20 @@ namespace CMMS.API.Maintenance.ServiceTypes
         public ServiceTypesController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        /// <summary>
+        /// Get all service types.
+        /// </summary>
+        [HttpGet("all")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<ServiceTypeDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetAllServiceTypes()
+        {
+            var serviceTypes = await _mediator.Send(new GetAllServiceTypesQuery());
+
+            return Ok(serviceTypes);
         }
 
         /// <summary>

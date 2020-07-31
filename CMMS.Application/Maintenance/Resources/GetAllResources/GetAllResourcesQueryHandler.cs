@@ -26,7 +26,6 @@ namespace CMMS.Application.Maintenance.Resources.GetAllResources
                          $"[Resource].[IsArea] AS [{nameof(ResourceDto.IsArea)}], " +
                          $"[Resource].[IsMachine] AS [{nameof(ResourceDto.IsMachine)}] " +
                          "FROM [CMMS].[maintenance].[Resources] AS [Resource]";
-
             var resources = await connection.QueryAsync<ResourceDto>(sql);
 
             return resources.AsList();
