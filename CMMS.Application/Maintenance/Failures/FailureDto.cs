@@ -11,6 +11,6 @@ namespace CMMS.Application.Maintenance.Failures
         public string ProblemDescription { get; set; }
         public string Note { get; set; }
         public DateTime OccurredOn { get; set; }
-        public DateTime ResolvedOn { get; set; }
+        public DateTime? ResolvedOn { get; set; }
     }
 }
