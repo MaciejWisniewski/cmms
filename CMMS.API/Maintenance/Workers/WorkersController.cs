@@ -43,7 +43,7 @@ namespace CMMS.API.Maintenance.Workers
         [Authorize]
         [ProducesResponseType(typeof(List<WorkerDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetWorkersHavingAccessTo(Guid resourceId)
+        public async Task<IActionResult> GetWorkersHavingAccessTo([FromRoute]Guid resourceId)
         {
             var workers = await _mediator.Send(new GetWorkersHavingAccessToQuery(resourceId));
 

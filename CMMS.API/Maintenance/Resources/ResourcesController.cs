@@ -48,7 +48,7 @@ namespace CMMS.API.Maintenance.Resources
         [Authorize]
         [ProducesResponseType(typeof(List<ResourceDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetResourcesWorkerHasAccessTo(Guid workerId)
+        public async Task<IActionResult> GetResourcesWorkerHasAccessTo([FromRoute]Guid workerId)
         {
             var resources = await _mediator.Send(new GetResourcesWorkerHasAccessToQuery(workerId));
 
@@ -107,7 +107,7 @@ namespace CMMS.API.Maintenance.Resources
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> DenyResourceAccess([FromRoute] Guid resourceId, [FromBody] DenyResourceAccessRequest request)
+        public async Task<IActionResult> DenyResourceAccess([FromRoute]Guid resourceId, [FromBody]DenyResourceAccessRequest request)
         {
             await _mediator.Send(new DenyResourceAccessCommand(resourceId, request.WorkerId));
 
@@ -143,7 +143,7 @@ namespace CMMS.API.Maintenance.Resources
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> RemoveResource(Guid resourceId)
+        public async Task<IActionResult> RemoveResource([FromRoute]Guid resourceId)
         {
             await _mediator.Send(new RemoveResourceCommand(resourceId));
 

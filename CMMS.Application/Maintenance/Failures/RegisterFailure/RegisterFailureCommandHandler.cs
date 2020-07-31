@@ -25,7 +25,7 @@ namespace CMMS.Application.Maintenance.Failures.RegisterFailure
             if (resource == null)
                 throw new NotFoundException("Resource with the given id hasn't been found", null);
 
-            var failure = Failure.CreateNew(resource.Id, command.ProblemDescription);
+            var failure = Failure.CreateNew(resource, command.ProblemDescription);
 
             await _failureRepository.AddAsync(failure);
 

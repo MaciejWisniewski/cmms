@@ -22,7 +22,9 @@ namespace CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo
             string sql = "SELECT " +
                          $"[Failure].[Id] AS [{nameof(FailureDto.Id)}], " +
                          $"[Failure].[ResourceId] AS [{nameof(FailureDto.ResourceId)}], " +
+                         $"[Resource].[Name] AS [{nameof(FailureDto.ResourceName)}], " +
                          $"[Failure].[WorkerId] AS [{nameof(FailureDto.WorkerId)}], " +
+                         $"[Worker].[UserName] AS [{nameof(FailureDto.WorkerUserName)}], " +
                          $"[Failure].[State] AS [{nameof(FailureDto.State)}], " +
                          $"[Failure].[ProblemDescription] AS [{nameof(FailureDto.ProblemDescription)}], " +
                          $"[Failure].[Note] AS [{nameof(FailureDto.Note)}], " +
@@ -31,6 +33,10 @@ namespace CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo
                          "FROM [CMMS].[maintenance].[Failures] AS [Failure] " +
                          "JOIN [CMMS].[maintenance].[ResourceAccesses] AS [Access] " +
                          "ON [Failure].[ResourceId] = [Access].[ResourceId] " +
+                         "JOIN [CMMS].[maintenance].[Resources] AS [Resource] " +
+                         "ON [Access].[ResourceId] = [Resource].[Id] " +
+                         "LEFT JOIN [CMMS].[maintenance].[Workers] AS [Worker] " +
+                         "ON [Failure].[WorkerId] = [Worker].[Id] " +
                          "WHERE [Access].[WorkerId] = @WorkerId";
             var failures = await connection.QueryAsync<FailureDto>(sql, new { query.WorkerId });
 

@@ -18,9 +18,10 @@ namespace CMMS.Application.Maintenance.Failures.RegisterFailure
 
         public async Task Handle(FailureRegisteredDomainEvent notification, CancellationToken cancellationToken)
         {
-            await _hubContext.Clients.All.SendAsync("notifyFailure", new FailureDto() { 
+            await _hubContext.Clients.All.SendAsync("notifyFailureRegistered", new FailureDto() { 
                 Id = notification.FailureId.Value,
                 ResourceId = notification.ResourceId.Value,
+                ResourceName = notification.ResourceName,
                 State = notification.FailureState.Value,
                 ProblemDescription = notification.ProblemDescription,
                 OccurredOn = notification.OccurredOn

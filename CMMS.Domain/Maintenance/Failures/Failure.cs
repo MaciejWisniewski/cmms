@@ -21,10 +21,10 @@ namespace CMMS.Domain.Maintenance.Failures
         {
         }
 
-        private Failure(ResourceId resourceId, string problemDescription)
+        private Failure(Resource resource, string problemDescription)
         {
             Id = new FailureId(Guid.NewGuid());
-            ResourceId = resourceId;
+            ResourceId = resource.Id;
             ProblemDescription = problemDescription;
             State = FailureState.Detected;
             OccurredOn = DateTime.UtcNow;
@@ -32,14 +32,15 @@ namespace CMMS.Domain.Maintenance.Failures
             AddDomainEvent(new FailureRegisteredDomainEvent(
                 Id, 
                 ResourceId, 
+                resource.Name,
                 State, 
                 ProblemDescription, 
                 OccurredOn));
         }
 
-        public static Failure CreateNew(ResourceId resourceId, string problemDescription)
+        public static Failure CreateNew(Resource resource, string problemDescription)
         {
-            return new Failure(resourceId, problemDescription);
+            return new Failure(resource, problemDescription);
         }
     }
 }
