@@ -43,6 +43,7 @@ namespace CMMS.Application.Identity.Authenticate
                     var claims = new List<Claim>()
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, userName),
+                        new Claim("id", user.Id.ToString()),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.UniqueName, userName)
                     };
