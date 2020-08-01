@@ -80,5 +80,18 @@ namespace CMMS.Domain.Maintenance.Services
 
             AddDomainEvent(new ServiceStartedDomainEvent(Id));
         }
+
+        public void Finish(Resource resource, WorkerId finishingWorkerId, string note)
+        {
+            CheckRule(new WorkerMustHaveAccessToTheServicedResourceRule(resource.Accesses, finishingWorkerId));
+            CheckRule(new FinishedServiceCannotBeStartedNorFinishedAgainRule(ActualEndDateTime));
+            CheckRule(new OnlyStartedServiceCanBeFinishedRule(ActualStartDateTime));
+            CheckRule(new OnlyActualWorkerCanFinishServiceRule(ActualWorkerId, finishingWorkerId));
+
+            Note = note;
+            ActualEndDateTime = DateTime.UtcNow;
+
+            AddDomainEvent(new ServiceFinishedDomainEvent(Id));
+        }
     }
 }

@@ -6,6 +6,7 @@
         public const string Leader = "Leader";
         public const string User = "User";
         public const string AdminOrLeader = Admin + "," + Leader;
+        public const string UserOrLeader = User + "," + Leader;
         public const string Default = User;
     }
 }

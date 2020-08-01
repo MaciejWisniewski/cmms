@@ -14,6 +14,6 @@ namespace CMMS.Domain.Maintenance.Services.Rules
 
         public bool IsBroken() => _actualEndDateTime != null;
 
-        public string Message => "Service has already finished";
+        public string Message => "Service has already been finished";
     }
 }

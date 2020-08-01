@@ -9,17 +9,17 @@ namespace CMMS.Domain.Maintenance.Services.Rules
     public class WorkerMustHaveAccessToTheServicedResourceRule : IBusinessRule
     {
         private readonly List<ResourceAccess> _resourceAccesses;
-        private readonly WorkerId _scheduledWorkerId;
+        private readonly WorkerId _workerId;
 
         public WorkerMustHaveAccessToTheServicedResourceRule(
             List<ResourceAccess> resourceAccesses,
-            WorkerId scheduledWorkerId)
+            WorkerId workerId)
         {
             _resourceAccesses = resourceAccesses;
-            _scheduledWorkerId = scheduledWorkerId;
+            _workerId = workerId;
         }
 
-        public bool IsBroken() => _resourceAccesses.FirstOrDefault(a => a.WorkerId == _scheduledWorkerId) == null;
+        public bool IsBroken() => _resourceAccesses.FirstOrDefault(a => a.WorkerId == _workerId) == null;
 
         public string Message => "Given worker doesn't have accesss to the resource";
     }

@@ -1,4 +1,5 @@
-﻿using CMMS.Application.Maintenance.Services.ScheduleService;
+﻿using CMMS.Application.Maintenance.Services.FinishService;
+using CMMS.Application.Maintenance.Services.ScheduleService;
 using CMMS.Application.Maintenance.Services.StartService;
 using CMMS.Domain.Identity;
 using MediatR;
@@ -58,6 +59,23 @@ namespace CMMS.API.Maintenance.Services
         public async Task<IActionResult> StartService([FromRoute]Guid serviceId, [FromBody]StartServiceRequest request)
         {
             await _mediator.Send(new StartServiceCommand(serviceId, request.ActualWorkerId, request.Note));
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Finish a service.
+        /// </summary>
+        [HttpPatch("{serviceId}/finish")]
+        [Authorize(Roles = UserRole.UserOrLeader)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> FinishService([FromRoute]Guid serviceId, [FromBody]FinishServiceRequest request)
+        {
+            await _mediator.Send(new FinishServiceCommand(serviceId, request.FinishingWorkerId, request.Note));
 
             return Ok();
         }
