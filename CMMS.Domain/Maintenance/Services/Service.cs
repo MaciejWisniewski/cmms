@@ -12,7 +12,8 @@ namespace CMMS.Domain.Maintenance.Services
         public ResourceId ResourceId { get; private set; }
         public ServiceTypeId TypeId { get; private set; }
         public WorkerId ScheduledWorkerId { get; private set; }
-        public WorkerId? ActualWorkerId { get; private set; }
+        public WorkerId ActualWorkerId { get; private set; }
+        public string Description { get; private set; } 
         public string Note { get; private set; }
         public DateTime ScheduledStartDateTime { get; private set; }
         public DateTime ScheduledEndDateTime { get; private set; }
@@ -21,6 +22,11 @@ namespace CMMS.Domain.Maintenance.Services
 
         private Service()
         {
+        }
+
+        public static Service CreateNew()
+        {
+            return new Service();
         }
     }
 }

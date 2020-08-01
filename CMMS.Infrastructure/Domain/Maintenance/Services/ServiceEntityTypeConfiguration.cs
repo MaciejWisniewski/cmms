@@ -19,8 +19,7 @@ namespace CMMS.Infrastructure.Domain.Maintenance.Services
             builder.HasOne<Resource>()
                 .WithMany()
                 .HasForeignKey(s => s.ResourceId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .IsRequired();
 
             builder.HasOne<ServiceType>()
                 .WithMany()
@@ -31,8 +30,7 @@ namespace CMMS.Infrastructure.Domain.Maintenance.Services
             builder.HasOne<Worker>()
                 .WithMany()
                 .HasForeignKey(s => s.ScheduledWorkerId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne<Worker>()
                  .WithMany()
