@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace CMMS.Domain.Maintenance.Services.Rules
 {
-    public class ScheduledWorkerMustHaveAccessToTheServicedResourceRule : IBusinessRule
+    public class WorkerMustHaveAccessToTheServicedResourceRule : IBusinessRule
     {
         private readonly List<ResourceAccess> _resourceAccesses;
         private readonly WorkerId _scheduledWorkerId;
 
-        public ScheduledWorkerMustHaveAccessToTheServicedResourceRule(
+        public WorkerMustHaveAccessToTheServicedResourceRule(
             List<ResourceAccess> resourceAccesses,
             WorkerId scheduledWorkerId)
         {
@@ -21,6 +21,6 @@ namespace CMMS.Domain.Maintenance.Services.Rules
 
         public bool IsBroken() => _resourceAccesses.FirstOrDefault(a => a.WorkerId == _scheduledWorkerId) == null;
 
-        public string Message => "Scheduled worker doesn't have accesss to the resource";
+        public string Message => "Given worker doesn't have accesss to the resource";
     }
 }

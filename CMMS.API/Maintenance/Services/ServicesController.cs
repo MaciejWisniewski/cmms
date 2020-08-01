@@ -1,4 +1,5 @@
 ﻿using CMMS.Application.Maintenance.Services.ScheduleService;
+using CMMS.Application.Maintenance.Services.StartService;
 using CMMS.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +43,23 @@ namespace CMMS.API.Maintenance.Services
                 ));
 
             return Ok(serviceId);
+        }
+
+        /// <summary>
+        /// Start a service.
+        /// </summary>
+        [HttpPatch("{serviceId}/start")]
+        [Authorize(Roles = UserRole.User)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> StartService([FromRoute]Guid serviceId, [FromBody]StartServiceRequest request)
+        {
+            await _mediator.Send(new StartServiceCommand(serviceId, request.ActualWorkerId, request.Note));
+
+            return Ok();
         }
     }
 }
