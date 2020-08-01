@@ -1,4 +1,6 @@
 ﻿using CMMS.Domain.Maintenance.Resources;
+using CMMS.Domain.Maintenance.Services.Events;
+using CMMS.Domain.Maintenance.Services.Rules;
 using CMMS.Domain.Maintenance.ServiceTypes;
 using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.SeedWork;
@@ -24,9 +26,46 @@ namespace CMMS.Domain.Maintenance.Services
         {
         }
 
-        public static Service CreateNew()
+        private Service(
+            ResourceId resourceId, 
+            ServiceTypeId typeId, 
+            WorkerId scheduledWorkerId, 
+            string description,
+            DateTime scheduledStartDateTime,
+            DateTime scheduledEndDateTime)
         {
-            return new Service();
+            Id = new ServiceId(Guid.NewGuid());
+            ResourceId = resourceId;
+            TypeId = typeId;
+            ScheduledWorkerId = scheduledWorkerId;
+            Description = description;
+            ScheduledStartDateTime = scheduledStartDateTime;
+            ScheduledEndDateTime = scheduledEndDateTime;
+
+            AddDomainEvent(new ServiceScheduledDomainEvent(Id));
+        }
+
+        public static Service Schedule(
+            Resource resource,
+            ServiceTypeId typeId,
+            WorkerId scheduledWorkerId,
+            string description,
+            DateTime scheduledStartDateTime,
+            DateTime scheduledEndDateTime)
+        {
+            CheckRule(new ServiceCannotBeScheduledForAnAreaRule(resource));
+            CheckRule(new ScheduledWorkerMustHaveAccessToTheServicedResourceRule(resource.Accesses, scheduledWorkerId));
+            CheckRule(new ServiceScheduledStartMustBeBeforeItsScheduledEndRule(
+                scheduledStartDateTime,
+                scheduledEndDateTime));
+
+            return new Service(
+                resource.Id, 
+                typeId, 
+                scheduledWorkerId, 
+                description,
+                scheduledStartDateTime,
+                scheduledEndDateTime);
         }
     }
 }
