@@ -55,9 +55,7 @@ namespace CMMS.Domain.Maintenance.Services
         {
             CheckRule(new ServiceCannotBeScheduledForAnAreaRule(resource));
             CheckRule(new WorkerMustHaveAccessToTheServicedResourceRule(resource.Accesses, scheduledWorkerId));
-            CheckRule(new ServiceScheduledStartMustBeBeforeItsScheduledEndRule(
-                scheduledStartDateTime,
-                scheduledEndDateTime));
+            CheckRule(new ServiceScheduledStartMustBeBeforeItsScheduledEndRule(scheduledStartDateTime, scheduledEndDateTime));
 
             return new Service(
                 resource.Id, 
@@ -92,6 +90,28 @@ namespace CMMS.Domain.Maintenance.Services
             ActualEndDateTime = DateTime.UtcNow;
 
             AddDomainEvent(new ServiceFinishedDomainEvent(Id));
+        }
+
+        public void Edit(
+            Resource resource, 
+            ServiceTypeId typeId,    
+            WorkerId scheduledWorkerId,
+            string description,
+            DateTime scheduledStartDateTime,
+            DateTime scheduledEndDateTime)
+        {
+            CheckRule(new WorkerMustHaveAccessToTheServicedResourceRule(resource.Accesses, scheduledWorkerId));
+            CheckRule(new OnlyNotStartedNorFinishedServiceCanBeEditedRule(ActualStartDateTime, ActualEndDateTime));
+            CheckRule(new ServiceScheduledStartMustBeBeforeItsScheduledEndRule(scheduledStartDateTime, scheduledEndDateTime));
+
+            ResourceId = resource.Id;
+            TypeId = typeId;
+            ScheduledWorkerId = scheduledWorkerId;
+            Description = description;
+            ScheduledStartDateTime = scheduledStartDateTime;
+            ScheduledEndDateTime = scheduledEndDateTime;
+
+            AddDomainEvent(new EditedScheduledServiceDomainEvent(Id));
         }
     }
 }

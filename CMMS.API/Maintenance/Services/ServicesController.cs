@@ -1,4 +1,5 @@
-﻿using CMMS.Application.Maintenance.Services.FinishService;
+﻿using CMMS.Application.Maintenance.Services.EditScheduledService;
+using CMMS.Application.Maintenance.Services.FinishService;
 using CMMS.Application.Maintenance.Services.ScheduleService;
 using CMMS.Application.Maintenance.Services.StartService;
 using CMMS.Domain.Identity;
@@ -44,6 +45,30 @@ namespace CMMS.API.Maintenance.Services
                 ));
 
             return Ok(serviceId);
+        }
+
+        /// <summary>
+        /// Edit scheduled service.
+        /// </summary>
+        [HttpPut("{serviceId}")]
+        [Authorize(Roles = UserRole.Leader)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> EditScheduledService([FromRoute]Guid serviceId, [FromBody]EditScheduledServiceRequest request)
+        {
+            await _mediator.Send(new EditScheduledServiceCommand(
+                serviceId,
+                request.ResourceId,
+                request.ServiceTypeId,
+                request.ScheduledWorkerId,
+                request.Description,
+                request.ScheduledStartDateTime,
+                request.ScheduledEndDateTime));
+
+            return Ok();
         }
 
         /// <summary>
