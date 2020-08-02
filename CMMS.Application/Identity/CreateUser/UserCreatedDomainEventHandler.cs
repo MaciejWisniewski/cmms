@@ -22,7 +22,8 @@ namespace CMMS.Application.Identity.CreateUser
                     notification.UserName,
                     notification.Email,
                     notification.FullName,
-                    notification.PhoneNumber
+                    notification.PhoneNumber,
+                    notification.RoleName
                 ));
         }
     }

@@ -4,22 +4,22 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Maintenance.Workers.UpdateWorker
+namespace CMMS.Application.Maintenance.Workers.ChangeWorkerRole
 {
-    public class UpdateWorkerCommandHandler : ICommandHandler<UpdateWorkerCommand>
+    public class ChangeWorkerRoleCommandHandler : ICommandHandler<ChangeWorkerRoleCommand>
     {
         private readonly IWorkerRepository _workerRepository;
 
-        public UpdateWorkerCommandHandler(IWorkerRepository workerRepository)
+        public ChangeWorkerRoleCommandHandler(IWorkerRepository workerRepository)
         {
             _workerRepository = workerRepository;
         }
 
-        public async Task<Unit> Handle(UpdateWorkerCommand command, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ChangeWorkerRoleCommand command, CancellationToken cancellationToken)
         {
             var worker = await _workerRepository.GetByIdAsync(new WorkerId(command.WorkerId));
 
-            worker.Update(command.FullName, command.Email, command.PhoneNumber, command.Role);
+            worker.ChangeRole(command.Role);
 
             return Unit.Value;
         }

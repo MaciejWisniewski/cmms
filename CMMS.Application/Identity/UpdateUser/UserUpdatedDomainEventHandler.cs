@@ -21,7 +21,8 @@ namespace CMMS.Application.Identity.UpdateUser
                     notification.UserId,
                     notification.FullName,
                     notification.Email,
-                    notification.PhoneNumber
+                    notification.PhoneNumber,
+                    notification.RoleName
                 ));
         }
     }

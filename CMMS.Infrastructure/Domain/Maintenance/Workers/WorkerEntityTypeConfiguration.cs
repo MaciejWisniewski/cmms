@@ -14,11 +14,11 @@ namespace CMMS.Infrastructure.Domain.Maintenance.Workers
             builder.HasKey(w => w.Id);
 
             builder.Property(w => w.UserName)
-                .HasMaxLength(256)
+                .HasMaxLength(255)
                 .IsRequired();
 
             builder.Property(w => w.Email)
-                .HasMaxLength(256)
+                .HasMaxLength(255)
                 .IsRequired();
 
             builder.Property(w => w.PhoneNumber)
@@ -26,7 +26,11 @@ namespace CMMS.Infrastructure.Domain.Maintenance.Workers
                 .IsRequired();
 
             builder.Property(w => w.FullName)
-                .HasMaxLength(256)
+                .HasMaxLength(255)
+                .IsRequired();
+
+            builder.Property(w => w.Role)
+                .HasMaxLength(50)
                 .IsRequired();
         }
     }
