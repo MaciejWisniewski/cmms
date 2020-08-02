@@ -1,5 +1,6 @@
 ﻿using CMMS.Application.Maintenance.Services.EditScheduledService;
 using CMMS.Application.Maintenance.Services.FinishService;
+using CMMS.Application.Maintenance.Services.RemoveScheduledService;
 using CMMS.Application.Maintenance.Services.ScheduleService;
 using CMMS.Application.Maintenance.Services.StartService;
 using CMMS.Domain.Identity;
@@ -67,6 +68,23 @@ namespace CMMS.API.Maintenance.Services
                 request.Description,
                 request.ScheduledStartDateTime,
                 request.ScheduledEndDateTime));
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Remove scheduled service.
+        /// </summary>
+        [HttpDelete("{serviceId}")]
+        [Authorize(Roles = UserRole.Leader)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> RemoveScheduledService([FromRoute]Guid serviceId)
+        {
+            await _mediator.Send(new RemoveScheduledServiceCommand(serviceId));
 
             return Ok();
         }

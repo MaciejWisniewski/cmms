@@ -23,5 +23,10 @@ namespace CMMS.Infrastructure.Domain.Maintenance.Services
         {
             await _context.Services.AddAsync(service);
         }
+
+        public void Remove(Service service)
+        {
+            _context.Services.Remove(service);
+        }
     }
 }

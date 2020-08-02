@@ -101,7 +101,7 @@ namespace CMMS.Domain.Maintenance.Services
             DateTime scheduledEndDateTime)
         {
             CheckRule(new WorkerMustHaveAccessToTheServicedResourceRule(resource.Accesses, scheduledWorkerId));
-            CheckRule(new OnlyNotStartedNorFinishedServiceCanBeEditedRule(ActualStartDateTime, ActualEndDateTime));
+            CheckRule(new AlreadyStartedOrFinishedServiceCannotBeEditedRule(ActualStartDateTime, ActualEndDateTime));
             CheckRule(new ServiceScheduledStartMustBeBeforeItsScheduledEndRule(scheduledStartDateTime, scheduledEndDateTime));
 
             ResourceId = resource.Id;
@@ -112,6 +112,15 @@ namespace CMMS.Domain.Maintenance.Services
             ScheduledEndDateTime = scheduledEndDateTime;
 
             AddDomainEvent(new EditedScheduledServiceDomainEvent(Id));
+        }
+
+        public void Remove(Action<Service> removeMethod)
+        {
+            CheckRule(new AlreadyStartedOrFinishedServiceCannotBeRemovedRule(ActualStartDateTime, ActualEndDateTime));
+
+            removeMethod(this);
+
+            AddDomainEvent(new RemovedScheduledServiceDomainEvent(Id));
         }
     }
 }

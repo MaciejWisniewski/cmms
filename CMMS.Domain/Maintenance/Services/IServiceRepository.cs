@@ -6,5 +6,6 @@ namespace CMMS.Domain.Maintenance.Services
     {
         Task<Service> GetByIdAsync(ServiceId id);
         Task AddAsync(Service service);
+        void Remove(Service service);
     }
 }
