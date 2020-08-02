@@ -1,7 +1,10 @@
 ﻿using CMMS.Application.Maintenance.Failures;
 using CMMS.Application.Maintenance.Failures.ChangeFailureState;
+using CMMS.Application.Maintenance.Failures.FinishRepair;
 using CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo;
 using CMMS.Application.Maintenance.Failures.RegisterFailure;
+using CMMS.Application.Maintenance.Failures.StartRepairFailure;
+using CMMS.Domain.Identity;
 using CMMS.Domain.Maintenance.Failures;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -69,6 +72,30 @@ namespace CMMS.API.Maintenance.Failures
                 changeFailureStateRequest.WorkerId,
                 changeFailureStateRequest.Note,
                 changeFailureStateRequest.FailureState));
+            return Ok();
+        }
+
+
+        [HttpPatch("{failureId}/start")]
+        [Authorize(Roles = UserRole.User)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> StartRepairFailure([FromRoute]Guid failureId, StartRepairFailureRequest startRepairFailureRequest)
+        {
+            await _mediator.Send(new StartRepairFailureCommand(failureId, startRepairFailureRequest.WorkerId));
+            return NoContent();
+        }
+
+
+        [HttpPatch("{failureId}/finish")]
+        [Authorize]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> FinishRepairFailure([FromRoute]Guid failureId, FinishRepairFailureRequest finishRepairFailureRequest)
+        {
+            await _mediator.Send(new FinishRepairFailureCommand(failureId, finishRepairFailureRequest.WorkerId));
             return NoContent();
         }
 

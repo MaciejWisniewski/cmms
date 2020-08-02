@@ -44,6 +44,45 @@ namespace CMMS.Domain.Maintenance.Failures
             return new Failure(resource, problemDescription);
         }
 
+
+        public void StartRepair(Worker worker)
+        {
+            WorkerId = worker.Id;
+            State = FailureState.InProgress;
+
+            AddDomainEvent(new FailureRepairStartedDomainEvent(
+                Id,
+                ResourceId,
+                WorkerId,
+                worker.UserName,
+                State,
+                ProblemDescription,
+                Note,
+                OccurredOn,
+                ResolvedOn));
+        }
+
+
+        public void FinishRepair(Worker worker)
+        {
+
+            CheckRule(new StartAndFinishWorkerMustBeTheSameRule(WorkerId, worker.Id));
+
+            State = FailureState.Resolved;
+            ResolvedOn = DateTime.UtcNow;
+
+            AddDomainEvent(new FailureRepairFinishedDomainEvent(
+                Id,
+                ResourceId,
+                WorkerId,
+                worker.UserName,
+                State,
+                ProblemDescription,
+                Note,
+                OccurredOn,
+                ResolvedOn));
+        }
+
         public void ChangeState(FailureState newfailureState, Worker worker, string note)
         {
              
