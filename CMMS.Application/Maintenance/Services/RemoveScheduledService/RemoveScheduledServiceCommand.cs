@@ -5,10 +5,12 @@ namespace CMMS.Application.Maintenance.Services.RemoveScheduledService
 {
     public class RemoveScheduledServiceCommand : CommandBase
     {
+        public Guid WorkerId { get; }
         public Guid ServiceId { get; }
 
-        public RemoveScheduledServiceCommand(Guid serviceId)
+        public RemoveScheduledServiceCommand(Guid workerId, Guid serviceId)
         {
+            WorkerId = workerId;
             ServiceId = serviceId;
         }
     }

@@ -26,6 +26,7 @@ namespace CMMS.Application.Maintenance.Services.ScheduleService
         {
             var resource = await _resourceRepository.GetByIdAsync(new ResourceId(command.ResourceId));
             var service = Service.Schedule(
+                    new WorkerId(command.SchedulerId),
                     resource,
                     new ServiceTypeId(command.ServiceTypeId),
                     new WorkerId(command.ScheduledWorkerId),

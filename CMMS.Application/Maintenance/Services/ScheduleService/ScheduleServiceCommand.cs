@@ -5,6 +5,7 @@ namespace CMMS.Application.Maintenance.Services.ScheduleService
 {
     public class ScheduleServiceCommand : CommandBase<Guid>
     {
+        public Guid SchedulerId { get; }
         public Guid ResourceId { get; }
         public Guid ServiceTypeId { get; }
         public Guid ScheduledWorkerId { get; }
@@ -13,6 +14,7 @@ namespace CMMS.Application.Maintenance.Services.ScheduleService
         public DateTime ScheduledEndDateTime { get; }
 
         public ScheduleServiceCommand(
+            Guid schedulerId,
             Guid resourceId, 
             Guid serviceTypeId, 
             Guid scheduledWorkerId, 
@@ -20,6 +22,7 @@ namespace CMMS.Application.Maintenance.Services.ScheduleService
             DateTime scheduledStartDateTime,
             DateTime scheduledEndDateTime)
         {
+            SchedulerId = schedulerId;
             ResourceId = resourceId;
             ServiceTypeId = serviceTypeId;
             ScheduledWorkerId = scheduledWorkerId;

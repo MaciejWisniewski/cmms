@@ -46,6 +46,7 @@ namespace CMMS.Domain.Maintenance.Services
         }
 
         public static Service Schedule(
+            WorkerId schedulerId,
             Resource resource,
             ServiceTypeId typeId,
             WorkerId scheduledWorkerId,
@@ -53,6 +54,7 @@ namespace CMMS.Domain.Maintenance.Services
             DateTime scheduledStartDateTime,
             DateTime scheduledEndDateTime)
         {
+            CheckRule(new WorkerMustHaveAccessToTheResourceToManageItsServicesRule(resource.Accesses, schedulerId));
             CheckRule(new ServiceCannotBeScheduledForAnAreaRule(resource));
             CheckRule(new WorkerMustHaveAccessToTheServicedResourceRule(resource.Accesses, scheduledWorkerId));
             CheckRule(new ServiceScheduledStartMustBeBeforeItsScheduledEndRule(scheduledStartDateTime, scheduledEndDateTime));
@@ -93,18 +95,22 @@ namespace CMMS.Domain.Maintenance.Services
         }
 
         public void Edit(
-            Resource resource, 
+            WorkerId editorId,
+            Resource actualResource,
+            Resource newResource,
             ServiceTypeId typeId,    
             WorkerId scheduledWorkerId,
             string description,
             DateTime scheduledStartDateTime,
             DateTime scheduledEndDateTime)
         {
-            CheckRule(new WorkerMustHaveAccessToTheServicedResourceRule(resource.Accesses, scheduledWorkerId));
+            CheckRule(new WorkerMustHaveAccessToTheResourceToManageItsServicesRule(actualResource.Accesses, editorId));
+            CheckRule(new WorkerMustHaveAccessToTheResourceToManageItsServicesRule(newResource.Accesses, editorId));
+            CheckRule(new WorkerMustHaveAccessToTheServicedResourceRule(newResource.Accesses, scheduledWorkerId));
             CheckRule(new AlreadyStartedOrFinishedServiceCannotBeEditedRule(ActualStartDateTime, ActualEndDateTime));
             CheckRule(new ServiceScheduledStartMustBeBeforeItsScheduledEndRule(scheduledStartDateTime, scheduledEndDateTime));
 
-            ResourceId = resource.Id;
+            ResourceId = newResource.Id;
             TypeId = typeId;
             ScheduledWorkerId = scheduledWorkerId;
             Description = description;
@@ -114,8 +120,9 @@ namespace CMMS.Domain.Maintenance.Services
             AddDomainEvent(new EditedScheduledServiceDomainEvent(Id));
         }
 
-        public void Remove(Action<Service> removeMethod)
+        public void Remove(Resource resource, WorkerId workerId, Action<Service> removeMethod)
         {
+            CheckRule(new WorkerMustHaveAccessToTheServicedResourceRule(resource.Accesses, workerId));
             CheckRule(new AlreadyStartedOrFinishedServiceCannotBeRemovedRule(ActualStartDateTime, ActualEndDateTime));
 
             removeMethod(this);

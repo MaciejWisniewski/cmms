@@ -23,10 +23,13 @@ namespace CMMS.Application.Maintenance.Services.EditScheduledService
         public async Task<Unit> Handle(EditScheduledServiceCommand command, CancellationToken cancellationToken)
         {
             var service = await _serviceRepository.GetByIdAsync(new ServiceId(command.ServiceId));
-            var resource = await _resourceRepository.GetByIdAsync(new ResourceId(command.ResourceId));
+            var actualResource = await _resourceRepository.GetByIdAsync(service.ResourceId);
+            var newResource = await _resourceRepository.GetByIdAsync(new ResourceId(command.ResourceId));
 
             service.Edit(
-                resource,
+                new WorkerId(command.EditorId),
+                actualResource,
+                newResource,
                 new ServiceTypeId(command.ServiceTypeId),
                 new WorkerId(command.ScheduledWorkerId),
                 command.Description,

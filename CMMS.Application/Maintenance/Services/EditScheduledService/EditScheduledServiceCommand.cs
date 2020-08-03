@@ -5,6 +5,7 @@ namespace CMMS.Application.Maintenance.Services.EditScheduledService
 {
     public class EditScheduledServiceCommand : CommandBase
     {
+        public Guid EditorId { get; }
         public Guid ServiceId { get; }
         public Guid ResourceId { get; }
         public Guid ServiceTypeId { get; }
@@ -14,6 +15,7 @@ namespace CMMS.Application.Maintenance.Services.EditScheduledService
         public DateTime ScheduledEndDateTime { get; }
 
         public EditScheduledServiceCommand(
+            Guid editorId,
             Guid serviceId,
             Guid resourceId,
             Guid serviceTypeId,
@@ -22,6 +24,7 @@ namespace CMMS.Application.Maintenance.Services.EditScheduledService
             DateTime scheduledStartDateTime,
             DateTime scheduledEndDateTime)
         {
+            EditorId = editorId;
             ServiceId = serviceId;
             ResourceId = resourceId;
             ServiceTypeId = serviceTypeId;
