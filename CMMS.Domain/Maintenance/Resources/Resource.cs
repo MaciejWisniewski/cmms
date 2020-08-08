@@ -39,6 +39,10 @@ namespace CMMS.Domain.Maintenance.Resources
             IsMachine = isMachine;
             Accesses = new List<ResourceAccess>();
 
+            if (parent != null)
+                foreach (var access in parent.Accesses)
+                    GiveAccessTo(this, access.WorkerId);
+
             AddDomainEvent(new ResourceCreatedDomainEvent(Id));
         }
 
