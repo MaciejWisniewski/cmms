@@ -19,7 +19,7 @@ namespace CMMS.Application.Maintenance.Workers.UpdateWorker
         {
             var worker = await _workerRepository.GetByIdAsync(new WorkerId(command.WorkerId));
 
-            worker.Update(command.FullName, command.Email, command.PhoneNumber);
+            worker.Update(command.FullName, command.Email, command.PhoneNumber, command.Role);
 
             return Unit.Value;
         }

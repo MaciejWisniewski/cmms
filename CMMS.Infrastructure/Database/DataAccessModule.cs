@@ -10,6 +10,10 @@ using CMMS.Infrastructure.Domain.Maintenance.Workers;
 using CMMS.Infrastructure.Domain.Maintenance.Resources;
 using CMMS.Infrastructure.Domain.Maintenance.Failures;
 using CMMS.Domain.Maintenance.Failures;
+using CMMS.Infrastructure.Domain.Maintenance.ServiceTypes;
+using CMMS.Domain.Maintenance.ServiceTypes;
+using CMMS.Infrastructure.Domain.Maintenance.Services;
+using CMMS.Domain.Maintenance.Services;
 
 namespace CMMS.Infrastructure.Database
 {
@@ -51,6 +55,14 @@ namespace CMMS.Infrastructure.Database
 
             builder.RegisterType<FailureRepository>()
                 .As<IFailureRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<ServiceTypeRepository>()
+                .As<IServiceTypeRepository>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<ServiceRepository>()
+                .As<IServiceRepository>()
                 .InstancePerLifetimeScope();
         }
     }

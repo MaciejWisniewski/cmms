@@ -10,14 +10,16 @@ namespace CMMS.Application.Maintenance.Workers.CreateWorker
         public string Email { get; }
         public string FullName { get; }
         public string PhoneNumber { get; }
+        public string Role { get; }
 
-        public CreateWorkerCommand(Guid workerId, string userName, string email, string fullName, string phoneNumber)
+        public CreateWorkerCommand(Guid workerId, string userName, string email, string fullName, string phoneNumber, string role)
         {
             WorkerId = workerId;
             UserName = userName;
             Email = email;
             FullName = fullName;
             PhoneNumber = phoneNumber;
+            Role = role;
         }
     }
 }

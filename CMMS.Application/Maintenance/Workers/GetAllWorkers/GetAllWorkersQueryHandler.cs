@@ -1,13 +1,12 @@
 ﻿using CMMS.Application.Configuration.Data;
 using CMMS.Application.Configuration.Queries;
+using CMMS.Application.Maintenance.Workers.GetlAllWorkers;
 using Dapper;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Maintenance.Workers.GetAllWorkres
+namespace CMMS.Application.Maintenance.Workers.GetAllWorkers
 {
     public class GetAllWorkersQueryHandler : IQueryHandler<GetAllWorkersQuery, List<WorkerDto>>
     {
@@ -26,10 +25,10 @@ namespace CMMS.Application.Maintenance.Workers.GetAllWorkres
                          $"[Worker].[UserName] AS [{nameof(WorkerDto.UserName)}], " +
                          $"[Worker].[Email] AS [{nameof(WorkerDto.Email)}], " +
                          $"[Worker].[FullName] AS [{nameof(WorkerDto.FullName)}], " +
-                         $"[Worker].[PhoneNumber] AS [{nameof(WorkerDto.PhoneNumber)}]" +
+                         $"[Worker].[PhoneNumber] AS [{nameof(WorkerDto.PhoneNumber)}], " +
+                         $"[Worker].[Role] AS [{nameof(WorkerDto.Role)}] " +
                          "FROM [CMMS].[maintenance].[Workers] AS [Worker] " +
                          "ORDER BY [Worker].[FullName] ASC";
-
             var resources = await connection.QueryAsync<WorkerDto>(sql);
 
             return resources.AsList();

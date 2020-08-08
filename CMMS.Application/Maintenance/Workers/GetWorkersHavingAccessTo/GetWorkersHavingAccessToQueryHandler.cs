@@ -24,7 +24,8 @@ namespace CMMS.Application.Maintenance.Workers.GetWorkersHavingAccessTo
                          $"[Worker].[UserName] AS [{nameof(WorkerDto.UserName)}], " +
                          $"[Worker].[Email] AS [{nameof(WorkerDto.Email)}], " +
                          $"[Worker].[FullName] AS [{nameof(WorkerDto.FullName)}], " +
-                         $"[Worker].[PhoneNumber] AS [{nameof(WorkerDto.PhoneNumber)}]" +
+                         $"[Worker].[PhoneNumber] AS [{nameof(WorkerDto.PhoneNumber)}], " +
+                         $"[Worker].[Role] AS [{nameof(WorkerDto.Role)}] " +
                          "FROM [CMMS].[maintenance].[Workers] AS [Worker] " +
                          "JOIN [CMMS].[maintenance].[ResourceAccesses] AS [Access] " +
                          "ON [Worker].[Id] = [Access].[WorkerId] " +

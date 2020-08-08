@@ -32,7 +32,7 @@ namespace CMMS.Domain.SeedWork
             _domainEvents?.Clear();
         }
 
-        protected void CheckRule(IBusinessRule rule)
+        protected static void CheckRule(IBusinessRule rule)
         {
             if (rule.IsBroken())
             {

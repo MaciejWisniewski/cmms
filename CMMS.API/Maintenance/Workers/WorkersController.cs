@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using CMMS.Application.Maintenance.Workers;
-using CMMS.Application.Maintenance.Workers.GetAllWorkres;
+using CMMS.Application.Maintenance.Workers.GetlAllWorkers;
 using CMMS.Application.Maintenance.Workers.GetWorkersHavingAccessTo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

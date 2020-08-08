@@ -20,7 +20,7 @@ namespace CMMS.Domain.Identity
             IsActive = true;
         }
 
-        private AppUser(string fullName, string userName, string email, string phoneNumber)
+        private AppUser(string fullName, string userName, string email, string phoneNumber, string roleName)
         {
             Id = Guid.NewGuid();
             FullName = fullName;
@@ -29,7 +29,7 @@ namespace CMMS.Domain.Identity
             PhoneNumber = phoneNumber;
             IsActive = true;
 
-            AddDomainEvent(new UserCreatedDomainEvent(Id, UserName, Email, FullName, PhoneNumber));
+            AddDomainEvent(new UserCreatedDomainEvent(Id, UserName, Email, FullName, PhoneNumber, roleName));
         }
 
         private void AddDomainEvent(IDomainEvent domainEvent)
@@ -54,7 +54,7 @@ namespace CMMS.Domain.Identity
             CheckRule(new UserMustHaveUniqueUsernameAndEmailRule(userUniquenessChecker, userName, email));
             CheckRule(new AdminRoleCannotBeSetRule(roleName));
 
-            return new AppUser(fullName, userName, email, phoneNumber);
+            return new AppUser(fullName, userName, email, phoneNumber, roleName);
         }
 
         public void Update(string fullName, string email, string phoneNumber, string roleName)
@@ -66,7 +66,7 @@ namespace CMMS.Domain.Identity
             NormalizedEmail = email.Normalize().ToUpperInvariant();
             PhoneNumber = phoneNumber;
 
-            AddDomainEvent(new UserUpdatedDomainEvent(Id, FullName, Email, PhoneNumber));
+            AddDomainEvent(new UserUpdatedDomainEvent(Id, FullName, Email, PhoneNumber, roleName));
         }
 
         public void ChangeRole(AppRole role)

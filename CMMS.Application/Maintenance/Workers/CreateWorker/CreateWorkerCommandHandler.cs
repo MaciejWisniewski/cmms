@@ -22,7 +22,8 @@ namespace CMMS.Application.Maintenance.Workers.CreateWorker
                     command.UserName,
                     command.Email,
                     command.FullName,
-                    command.PhoneNumber
+                    command.PhoneNumber,
+                    command.Role
                 );
 
             await _workerRepository.AddAsync(worker);

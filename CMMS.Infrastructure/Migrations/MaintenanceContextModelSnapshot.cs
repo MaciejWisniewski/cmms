@@ -184,6 +184,72 @@ namespace CMMS.Infrastructure.Migrations
                     b.ToTable("Resources","maintenance");
                 });
 
+            modelBuilder.Entity("CMMS.Domain.Maintenance.ServiceTypes.ServiceType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(80)")
+                        .HasMaxLength(80);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("ServiceTypes","maintenance");
+                });
+
+            modelBuilder.Entity("CMMS.Domain.Maintenance.Services.Service", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ActualEndDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ActualStartDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ActualWorkerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ScheduledEndDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ScheduledStartDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ScheduledWorkerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActualWorkerId");
+
+                    b.HasIndex("ResourceId");
+
+                    b.HasIndex("ScheduledWorkerId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Services","maintenance");
+                });
+
             modelBuilder.Entity("CMMS.Domain.Maintenance.Workers.Worker", b =>
                 {
                     b.Property<Guid>("Id")
@@ -191,23 +257,28 @@ namespace CMMS.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 
@@ -423,6 +494,30 @@ namespace CMMS.Infrastructure.Migrations
                                 .OnDelete(DeleteBehavior.Cascade)
                                 .IsRequired();
                         });
+                });
+
+            modelBuilder.Entity("CMMS.Domain.Maintenance.Services.Service", b =>
+                {
+                    b.HasOne("CMMS.Domain.Maintenance.Workers.Worker", null)
+                        .WithMany()
+                        .HasForeignKey("ActualWorkerId");
+
+                    b.HasOne("CMMS.Domain.Maintenance.Resources.Resource", null)
+                        .WithMany()
+                        .HasForeignKey("ResourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CMMS.Domain.Maintenance.Workers.Worker", null)
+                        .WithMany()
+                        .HasForeignKey("ScheduledWorkerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CMMS.Domain.Maintenance.ServiceTypes.ServiceType", null)
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
