@@ -113,7 +113,12 @@ namespace CMMS.API.Maintenance.Services
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> StartService([FromRoute]Guid serviceId, [FromBody]StartServiceRequest request)
         {
-            await _mediator.Send(new StartServiceCommand(serviceId, request.ActualWorkerId, request.Note));
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            await _mediator.Send(new StartServiceCommand(
+                serviceId, 
+                JwtTokenHelper.ExtractUserId(accessToken), 
+                request.Note));
 
             return Ok();
         }
@@ -130,7 +135,12 @@ namespace CMMS.API.Maintenance.Services
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> FinishService([FromRoute]Guid serviceId, [FromBody]FinishServiceRequest request)
         {
-            await _mediator.Send(new FinishServiceCommand(serviceId, request.FinishingWorkerId, request.Note));
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            await _mediator.Send(new FinishServiceCommand(
+                serviceId,
+                JwtTokenHelper.ExtractUserId(accessToken),
+                request.Note));
 
             return Ok();
         }
