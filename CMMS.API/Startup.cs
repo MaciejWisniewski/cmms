@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CMMS.Infrastructure.Domain.Maintenance.Failures;
 using CMMS.Domain.Failures;
+using Newtonsoft.Json;
 
 namespace CMMS.API
 {
@@ -54,9 +55,13 @@ namespace CMMS.API
                        .AllowCredentials();
                         
             }));
+            
 
-
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                options.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd'T'HH':'mm':'ssZ";
+            });
 
             services.AddSignalR();
 
@@ -93,7 +98,6 @@ namespace CMMS.API
                     .Build();
 
             services.AddMvc(config => config.Filters.Add(new AuthorizeFilter(authorizePolicy))).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
             services
                 .AddDbContext<MaintenanceContext>(options =>
                 {
@@ -151,4 +155,5 @@ namespace CMMS.API
             app.UseSwaggerDocumentation();
         }
     }
+
 }

@@ -40,7 +40,7 @@ namespace CMMS.API.Maintenance.ServiceTypes
         /// Add new service type.
         /// </summary>
         [HttpPost]
-        [Authorize(Roles = UserRole.Admin)]
+        [Authorize(Roles = UserRole.Leader)]
         [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]

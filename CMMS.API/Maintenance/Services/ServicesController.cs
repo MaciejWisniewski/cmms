@@ -1,6 +1,7 @@
 ﻿using CMMS.API.Configuration;
 using CMMS.Application.Maintenance.Services.EditScheduledService;
 using CMMS.Application.Maintenance.Services.FinishService;
+using CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses;
 using CMMS.Application.Maintenance.Services.RemoveScheduledService;
 using CMMS.Application.Maintenance.Services.ScheduleService;
 using CMMS.Application.Maintenance.Services.StartService;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -25,6 +27,26 @@ namespace CMMS.API.Maintenance.Services
         {
             _mediator = mediator;
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Authorize]
+        [ProducesResponseType(typeof(List<ServiceDto>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetServiceByWorkerAccesses()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var services = await _mediator.Send(new GetServicesByWorkerAccessesQuery(JwtTokenHelper.ExtractUserId(accessToken)));
+
+            return Ok(services);
+        }
+
+
+
 
         /// <summary>
         /// Schedule a service.
