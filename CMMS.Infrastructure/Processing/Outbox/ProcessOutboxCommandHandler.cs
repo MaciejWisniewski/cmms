@@ -1,29 +1,28 @@
-﻿using CMMS.Application.Configuration.Data;
+﻿using CMMS.Application.Configuration.Commands;
+using CMMS.Application.Configuration.Data;
 using CMMS.Application.Configuration.DomainEvents;
 using Dapper;
 using MediatR;
 using Newtonsoft.Json;
-using Quartz;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CMMS.Infrastructure.Processing.Outbox
 {
-    [DisallowConcurrentExecution]
-    public class ProcessOutboxJob : IJob
+    internal class ProcessOutboxCommandHandler : ICommandHandler<ProcessOutboxCommand, Unit>
     {
         private readonly IMediator _mediator;
+
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-        public ProcessOutboxJob(
-            IMediator mediator,
-            ISqlConnectionFactory sqlConnectionFactory)
+        public ProcessOutboxCommandHandler(IMediator mediator, ISqlConnectionFactory sqlConnectionFactory)
         {
             _mediator = mediator;
             _sqlConnectionFactory = sqlConnectionFactory;
         }
 
-        public async Task Execute(IJobExecutionContext context)
+        public async Task<Unit> Handle(ProcessOutboxCommand command, CancellationToken cancellationToken)
         {
             var connection = this._sqlConnectionFactory.GetOpenConnection();
             const string sql = "SELECT " +
@@ -47,7 +46,7 @@ namespace CMMS.Infrastructure.Processing.Outbox
                         .GetType(message.Type);
                     var request = JsonConvert.DeserializeObject(message.Data, type) as IDomainEventNotification;
 
-                    await this._mediator.Publish(request);
+                    await this._mediator.Publish(request, cancellationToken);
 
                     await connection.ExecuteAsync(sqlUpdateProcessedDate, new
                     {
@@ -56,6 +55,8 @@ namespace CMMS.Infrastructure.Processing.Outbox
                     });
                 }
             }
+
+            return Unit.Value;
         }
     }
 }

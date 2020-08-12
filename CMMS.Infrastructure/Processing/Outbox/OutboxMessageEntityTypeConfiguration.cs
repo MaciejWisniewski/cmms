@@ -12,7 +12,6 @@ namespace CMMS.Infrastructure.Processing.Outbox
 
             builder.HasKey(b => b.Id);
             builder.Property(b => b.Id).ValueGeneratedNever();
-            builder.Property(b => b.Type).HasMaxLength(255);
         }
     }
 }

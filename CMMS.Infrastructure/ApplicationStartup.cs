@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.CommonServiceLocator;
@@ -17,6 +16,9 @@ using CMMS.Infrastructure.Processing.Outbox;
 using CMMS.Infrastructure.Quartz;
 using CMMS.Infrastructure.SeedWork;
 using CMMS.Infrastructure.Domain;
+using CMMS.Application.Configuration.Emails;
+using CMMS.Infrastructure.Emails;
+using CMMS.Application.Configuration;
 
 namespace CMMS.Infrastructure
 {
@@ -25,12 +27,25 @@ namespace CMMS.Infrastructure
         public static IServiceProvider Initialize(
             IServiceCollection services,
             string connectionString,
-            Dictionary<string, TimeSpan> cachingConfiguration)
+            ICacheStore cacheStore,
+            IEmailSender emailSender,
+            EmailsSettings emailsSettings,
+            IExecutionContextAccessor executionContextAccessor,
+            bool runQuartz = true)
         {
-            StartQuartz(connectionString);
+            if (runQuartz)
+            {
+                StartQuartz(connectionString, emailsSettings, executionContextAccessor);
+            }
 
-            var serviceProvider = CreateAutofacServiceProvider(services, connectionString, cachingConfiguration);
-            SeedDatabase.Initialize(serviceProvider);
+            services.AddSingleton(cacheStore);
+
+            var serviceProvider = CreateAutofacServiceProvider(
+                services,
+                connectionString,
+                emailSender,
+                emailsSettings,
+                executionContextAccessor);
 
             return serviceProvider;
         }
@@ -38,19 +53,31 @@ namespace CMMS.Infrastructure
         private static IServiceProvider CreateAutofacServiceProvider(
             IServiceCollection services,
             string connectionString,
-            Dictionary<string, TimeSpan> cachingConfiguration)
+            IEmailSender emailSender,
+            EmailsSettings emailsSettings,
+            IExecutionContextAccessor executionContextAccessor)
         {
             var container = new ContainerBuilder();
 
             container.Populate(services);
 
+            //container.RegisterModule(new LoggingModule(logger));
             container.RegisterModule(new DataAccessModule(connectionString));
             container.RegisterModule(new MediatorModule());
             container.RegisterModule(new DomainModule());
-            //container.RegisterModule(new EmailModule());
+
+            if (emailSender != null)
+            {
+                container.RegisterModule(new EmailModule(emailSender, emailsSettings));
+            }
+            else
+            {
+                container.RegisterModule(new EmailModule(emailsSettings));
+            }
+
             container.RegisterModule(new ProcessingModule());
 
-            container.RegisterModule(new CachingModule(cachingConfiguration));
+            container.RegisterInstance(executionContextAccessor);
 
             var buildContainer = container.Build();
 
@@ -58,21 +85,28 @@ namespace CMMS.Infrastructure
 
             var serviceProvider = new AutofacServiceProvider(buildContainer);
 
+            CompositionRoot.SetContainer(buildContainer);
+
             return serviceProvider;
         }
 
-        private static void StartQuartz(string connectionString)
+        private static void StartQuartz(
+            string connectionString,
+            EmailsSettings emailsSettings,
+            IExecutionContextAccessor executionContextAccessor)
         {
             var schedulerFactory = new StdSchedulerFactory();
             var scheduler = schedulerFactory.GetScheduler().GetAwaiter().GetResult();
 
             var container = new ContainerBuilder();
+
             container.RegisterModule(new QuartzModule());
             container.RegisterModule(new MediatorModule());
             container.RegisterModule(new DataAccessModule(connectionString));
-            //container.RegisterModule(new EmailModule());
+            container.RegisterModule(new EmailModule(emailsSettings));
             container.RegisterModule(new ProcessingModule());
 
+            container.RegisterInstance(executionContextAccessor);
             container.Register(c =>
             {
                 var dbContextOptionsBuilder = new DbContextOptionsBuilder<MaintenanceContext>();
