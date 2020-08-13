@@ -26,7 +26,7 @@ namespace CMMS.Application.Maintenance.Failures.FinishRepair
         public async Task Handle(FailureRepairFinishedDomainEvent notification, CancellationToken cancellationToken)
         {
             var resource = await _resourceRepository.GetByIdAsync(notification.ResourceId);
-            await _hubContext.Clients.All.SendAsync("notifyFailureRepairStarted", new FailureDto()
+            await _hubContext.Clients.All.SendAsync("notifyFailureRepairFinished", new FailureDto()
             {
                 Id = notification.FailureId.Value,
                 ResourceId = notification.ResourceId.Value,
