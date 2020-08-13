@@ -40,8 +40,10 @@ namespace CMMS.Application.Maintenance.Failures.RegisterFailure
                     ResourceId = notification.ResourceId.Value
                 });
 
+            var occurredOn = notification.FailureOccurredOn.ToString(new CultureInfo("pl-PL"));
+            string subject = $"[Failure] {notification.ResourceName} {occurredOn}";
             string emailContent = $"The failure concerning resource: {notification.ResourceName} " +
-                                  $"occured on {notification.FailureOccurredOn.ToString(new CultureInfo("pl-PL"))}.  \n" +
+                                  $"occured on {occurredOn}.  \n" +
                                   $"Description: {notification.ProblemDescription}";
 
             var tasks = workerEmails.Select(async email =>
@@ -49,6 +51,7 @@ namespace CMMS.Application.Maintenance.Failures.RegisterFailure
                 var emailMessage = new EmailMessage(
                     _emailSettings.FromAddressEmail,
                     email,
+                    subject,
                     emailContent
                     );
 
