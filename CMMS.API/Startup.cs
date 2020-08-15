@@ -29,6 +29,8 @@ using CMMS.Infrastructure.Caching;
 using Microsoft.Extensions.Caching.Memory;
 using CMMS.Application.Configuration;
 using Microsoft.AspNetCore.Http;
+using CMMS.Application.Configuration.SmsMessages;
+using CMMS.Infrastructure.SmsMessages;
 
 namespace CMMS.API
 {
@@ -126,6 +128,8 @@ namespace CMMS.API
             var cachingConfiguration = children.ToDictionary(child => child.Key, child => TimeSpan.Parse(child.Value));
             var emailsSettings = _configuration.GetSection("EmailsSettings").Get<EmailsSettings>();
             var emailSender = new EmailSender();
+            var smsMessagesSettings = _configuration.GetSection("SmsMessagesSettings").Get<SmsMessagesSettings>();
+            var smsMessageSender = new SmsMessageSender();
             var memoryCache = serviceProvider.GetService<IMemoryCache>();
 
             return ApplicationStartup.Initialize(
@@ -134,6 +138,8 @@ namespace CMMS.API
                 new MemoryCacheStore(memoryCache, cachingConfiguration),
                 emailSender,
                 emailsSettings,
+                smsMessageSender,
+                smsMessagesSettings,
                 executionContextAccessor);
         }
 

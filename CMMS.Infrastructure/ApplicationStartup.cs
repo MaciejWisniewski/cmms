@@ -19,6 +19,8 @@ using CMMS.Infrastructure.Domain;
 using CMMS.Application.Configuration.Emails;
 using CMMS.Infrastructure.Emails;
 using CMMS.Application.Configuration;
+using CMMS.Application.Configuration.SmsMessages;
+using CMMS.Infrastructure.SmsMessages;
 
 namespace CMMS.Infrastructure
 {
@@ -30,12 +32,14 @@ namespace CMMS.Infrastructure
             ICacheStore cacheStore,
             IEmailSender emailSender,
             EmailsSettings emailsSettings,
+            ISmsMessageSender smsMessageSender,
+            SmsMessagesSettings smsMessagesSettings,
             IExecutionContextAccessor executionContextAccessor,
             bool runQuartz = true)
         {
             if (runQuartz)
             {
-                StartQuartz(connectionString, emailsSettings, executionContextAccessor);
+                StartQuartz(connectionString, emailsSettings, smsMessagesSettings, executionContextAccessor);
             }
 
             services.AddSingleton(cacheStore);
@@ -45,6 +49,8 @@ namespace CMMS.Infrastructure
                 connectionString,
                 emailSender,
                 emailsSettings,
+                smsMessageSender,
+                smsMessagesSettings,
                 executionContextAccessor);
 
             return serviceProvider;
@@ -55,6 +61,8 @@ namespace CMMS.Infrastructure
             string connectionString,
             IEmailSender emailSender,
             EmailsSettings emailsSettings,
+            ISmsMessageSender smsMessageSender,
+            SmsMessagesSettings smsMessagesSettings,
             IExecutionContextAccessor executionContextAccessor)
         {
             var container = new ContainerBuilder();
@@ -67,13 +75,14 @@ namespace CMMS.Infrastructure
             container.RegisterModule(new DomainModule());
 
             if (emailSender != null)
-            {
                 container.RegisterModule(new EmailModule(emailSender, emailsSettings));
-            }
             else
-            {
                 container.RegisterModule(new EmailModule(emailsSettings));
-            }
+
+            if(smsMessageSender != null)
+                container.RegisterModule(new SmsMessageModule(smsMessageSender, smsMessagesSettings));
+            else
+                container.RegisterModule(new SmsMessageModule(smsMessagesSettings));
 
             container.RegisterModule(new ProcessingModule());
 
@@ -93,6 +102,7 @@ namespace CMMS.Infrastructure
         private static void StartQuartz(
             string connectionString,
             EmailsSettings emailsSettings,
+            SmsMessagesSettings smsMessagesSettings,
             IExecutionContextAccessor executionContextAccessor)
         {
             var schedulerFactory = new StdSchedulerFactory();
@@ -104,6 +114,7 @@ namespace CMMS.Infrastructure
             container.RegisterModule(new MediatorModule());
             container.RegisterModule(new DataAccessModule(connectionString));
             container.RegisterModule(new EmailModule(emailsSettings));
+            container.RegisterModule(new SmsMessageModule(smsMessagesSettings));
             container.RegisterModule(new ProcessingModule());
 
             container.RegisterInstance(executionContextAccessor);
