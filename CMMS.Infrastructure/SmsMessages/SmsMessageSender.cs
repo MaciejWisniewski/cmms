@@ -7,7 +7,8 @@ namespace CMMS.Infrastructure.SmsMessages
     {
         public Task SendSmsMessageAsync(SmsMessage smsMessage)
         {
-            throw new System.NotImplementedException();
+            //SMS Service integration
+            return Task.CompletedTask;
         }
     }
 }
