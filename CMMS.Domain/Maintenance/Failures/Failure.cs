@@ -47,6 +47,8 @@ namespace CMMS.Domain.Maintenance.Failures
 
         public void StartRepair(Worker worker)
         {
+            CheckRule(new CannotStartAlreadyStartedOrFinishedRepairRule(State));
+
             WorkerId = worker.Id;
             State = FailureState.InProgress;
 
@@ -65,6 +67,7 @@ namespace CMMS.Domain.Maintenance.Failures
         public void FinishRepair(Worker worker)
         {
             CheckRule(new StartAndFinishWorkerMustBeTheSameRule(WorkerId, worker.Id));
+            CheckRule(new CannotFinishAlreadyFinishedRepairRule(State));
 
             State = FailureState.Resolved;
             ResolvedOn = DateTime.UtcNow;

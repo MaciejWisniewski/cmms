@@ -36,7 +36,7 @@ namespace CMMS.API.Maintenance.Services
         [HttpGet]
         [Authorize]
         [ProducesResponseType(typeof(List<ServiceDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetServiceByWorkerAccesses()
+        public async Task<IActionResult> GetServicesByWorkerAccesses()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 

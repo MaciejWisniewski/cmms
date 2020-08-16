@@ -1,4 +1,5 @@
-﻿using CMMS.Application.Maintenance.Failures;
+﻿using CMMS.API.Configuration;
+using CMMS.Application.Maintenance.Failures;
 using CMMS.Application.Maintenance.Failures.ChangeFailureState;
 using CMMS.Application.Maintenance.Failures.FinishFailureRepair;
 using CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo;
@@ -6,6 +7,7 @@ using CMMS.Application.Maintenance.Failures.RegisterFailure;
 using CMMS.Application.Maintenance.Failures.StartFailureRepair;
 using CMMS.Domain.Identity;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -83,9 +85,11 @@ namespace CMMS.API.Maintenance.Failures
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> StartFailureRepair([FromRoute]Guid failureId, StartFailureRepairRequest request)
+        public async Task<IActionResult> StartFailureRepair([FromRoute]Guid failureId)
         {
-            await _mediator.Send(new StartFailureRepairCommand(failureId, request.WorkerId));
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            await _mediator.Send(new StartFailureRepairCommand(failureId, JwtTokenHelper.ExtractUserId(accessToken)));
 
             return Ok();
         }
@@ -100,9 +104,11 @@ namespace CMMS.API.Maintenance.Failures
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> FinishFailureRepair([FromRoute]Guid failureId, FinishFailureRepairRequest request)
+        public async Task<IActionResult> FinishFailureRepair([FromRoute]Guid failureId)
         {
-            await _mediator.Send(new FinishFailureRepairCommand(failureId, request.WorkerId));
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            await _mediator.Send(new FinishFailureRepairCommand(failureId, JwtTokenHelper.ExtractUserId(accessToken)));
 
             return Ok();
         }
