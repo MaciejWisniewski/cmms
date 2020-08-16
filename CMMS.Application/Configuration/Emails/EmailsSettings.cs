@@ -2,6 +2,6 @@
 {
     public class EmailsSettings
     {
-        public string FromAddressEmail { get; set; }
+        public string FromEmailAddress { get; set; }
     }
 }

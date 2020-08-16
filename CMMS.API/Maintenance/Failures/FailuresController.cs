@@ -1,9 +1,9 @@
 ﻿using CMMS.Application.Maintenance.Failures;
 using CMMS.Application.Maintenance.Failures.ChangeFailureState;
-using CMMS.Application.Maintenance.Failures.FinishRepair;
+using CMMS.Application.Maintenance.Failures.FinishFailureRepair;
 using CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo;
 using CMMS.Application.Maintenance.Failures.RegisterFailure;
-using CMMS.Application.Maintenance.Failures.StartRepairFailure;
+using CMMS.Application.Maintenance.Failures.StartFailureRepair;
 using CMMS.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -40,7 +40,6 @@ namespace CMMS.API.Maintenance.Failures
             return Ok(resources);
         }
 
-
         /// <summary>
         /// Register detected failure.
         /// </summary>
@@ -58,12 +57,12 @@ namespace CMMS.API.Maintenance.Failures
             return Ok(failureId);
         }
 
-
         [HttpPut("{failureId}")]
         [Authorize]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> ChangeFailureState([FromRoute]Guid failureId, [FromBody]ChangeFailureStateRequest changeFailureStateRequest)
         {
             await _mediator.Send(new ChangeFailureStateCommand(
@@ -74,29 +73,38 @@ namespace CMMS.API.Maintenance.Failures
             return Ok();
         }
 
-
+        /// <summary>
+        /// Start to repair a failure with the given id
+        /// </summary>
         [HttpPatch("{failureId}/start")]
         [Authorize(Roles = UserRole.User)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> StartRepairFailure([FromRoute]Guid failureId, StartRepairFailureRequest startRepairFailureRequest)
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> StartFailureRepair([FromRoute]Guid failureId, StartFailureRepairRequest request)
         {
-            await _mediator.Send(new StartRepairFailureCommand(failureId, startRepairFailureRequest.WorkerId));
-            return NoContent();
+            await _mediator.Send(new StartFailureRepairCommand(failureId, request.WorkerId));
+
+            return Ok();
         }
 
-
+        /// <summary>
+        /// Finish repairing a failure with the given id
+        /// </summary>
         [HttpPatch("{failureId}/finish")]
-        [Authorize]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        [Authorize(Roles = UserRole.User)]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> FinishRepairFailure([FromRoute]Guid failureId, FinishRepairFailureRequest finishRepairFailureRequest)
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> FinishFailureRepair([FromRoute]Guid failureId, FinishFailureRepairRequest request)
         {
-            await _mediator.Send(new FinishRepairFailureCommand(failureId, finishRepairFailureRequest.WorkerId));
-            return NoContent();
-        }
+            await _mediator.Send(new FinishFailureRepairCommand(failureId, request.WorkerId));
 
+            return Ok();
+        }
     }
 }

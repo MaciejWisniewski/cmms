@@ -62,10 +62,8 @@ namespace CMMS.Domain.Maintenance.Failures
                 ResolvedOn));
         }
 
-
         public void FinishRepair(Worker worker)
         {
-
             CheckRule(new StartAndFinishWorkerMustBeTheSameRule(WorkerId, worker.Id));
 
             State = FailureState.Resolved;
@@ -85,9 +83,8 @@ namespace CMMS.Domain.Maintenance.Failures
 
         public void ChangeState(FailureState newfailureState, Worker worker, string note)
         {
-             
-
             CheckRule(new StateCannotBeTheSameRule(State, newfailureState));
+
             State = newfailureState;
             WorkerId = worker.Id;
             Note = note;

@@ -1,16 +1,14 @@
 ﻿using CMMS.Application.Configuration.Commands;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace CMMS.Application.Maintenance.Failures.FinishRepair
+namespace CMMS.Application.Maintenance.Failures.FinishFailureRepair
 {
-    public class FinishRepairFailureCommand : CommandBase
+    public class FinishFailureRepairCommand : CommandBase
     {
         public Guid FailureId { get; }
         public Guid WorkerId { get; }
 
-        public FinishRepairFailureCommand(Guid failureId, Guid workerId)
+        public FinishFailureRepairCommand(Guid failureId, Guid workerId)
         {
             FailureId = failureId;
             WorkerId = workerId;

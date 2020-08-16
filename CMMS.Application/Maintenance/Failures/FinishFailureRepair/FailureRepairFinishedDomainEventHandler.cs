@@ -3,29 +3,27 @@ using CMMS.Domain.Maintenance.Failures.Events;
 using CMMS.Domain.Maintenance.Resources;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
+namespace CMMS.Application.Maintenance.Failures.FinishFailureRepair
 {
-    public class FailureRepairStartedDomainEventHandler : INotificationHandler<FailureRepairStartedDomainEvent>
+    public class FailureRepairFinishedDomainEventHandler : INotificationHandler<FailureRepairFinishedDomainEvent>
     {
+
         private readonly IHubContext<FailureHub> _hubContext;
         private readonly IResourceRepository _resourceRepository;
 
-        public FailureRepairStartedDomainEventHandler(IHubContext<FailureHub> hubContext, IResourceRepository resourceRepository)
+        public FailureRepairFinishedDomainEventHandler(IHubContext<FailureHub> hubContext, IResourceRepository resourceRepository)
         {
             _hubContext = hubContext;
             _resourceRepository = resourceRepository;
         }
 
-        public async Task Handle(FailureRepairStartedDomainEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(FailureRepairFinishedDomainEvent notification, CancellationToken cancellationToken)
         {
             var resource = await _resourceRepository.GetByIdAsync(notification.ResourceId);
-            await _hubContext.Clients.All.SendAsync("notifyFailureRepairStarted", new FailureDto()
+            await _hubContext.Clients.All.SendAsync("notifyFailureRepairFinished", new FailureDto()
             {
                 Id = notification.FailureId.Value,
                 ResourceId = notification.ResourceId.Value,
@@ -40,5 +38,4 @@ namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
             });
         }
     }
-    
 }

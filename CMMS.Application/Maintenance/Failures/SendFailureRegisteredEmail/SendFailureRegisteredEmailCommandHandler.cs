@@ -27,7 +27,7 @@ namespace CMMS.Application.Maintenance.Failures.SendFailureRegisteredEmail
                                     $"Description: {command.ProblemDescription}";
 
             var emailMessage = new EmailMessage(
-                    _emailsSettings.FromAddressEmail,
+                    _emailsSettings.FromEmailAddress,
                     command.ToEmailAddress,
                     subject,
                     messageContent

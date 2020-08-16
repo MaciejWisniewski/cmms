@@ -3,26 +3,23 @@ using CMMS.Application.Configuration.Validation;
 using CMMS.Domain.Maintenance.Failures;
 using CMMS.Domain.Maintenance.Workers;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
+namespace CMMS.Application.Maintenance.Failures.FinishFailureRepair
 {
-    public class StartRepairFailureCommandHandler : ICommandHandler<StartRepairFailureCommand>
+    public class FinishFailureRepairCommandHandler : ICommandHandler<FinishFailureRepairCommand>
     {
         private readonly IFailureRepository _failureRepository;
         private readonly IWorkerRepository _workerRepository;
 
-        public StartRepairFailureCommandHandler(IFailureRepository failureRepository, IWorkerRepository workerRepository)
+        public FinishFailureRepairCommandHandler(IFailureRepository failureRepository, IWorkerRepository workerRepository)
         {
             _failureRepository = failureRepository;
             _workerRepository = workerRepository;
         }
 
-        public async Task<Unit> Handle(StartRepairFailureCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(FinishFailureRepairCommand request, CancellationToken cancellationToken)
         {
             var failure = await _failureRepository.GetByIdAsync(new FailureId(request.FailureId));
             if (failure == null)
@@ -31,7 +28,7 @@ namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
             var worker = await _workerRepository.GetByIdAsync(new WorkerId(request.WorkerId));
             if (worker == null)
                 throw new NotFoundException("Worker with the given id hasn't been found", null);
-            failure.StartRepair(worker);
+            failure.FinishRepair(worker);
             return Unit.Value;
         }
     }
