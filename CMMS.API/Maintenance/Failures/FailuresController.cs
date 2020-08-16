@@ -59,11 +59,13 @@ namespace CMMS.API.Maintenance.Failures
             return Ok(failureId);
         }
 
+        [Obsolete]
         [HttpPut("{failureId}")]
-        [Authorize]
+        [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> ChangeFailureState([FromRoute]Guid failureId, [FromBody]ChangeFailureStateRequest changeFailureStateRequest)
         {
@@ -72,6 +74,7 @@ namespace CMMS.API.Maintenance.Failures
                 changeFailureStateRequest.WorkerId,
                 changeFailureStateRequest.Note,
                 changeFailureStateRequest.FailureState));
+
             return Ok();
         }
 
@@ -104,11 +107,14 @@ namespace CMMS.API.Maintenance.Failures
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> FinishFailureRepair([FromRoute]Guid failureId)
+        public async Task<IActionResult> FinishFailureRepair([FromRoute]Guid failureId, [FromBody]FinishFailureRepairRequest request)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
-            await _mediator.Send(new FinishFailureRepairCommand(failureId, JwtTokenHelper.ExtractUserId(accessToken)));
+            await _mediator.Send(new FinishFailureRepairCommand(
+                failureId, 
+                JwtTokenHelper.ExtractUserId(accessToken),
+                request.Note));
 
             return Ok();
         }

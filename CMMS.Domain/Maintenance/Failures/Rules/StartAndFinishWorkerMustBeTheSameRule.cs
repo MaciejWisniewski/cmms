@@ -1,8 +1,5 @@
 ﻿using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.SeedWork;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CMMS.Domain.Maintenance.Failures.Rules
 {
@@ -17,11 +14,10 @@ namespace CMMS.Domain.Maintenance.Failures.Rules
             _finishWorker = finishWorker;
         }
 
-        public string Message => "Worker which start repair could only finish this action";
-
         public bool IsBroken()
         {
            return  _startWorker != _finishWorker;
         }
+        public string Message => "A worker who hasn't started the repair cannot finish it";
     }
 }

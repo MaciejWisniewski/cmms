@@ -64,13 +64,15 @@ namespace CMMS.Domain.Maintenance.Failures
                 ResolvedOn));
         }
 
-        public void FinishRepair(Worker worker)
+        public void FinishRepair(Worker worker, string note)
         {
-            CheckRule(new StartAndFinishWorkerMustBeTheSameRule(WorkerId, worker.Id));
+            CheckRule(new OnlyStartedRepairCanBeFinishedRule(State));
             CheckRule(new CannotFinishAlreadyFinishedRepairRule(State));
+            CheckRule(new StartAndFinishWorkerMustBeTheSameRule(WorkerId, worker.Id));
 
             State = FailureState.Resolved;
             ResolvedOn = DateTime.UtcNow;
+            Note = note;
 
             AddDomainEvent(new FailureRepairFinishedDomainEvent(
                 Id,
