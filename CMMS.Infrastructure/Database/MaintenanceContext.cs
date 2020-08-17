@@ -1,14 +1,14 @@
 ﻿using CMMS.Domain.Identity;
-using CMMS.Domain.Maintenance.Workers;
+using CMMS.Domain.Maintenance.Failures;
 using CMMS.Domain.Maintenance.Resources;
+using CMMS.Domain.Maintenance.Services;
+using CMMS.Domain.Maintenance.ServiceTypes;
+using CMMS.Domain.Maintenance.Workers;
 using CMMS.Infrastructure.Processing.InternalCommands;
 using CMMS.Infrastructure.Processing.Outbox;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using CMMS.Domain.Maintenance.Failures;
-using CMMS.Domain.Maintenance.ServiceTypes;
-using CMMS.Domain.Maintenance.Services;
 
 namespace CMMS.Infrastructure.Database
 {

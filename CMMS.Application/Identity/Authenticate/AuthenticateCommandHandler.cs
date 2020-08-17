@@ -57,7 +57,7 @@ namespace CMMS.Application.Identity.Authenticate
                         signingCredentials: credentials);
 
                     return new AuthenticationResult(
-                        token: new JwtSecurityTokenHandler().WriteToken(token), 
+                        token: new JwtSecurityTokenHandler().WriteToken(token),
                         expirationDate: token.ValidTo);
                 }
             }

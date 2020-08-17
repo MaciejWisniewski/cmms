@@ -15,7 +15,7 @@ namespace CMMS.Application.Maintenance.Services.FinishService
         private readonly IWorkerRepository _workerRepository;
 
         public FinishServiceCommandHandler(
-            IServiceRepository serviceRepository, 
+            IServiceRepository serviceRepository,
             IResourceRepository resourceRepository,
             IWorkerRepository workerRepository)
         {

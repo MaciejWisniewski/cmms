@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CMMS.Application.Maintenance.Workers.GetWorkersHavingAccessTo
 {
     public class GetWorkersHavingAccessToQueryHandler : IQueryHandler<GetWorkersHavingAccessToQuery, List<WorkerDto>>
-    {        
+    {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
         public GetWorkersHavingAccessToQueryHandler(ISqlConnectionFactory sqlConnectionFactory)

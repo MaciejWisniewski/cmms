@@ -13,7 +13,7 @@ namespace CMMS.Domain.Maintenance.Resources.Rules
             _parent = parent;
         }
 
-        public bool IsBroken() => _isResourceAMachine &&  (_parent == null || !_parent.IsArea);
+        public bool IsBroken() => _isResourceAMachine && (_parent == null || !_parent.IsArea);
 
         public string Message => "Machine must have an area parent";
 

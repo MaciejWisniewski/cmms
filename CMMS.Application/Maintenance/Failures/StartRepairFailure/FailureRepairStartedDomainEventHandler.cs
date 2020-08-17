@@ -3,9 +3,6 @@ using CMMS.Domain.Maintenance.Failures.Events;
 using CMMS.Domain.Maintenance.Resources;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,5 +37,5 @@ namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
             });
         }
     }
-    
+
 }

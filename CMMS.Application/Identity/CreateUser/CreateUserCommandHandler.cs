@@ -13,8 +13,8 @@ namespace CMMS.Application.Identity.CreateUser
         private readonly IRoleValidator _roleValidator;
 
         public CreateUserCommandHandler(
-            IUserRepository userRepository, 
-            IUserUniquenessChecker userUniquenessChecker, 
+            IUserRepository userRepository,
+            IUserUniquenessChecker userUniquenessChecker,
             IRoleValidator roleValidator)
         {
             _userRepository = userRepository;

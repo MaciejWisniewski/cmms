@@ -15,9 +15,9 @@ namespace CMMS.Application.Maintenance.Services.ScheduleService
 
         public ScheduleServiceCommand(
             Guid schedulerId,
-            Guid resourceId, 
-            Guid serviceTypeId, 
-            Guid scheduledWorkerId, 
+            Guid resourceId,
+            Guid serviceTypeId,
+            Guid scheduledWorkerId,
             string description,
             DateTime scheduledStartDateTime,
             DateTime scheduledEndDateTime)

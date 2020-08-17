@@ -31,11 +31,11 @@ namespace CMMS.Domain.Maintenance.Failures
             OccurredOn = DateTime.UtcNow;
 
             AddDomainEvent(new FailureRegisteredDomainEvent(
-                Id, 
-                ResourceId, 
+                Id,
+                ResourceId,
                 resource.Name,
-                State, 
-                ProblemDescription, 
+                State,
+                ProblemDescription,
                 OccurredOn));
         }
 
@@ -85,14 +85,14 @@ namespace CMMS.Domain.Maintenance.Failures
 
         public void ChangeState(FailureState newfailureState, Worker worker, string note)
         {
-             
+
 
             CheckRule(new StateCannotBeTheSameRule(State, newfailureState));
             State = newfailureState;
             WorkerId = worker.Id;
             Note = note;
 
-            if(newfailureState == FailureState.Resolved)
+            if (newfailureState == FailureState.Resolved)
             {
                 ResolvedOn = DateTime.UtcNow;
             }

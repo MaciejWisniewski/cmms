@@ -3,9 +3,6 @@ using CMMS.Application.Configuration.Validation;
 using CMMS.Domain.Maintenance.Failures;
 using CMMS.Domain.Maintenance.Workers;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

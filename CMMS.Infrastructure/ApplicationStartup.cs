@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.CommonServiceLocator;
+using CMMS.Infrastructure.Caching;
+using CMMS.Infrastructure.Database;
+using CMMS.Infrastructure.Domain;
+using CMMS.Infrastructure.Processing;
+using CMMS.Infrastructure.Processing.InternalCommands;
+using CMMS.Infrastructure.Processing.Outbox;
+using CMMS.Infrastructure.Quartz;
+using CMMS.Infrastructure.SeedWork;
 using CommonServiceLocator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Impl;
-using CMMS.Infrastructure.Caching;
-using CMMS.Infrastructure.Database;
-using CMMS.Infrastructure.Processing;
-using CMMS.Infrastructure.Processing.InternalCommands;
-using CMMS.Infrastructure.Processing.Outbox;
-using CMMS.Infrastructure.Quartz;
-using CMMS.Infrastructure.SeedWork;
-using CMMS.Infrastructure.Domain;
+using System;
+using System.Collections.Generic;
 
 namespace CMMS.Infrastructure
 {

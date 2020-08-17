@@ -15,7 +15,7 @@ namespace CMMS.Domain.Maintenance.Services
         public ServiceTypeId TypeId { get; private set; }
         public WorkerId ScheduledWorkerId { get; private set; }
         public WorkerId ActualWorkerId { get; private set; }
-        public string Description { get; private set; } 
+        public string Description { get; private set; }
         public string Note { get; private set; }
         public DateTime ScheduledStartDateTime { get; private set; }
         public DateTime ScheduledEndDateTime { get; private set; }
@@ -27,9 +27,9 @@ namespace CMMS.Domain.Maintenance.Services
         }
 
         private Service(
-            ResourceId resourceId, 
-            ServiceTypeId typeId, 
-            WorkerId scheduledWorkerId, 
+            ResourceId resourceId,
+            ServiceTypeId typeId,
+            WorkerId scheduledWorkerId,
             string description,
             DateTime scheduledStartDateTime,
             DateTime scheduledEndDateTime)
@@ -60,9 +60,9 @@ namespace CMMS.Domain.Maintenance.Services
             CheckRule(new ServiceScheduledStartMustBeBeforeItsScheduledEndRule(scheduledStartDateTime, scheduledEndDateTime));
 
             return new Service(
-                resource.Id, 
-                typeId, 
-                scheduledWorkerId, 
+                resource.Id,
+                typeId,
+                scheduledWorkerId,
                 description,
                 scheduledStartDateTime,
                 scheduledEndDateTime);
@@ -98,7 +98,7 @@ namespace CMMS.Domain.Maintenance.Services
             WorkerId editorId,
             Resource actualResource,
             Resource newResource,
-            ServiceTypeId typeId,    
+            ServiceTypeId typeId,
             WorkerId scheduledWorkerId,
             string description,
             DateTime scheduledStartDateTime,

@@ -17,7 +17,7 @@ namespace CMMS.Application.Identity.ChangeUserRole
 
         public async Task Handle(ChangedUserRoleDomainEvent notification, CancellationToken cancellationToken)
         {
-            await _mediator.Send(new ChangeWorkerRoleCommand(notification.UserId, notification.NewRoleName));   
+            await _mediator.Send(new ChangeWorkerRoleCommand(notification.UserId, notification.NewRoleName));
         }
     }
 }

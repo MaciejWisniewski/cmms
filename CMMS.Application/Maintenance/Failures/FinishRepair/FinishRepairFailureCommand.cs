@@ -1,7 +1,5 @@
 ﻿using CMMS.Application.Configuration.Commands;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CMMS.Application.Maintenance.Failures.FinishRepair
 {

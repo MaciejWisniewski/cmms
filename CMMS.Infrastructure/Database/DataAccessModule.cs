@@ -1,19 +1,19 @@
 ﻿using Autofac;
 using CMMS.Application.Configuration.Data;
 using CMMS.Domain.Identity;
-using CMMS.Domain.Maintenance.Workers;
+using CMMS.Domain.Maintenance.Failures;
 using CMMS.Domain.Maintenance.Resources;
+using CMMS.Domain.Maintenance.Services;
+using CMMS.Domain.Maintenance.ServiceTypes;
+using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.SeedWork;
 using CMMS.Infrastructure.Domain;
 using CMMS.Infrastructure.Domain.Identity;
-using CMMS.Infrastructure.Domain.Maintenance.Workers;
-using CMMS.Infrastructure.Domain.Maintenance.Resources;
 using CMMS.Infrastructure.Domain.Maintenance.Failures;
-using CMMS.Domain.Maintenance.Failures;
-using CMMS.Infrastructure.Domain.Maintenance.ServiceTypes;
-using CMMS.Domain.Maintenance.ServiceTypes;
+using CMMS.Infrastructure.Domain.Maintenance.Resources;
 using CMMS.Infrastructure.Domain.Maintenance.Services;
-using CMMS.Domain.Maintenance.Services;
+using CMMS.Infrastructure.Domain.Maintenance.ServiceTypes;
+using CMMS.Infrastructure.Domain.Maintenance.Workers;
 
 namespace CMMS.Infrastructure.Database
 {
