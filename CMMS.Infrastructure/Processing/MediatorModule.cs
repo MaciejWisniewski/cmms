@@ -2,7 +2,6 @@
 using Autofac.Core;
 using Autofac.Features.Variance;
 using CMMS.Application.Configuration.Validation;
-using CMMS.Application.Identity.GetAllRoles;
 using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
@@ -10,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
+
 
 namespace CMMS.Infrastructure.Processing
 {
@@ -35,8 +36,9 @@ namespace CMMS.Infrastructure.Processing
             foreach (var mediatrOpenType in mediatrOpenTypes)
             {
                 builder
-                    .RegisterAssemblyTypes(typeof(GetAllRolesQuery).GetTypeInfo().Assembly)
+                    .RegisterAssemblyTypes(Assemblies.Application, ThisAssembly)
                     .AsClosedTypesOf(mediatrOpenType)
+                    .FindConstructorsWith(new AllConstructorFinder())
                     .AsImplementedInterfaces();
             }
 
@@ -52,7 +54,7 @@ namespace CMMS.Infrastructure.Processing
             builder.RegisterGeneric(typeof(CommandValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>));
         }
 
-        public class ScopedContravariantRegistrationSource : IRegistrationSource
+        private class ScopedContravariantRegistrationSource : IRegistrationSource
         {
             private readonly IRegistrationSource _source = new ContravariantRegistrationSource();
             private readonly List<Type> _types = new List<Type>();

@@ -36,7 +36,7 @@ namespace CMMS.API.Maintenance.Services
         [HttpGet]
         [Authorize]
         [ProducesResponseType(typeof(List<ServiceDto>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetServiceByWorkerAccesses()
+        public async Task<IActionResult> GetServicesByWorkerAccesses()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
@@ -58,7 +58,7 @@ namespace CMMS.API.Maintenance.Services
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> ScheduleService([FromBody]ScheduleServiceRequest request)
+        public async Task<IActionResult> ScheduleService([FromBody] ScheduleServiceRequest request)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
@@ -85,7 +85,7 @@ namespace CMMS.API.Maintenance.Services
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> EditScheduledService([FromRoute]Guid serviceId, [FromBody]EditScheduledServiceRequest request)
+        public async Task<IActionResult> EditScheduledService([FromRoute] Guid serviceId, [FromBody] EditScheduledServiceRequest request)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
@@ -112,12 +112,12 @@ namespace CMMS.API.Maintenance.Services
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> RemoveScheduledService([FromRoute]Guid serviceId)
+        public async Task<IActionResult> RemoveScheduledService([FromRoute] Guid serviceId)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             await _mediator.Send(new RemoveScheduledServiceCommand(
-                JwtTokenHelper.ExtractUserId(accessToken), 
+                JwtTokenHelper.ExtractUserId(accessToken),
                 serviceId));
 
             return Ok();
@@ -133,13 +133,13 @@ namespace CMMS.API.Maintenance.Services
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> StartService([FromRoute]Guid serviceId, [FromBody]StartServiceRequest request)
+        public async Task<IActionResult> StartService([FromRoute] Guid serviceId, [FromBody] StartServiceRequest request)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             await _mediator.Send(new StartServiceCommand(
-                serviceId, 
-                JwtTokenHelper.ExtractUserId(accessToken), 
+                serviceId,
+                JwtTokenHelper.ExtractUserId(accessToken),
                 request.Note));
 
             return Ok();
@@ -155,7 +155,7 @@ namespace CMMS.API.Maintenance.Services
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> FinishService([FromRoute]Guid serviceId, [FromBody]FinishServiceRequest request)
+        public async Task<IActionResult> FinishService([FromRoute] Guid serviceId, [FromBody] FinishServiceRequest request)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 

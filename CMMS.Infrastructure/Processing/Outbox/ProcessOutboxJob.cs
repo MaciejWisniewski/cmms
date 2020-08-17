@@ -5,7 +5,6 @@ using MediatR;
 using Newtonsoft.Json;
 using Quartz;
 using System;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CMMS.Infrastructure.Processing.Outbox
@@ -35,23 +34,27 @@ namespace CMMS.Infrastructure.Processing.Outbox
                                "WHERE [OutboxMessage].[ProcessedDate] IS NULL";
 
             var messages = await connection.QueryAsync<OutboxMessageDto>(sql);
+            var messagesList = messages.AsList();
 
             const string sqlUpdateProcessedDate = "UPDATE [app].[OutboxMessages] " +
                                                   "SET [ProcessedDate] = @Date " +
                                                   "WHERE [Id] = @Id";
-
-            foreach (var message in messages)
+            if (messagesList.Count > 0)
             {
-                Type type = Assembly.GetAssembly(typeof(IDomainEventNotification<>)).GetType(message.Type);
-                var request = JsonConvert.DeserializeObject(message.Data, type);
-
-                await this._mediator.Publish((INotification)request);
-
-                await connection.ExecuteAsync(sqlUpdateProcessedDate, new
+                foreach (var message in messagesList)
                 {
-                    Date = DateTime.UtcNow,
-                    message.Id
-                });
+                    Type type = Assemblies.Application
+                        .GetType(message.Type);
+                    var request = JsonConvert.DeserializeObject(message.Data, type) as IDomainEventNotification;
+
+                    await this._mediator.Publish(request);
+
+                    await connection.ExecuteAsync(sqlUpdateProcessedDate, new
+                    {
+                        Date = DateTime.UtcNow,
+                        message.Id
+                    });
+                }
             }
         }
     }

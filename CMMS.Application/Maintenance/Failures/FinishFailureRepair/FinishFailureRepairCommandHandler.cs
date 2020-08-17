@@ -6,29 +6,31 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
+namespace CMMS.Application.Maintenance.Failures.FinishFailureRepair
 {
-    public class StartRepairFailureCommandHandler : ICommandHandler<StartRepairFailureCommand>
+    public class FinishFailureRepairCommandHandler : ICommandHandler<FinishFailureRepairCommand>
     {
         private readonly IFailureRepository _failureRepository;
         private readonly IWorkerRepository _workerRepository;
 
-        public StartRepairFailureCommandHandler(IFailureRepository failureRepository, IWorkerRepository workerRepository)
+        public FinishFailureRepairCommandHandler(IFailureRepository failureRepository, IWorkerRepository workerRepository)
         {
             _failureRepository = failureRepository;
             _workerRepository = workerRepository;
         }
 
-        public async Task<Unit> Handle(StartRepairFailureCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(FinishFailureRepairCommand command, CancellationToken cancellationToken)
         {
-            var failure = await _failureRepository.GetByIdAsync(new FailureId(request.FailureId));
+            var failure = await _failureRepository.GetByIdAsync(new FailureId(command.FailureId));
             if (failure == null)
                 throw new NotFoundException("Failure with the given id hasn't been found", null);
 
-            var worker = await _workerRepository.GetByIdAsync(new WorkerId(request.WorkerId));
+            var worker = await _workerRepository.GetByIdAsync(new WorkerId(command.WorkerId));
             if (worker == null)
                 throw new NotFoundException("Worker with the given id hasn't been found", null);
-            failure.StartRepair(worker);
+
+            failure.FinishRepair(worker, command.Note);
+
             return Unit.Value;
         }
     }

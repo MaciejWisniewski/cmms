@@ -1,18 +1,17 @@
 ﻿using CMMS.Application.Configuration.Commands;
 using System;
 
-namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
+namespace CMMS.Application.Maintenance.Failures.StartFailureRepair
 {
-    public class StartRepairFailureCommand : CommandBase
+    public class StartFailureRepairCommand : CommandBase
     {
         public Guid FailureId { get; }
         public Guid WorkerId { get; }
 
-        public StartRepairFailureCommand(Guid failureId, Guid workerId)
+        public StartFailureRepairCommand(Guid failureId, Guid workerId)
         {
             FailureId = failureId;
             WorkerId = workerId;
         }
-
     }
 }

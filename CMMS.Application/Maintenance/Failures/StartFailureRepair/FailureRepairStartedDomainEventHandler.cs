@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
+namespace CMMS.Application.Maintenance.Failures.StartFailureRepair
 {
     public class FailureRepairStartedDomainEventHandler : INotificationHandler<FailureRepairStartedDomainEvent>
     {
@@ -22,7 +22,7 @@ namespace CMMS.Application.Maintenance.Failures.StartRepairFailure
         public async Task Handle(FailureRepairStartedDomainEvent notification, CancellationToken cancellationToken)
         {
             var resource = await _resourceRepository.GetByIdAsync(notification.ResourceId);
-            await _hubContext.Clients.All.SendAsync("notifyFailureRepairFinished", new FailureDto()
+            await _hubContext.Clients.All.SendAsync("notifyFailureRepairStarted", new FailureDto()
             {
                 Id = notification.FailureId.Value,
                 ResourceId = notification.ResourceId.Value,

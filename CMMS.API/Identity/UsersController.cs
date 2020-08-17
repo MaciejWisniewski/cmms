@@ -31,7 +31,7 @@ namespace CMMS.API.Identity
         [Authorize(Roles = UserRole.Admin)]
         [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetByUserName([FromRoute]Guid id)
+        public async Task<IActionResult> GetByUserName([FromRoute] Guid id)
         {
             var user = await _mediator.Send(new GetUserQuery(id));
 
@@ -62,7 +62,7 @@ namespace CMMS.API.Identity
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> CreateUser([FromBody]CreateUserRequest request)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request)
         {
             var userId = await _mediator.Send(new CreateUserCommand(
                     request.FullName,
@@ -86,7 +86,7 @@ namespace CMMS.API.Identity
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> UpdateUser([FromRoute]Guid id, [FromBody]UpdateUserRequest request)
+        public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserRequest request)
         {
             await _mediator.Send(new UpdateUserCommand(
                     id,
@@ -110,7 +110,7 @@ namespace CMMS.API.Identity
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> ChangeUserRole([FromRoute]Guid userId, [FromBody]ChangeUserRoleRequest request)
+        public async Task<IActionResult> ChangeUserRole([FromRoute] Guid userId, [FromBody] ChangeUserRoleRequest request)
         {
             await _mediator.Send(new ChangeUserRoleCommand(userId, request.RoleId));
 
@@ -127,7 +127,7 @@ namespace CMMS.API.Identity
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> DeactivateUser([FromRoute]Guid id)
+        public async Task<IActionResult> DeactivateUser([FromRoute] Guid id)
         {
             await _mediator.Send(new DeactivateUserCommand(id));
 

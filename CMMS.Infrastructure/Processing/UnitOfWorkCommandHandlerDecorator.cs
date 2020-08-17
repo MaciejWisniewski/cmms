@@ -20,11 +20,11 @@ namespace CMMS.Infrastructure.Processing
         public UnitOfWorkCommandHandlerDecorator(
             ICommandHandler<T> decorated,
             IUnitOfWork unitOfWork,
-            MaintenanceContext ordersContext)
+            MaintenanceContext maintenanceContext)
         {
             _decorated = decorated;
             _unitOfWork = unitOfWork;
-            _maintenanceContext = ordersContext;
+            _maintenanceContext = maintenanceContext;
         }
 
         public async Task<Unit> Handle(T command, CancellationToken cancellationToken)

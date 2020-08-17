@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using CMMS.Application.Identity.Authenticate;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using CMMS.Application.Identity.Authenticate;
-using MediatR;
+using System.Threading.Tasks;
 
 namespace CMMS.API.Identity.Authenticate
 {
@@ -29,7 +29,7 @@ namespace CMMS.API.Identity.Authenticate
         {
             var result = await _mediator.Send(
                 new AuthenticateCommand(
-                    credentialsDto.UserName, 
+                    credentialsDto.UserName,
                     credentialsDto.Password
                     ));
 

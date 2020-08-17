@@ -1,30 +1,36 @@
-using System;
-using System.Linq;
-using Hellang.Middleware.ProblemDetails;
 using CMMS.API.Configuration;
+using CMMS.API.SeedWork;
+using CMMS.Application.Configuration;
+using CMMS.Application.Configuration.Emails;
+using CMMS.Application.Configuration.SmsMessages;
+using CMMS.Application.Configuration.Validation;
+using CMMS.Domain.Failures;
+using CMMS.Domain.Identity;
+using CMMS.Domain.SeedWork;
+using CMMS.Infrastructure;
+using CMMS.Infrastructure.Caching;
 using CMMS.Infrastructure.Database;
+using CMMS.Infrastructure.Emails;
 using CMMS.Infrastructure.SeedWork;
+using CMMS.Infrastructure.SmsMessages;
+using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CMMS.Application.Configuration.Validation;
-using CMMS.Domain.SeedWork;
-using CMMS.API.SeedWork;
-using CMMS.Infrastructure;
-using CMMS.Domain.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Linq;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using CMMS.Infrastructure.Domain.Maintenance.Failures;
-using CMMS.Domain.Failures;
-using Newtonsoft.Json;
 
 namespace CMMS.API
 {
@@ -53,9 +59,8 @@ namespace CMMS.API
                        .SetIsOriginAllowed((host) => true)
                        .AllowAnyHeader()
                        .AllowCredentials();
-                        
+
             }));
-            
 
             services.AddControllers().AddNewtonsoftJson(options =>
             {
@@ -98,6 +103,7 @@ namespace CMMS.API
                     .Build();
 
             services.AddMvc(config => config.Filters.Add(new AuthorizeFilter(authorizePolicy))).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services
                 .AddDbContext<MaintenanceContext>(options =>
                 {
@@ -113,13 +119,28 @@ namespace CMMS.API
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
             });
 
+            services.AddHttpContextAccessor();
+            var serviceProvider = services.BuildServiceProvider();
+
+            IExecutionContextAccessor executionContextAccessor = new ExecutionContextAccessor(serviceProvider.GetService<IHttpContextAccessor>());
+
             var children = _configuration.GetSection("Caching").GetChildren();
             var cachingConfiguration = children.ToDictionary(child => child.Key, child => TimeSpan.Parse(child.Value));
+            var emailsSettings = _configuration.GetSection("EmailsSettings").Get<EmailsSettings>();
+            var emailSender = new EmailSender();
+            var smsMessagesSettings = _configuration.GetSection("SmsMessagesSettings").Get<SmsMessagesSettings>();
+            var smsMessageSender = new SmsMessageSender();
+            var memoryCache = serviceProvider.GetService<IMemoryCache>();
 
             return ApplicationStartup.Initialize(
                 services,
                 _configuration[MaintenanceConnectionString],
-                cachingConfiguration);
+                new MemoryCacheStore(memoryCache, cachingConfiguration),
+                emailSender,
+                emailsSettings,
+                smsMessageSender,
+                smsMessagesSettings,
+                executionContextAccessor);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -155,5 +176,4 @@ namespace CMMS.API
             app.UseSwaggerDocumentation();
         }
     }
-
 }
