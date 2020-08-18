@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
-using CMMS.Application.Identity;
+﻿using CMMS.Application.Identity;
 using CMMS.Application.Identity.GetAllRoles;
 using CMMS.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace CMMS.API.Identity
 {

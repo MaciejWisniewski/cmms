@@ -1,26 +1,26 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.CommonServiceLocator;
+using CMMS.Application.Configuration;
+using CMMS.Application.Configuration.Emails;
+using CMMS.Application.Configuration.SmsMessages;
+using CMMS.Infrastructure.Caching;
+using CMMS.Infrastructure.Database;
+using CMMS.Infrastructure.Domain;
+using CMMS.Infrastructure.Emails;
+using CMMS.Infrastructure.Processing;
+using CMMS.Infrastructure.Processing.InternalCommands;
+using CMMS.Infrastructure.Processing.Outbox;
+using CMMS.Infrastructure.Quartz;
+using CMMS.Infrastructure.SeedWork;
+using CMMS.Infrastructure.SmsMessages;
 using CommonServiceLocator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Impl;
-using CMMS.Infrastructure.Caching;
-using CMMS.Infrastructure.Database;
-using CMMS.Infrastructure.Processing;
-using CMMS.Infrastructure.Processing.InternalCommands;
-using CMMS.Infrastructure.Processing.Outbox;
-using CMMS.Infrastructure.Quartz;
-using CMMS.Infrastructure.SeedWork;
-using CMMS.Infrastructure.Domain;
-using CMMS.Application.Configuration.Emails;
-using CMMS.Infrastructure.Emails;
-using CMMS.Application.Configuration;
-using CMMS.Application.Configuration.SmsMessages;
-using CMMS.Infrastructure.SmsMessages;
+using System;
 
 namespace CMMS.Infrastructure
 {
@@ -79,7 +79,7 @@ namespace CMMS.Infrastructure
             else
                 container.RegisterModule(new EmailModule(emailsSettings));
 
-            if(smsMessageSender != null)
+            if (smsMessageSender != null)
                 container.RegisterModule(new SmsMessageModule(smsMessageSender, smsMessagesSettings));
             else
                 container.RegisterModule(new SmsMessageModule(smsMessagesSettings));

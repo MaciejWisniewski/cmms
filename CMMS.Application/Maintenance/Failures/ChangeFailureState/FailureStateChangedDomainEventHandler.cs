@@ -3,9 +3,6 @@ using CMMS.Domain.Maintenance.Failures.Events;
 using CMMS.Domain.Maintenance.Resources;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,8 +21,9 @@ namespace CMMS.Application.Maintenance.Failures.ChangeFailureState
 
         public async Task Handle(FailureStateChangedDomainEvent notification, CancellationToken cancellationToken)
         {
-            var resource = await _resourceRepository.GetByIdAsync(notification.ResourceId);      
-            await _hubContext.Clients.All.SendAsync("notifyFailureChanged", new FailureDto() {
+            var resource = await _resourceRepository.GetByIdAsync(notification.ResourceId);
+            await _hubContext.Clients.All.SendAsync("notifyFailureChanged", new FailureDto()
+            {
                 Id = notification.FailureId.Value,
                 ResourceId = notification.ResourceId.Value,
                 ResourceName = resource.Name,
@@ -36,7 +34,7 @@ namespace CMMS.Application.Maintenance.Failures.ChangeFailureState
                 Note = notification.Note,
                 OccurredOn = notification.OccurredOn,
                 ResolvedOn = notification.ResolvedOn
-            });                     
+            });
         }
     }
 }

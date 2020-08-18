@@ -1,5 +1,4 @@
-﻿using CMMS.Domain.Maintenance.Failures;
-using CMMS.Domain.Maintenance.Resources;
+﻿using CMMS.Domain.Maintenance.Resources;
 using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.SeedWork;
 using System;

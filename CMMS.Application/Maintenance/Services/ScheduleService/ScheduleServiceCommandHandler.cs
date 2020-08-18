@@ -15,7 +15,7 @@ namespace CMMS.Application.Maintenance.Services.ScheduleService
         private readonly IResourceRepository _resourceRepository;
 
         public ScheduleServiceCommandHandler(
-            IServiceRepository serviceRepository, 
+            IServiceRepository serviceRepository,
             IResourceRepository resourceRepository)
         {
             _serviceRepository = serviceRepository;

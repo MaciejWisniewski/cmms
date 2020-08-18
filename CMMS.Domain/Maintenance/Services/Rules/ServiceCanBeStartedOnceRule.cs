@@ -13,7 +13,7 @@ namespace CMMS.Domain.Maintenance.Services.Rules
         }
 
         public bool IsBroken() => _actualStartDateTime != null;
-        
+
         public string Message => "Service has already started";
     }
 }

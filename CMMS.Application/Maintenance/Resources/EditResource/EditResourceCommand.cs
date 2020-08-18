@@ -5,7 +5,7 @@ namespace CMMS.Application.Maintenance.Resources.EditResource
 {
     public class EditResourceCommand : CommandBase
     {
-        public Guid ResourceId { get;  }
+        public Guid ResourceId { get; }
 
         public string Name { get; }
 

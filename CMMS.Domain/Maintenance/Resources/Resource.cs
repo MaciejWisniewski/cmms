@@ -47,7 +47,7 @@ namespace CMMS.Domain.Maintenance.Resources
         }
 
         public static Resource CreateNew(
-            Resource parent, 
+            Resource parent,
             string name,
             bool isArea,
             bool isMachine)
@@ -131,7 +131,7 @@ namespace CMMS.Domain.Maintenance.Resources
 
         private bool HasAccess(Resource resource, WorkerId workerId)
         {
-            return resource != null && 
+            return resource != null &&
                 resource.Accesses.FirstOrDefault(a => a.WorkerId == workerId) != null;
         }
 

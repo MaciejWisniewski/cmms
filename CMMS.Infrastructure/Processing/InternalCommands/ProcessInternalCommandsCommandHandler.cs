@@ -82,7 +82,7 @@ namespace CMMS.Infrastructure.Processing.InternalCommands
         {
             Type type = Assemblies.Application.GetType(internalCommand.Type);
             dynamic commandToProcess = JsonConvert.DeserializeObject(internalCommand.Data, type);
-            
+
             await CommandsExecutor.Execute(commandToProcess);
         }
 

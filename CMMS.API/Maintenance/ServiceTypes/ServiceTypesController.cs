@@ -46,7 +46,7 @@ namespace CMMS.API.Maintenance.ServiceTypes
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> AddServiceType([FromBody]AddServiceTypeRequest request)
+        public async Task<IActionResult> AddServiceType([FromBody] AddServiceTypeRequest request)
         {
             var serviceTypeId = await _mediator.Send(new AddServiceTypeCommand(request.Name));
 

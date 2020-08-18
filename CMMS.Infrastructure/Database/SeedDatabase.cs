@@ -19,7 +19,7 @@ namespace CMMS.Infrastructure.Database
                 return;
 
             var isRolesTableExists = await IsTableExists(context, SchemaNames.Dbo, "AspNetRoles");
-            if(isRolesTableExists)
+            if (isRolesTableExists)
                 await CreateRoles(serviceProvider, context);
 
             var isUsersTableExists = await IsTableExists(context, SchemaNames.Dbo, "AspNetUsers");

@@ -1,36 +1,36 @@
-using System;
-using System.Linq;
-using Hellang.Middleware.ProblemDetails;
 using CMMS.API.Configuration;
+using CMMS.API.SeedWork;
+using CMMS.Application.Configuration;
+using CMMS.Application.Configuration.Emails;
+using CMMS.Application.Configuration.SmsMessages;
+using CMMS.Application.Configuration.Validation;
+using CMMS.Domain.Failures;
+using CMMS.Domain.Identity;
+using CMMS.Domain.SeedWork;
+using CMMS.Infrastructure;
+using CMMS.Infrastructure.Caching;
 using CMMS.Infrastructure.Database;
+using CMMS.Infrastructure.Emails;
 using CMMS.Infrastructure.SeedWork;
+using CMMS.Infrastructure.SmsMessages;
+using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CMMS.Application.Configuration.Validation;
-using CMMS.Domain.SeedWork;
-using CMMS.API.SeedWork;
-using CMMS.Infrastructure;
-using CMMS.Domain.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Linq;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using CMMS.Domain.Failures;
-using CMMS.Application.Configuration.Emails;
-using CMMS.Infrastructure.Emails;
-using CMMS.Infrastructure.Caching;
-using Microsoft.Extensions.Caching.Memory;
-using CMMS.Application.Configuration;
-using Microsoft.AspNetCore.Http;
-using CMMS.Application.Configuration.SmsMessages;
-using CMMS.Infrastructure.SmsMessages;
 
 namespace CMMS.API
 {
@@ -59,7 +59,7 @@ namespace CMMS.API
                        .SetIsOriginAllowed((host) => true)
                        .AllowAnyHeader()
                        .AllowCredentials();
-                        
+
             }));
 
             services.AddControllers().AddNewtonsoftJson(options =>

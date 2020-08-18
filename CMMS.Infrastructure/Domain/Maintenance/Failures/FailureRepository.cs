@@ -1,7 +1,6 @@
 ﻿using CMMS.Domain.Maintenance.Failures;
 using CMMS.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CMMS.Infrastructure.Domain.Maintenance.Failures

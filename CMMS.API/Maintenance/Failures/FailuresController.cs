@@ -53,7 +53,7 @@ namespace CMMS.API.Maintenance.Failures
         [Authorize]
         [ProducesResponseType(typeof(List<FailureDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetFailuresWorkerHasAccessTo([FromRoute]Guid workerId)
+        public async Task<IActionResult> GetFailuresWorkerHasAccessTo([FromRoute] Guid workerId)
         {
             var failures = await _mediator.Send(new GetFailuresWorkerHasAccessToQuery(workerId));
 
@@ -71,7 +71,7 @@ namespace CMMS.API.Maintenance.Failures
         public async Task<IActionResult> RegisterFailure([FromBody] RegisterFailureRequest request)
         {
             var failureId = await _mediator.Send(new RegisterFailureCommand(
-                request.ResourceId, 
+                request.ResourceId,
                 request.ProblemDescription));
 
             return Ok(failureId);
@@ -85,7 +85,7 @@ namespace CMMS.API.Maintenance.Failures
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> ChangeFailureState([FromRoute]Guid failureId, [FromBody]ChangeFailureStateRequest changeFailureStateRequest)
+        public async Task<IActionResult> ChangeFailureState([FromRoute] Guid failureId, [FromBody] ChangeFailureStateRequest changeFailureStateRequest)
         {
             await _mediator.Send(new ChangeFailureStateCommand(
                 failureId,
@@ -106,7 +106,7 @@ namespace CMMS.API.Maintenance.Failures
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> StartFailureRepair([FromRoute]Guid failureId)
+        public async Task<IActionResult> StartFailureRepair([FromRoute] Guid failureId)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
@@ -125,12 +125,12 @@ namespace CMMS.API.Maintenance.Failures
         [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.Conflict)]
-        public async Task<IActionResult> FinishFailureRepair([FromRoute]Guid failureId, [FromBody]FinishFailureRepairRequest request)
+        public async Task<IActionResult> FinishFailureRepair([FromRoute] Guid failureId, [FromBody] FinishFailureRepairRequest request)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             await _mediator.Send(new FinishFailureRepairCommand(
-                failureId, 
+                failureId,
                 JwtTokenHelper.ExtractUserId(accessToken),
                 request.Note));
 

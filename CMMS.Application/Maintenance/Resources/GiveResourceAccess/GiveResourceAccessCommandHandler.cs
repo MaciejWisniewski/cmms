@@ -26,7 +26,7 @@ namespace CMMS.Application.Maintenance.Resources.GiveResourceAccess
                 throw new NotFoundException("Resource with the given id hasn't been found", null);
 
             var worker = await _workerRepository.GetByIdAsync(new WorkerId(command.WorkerId));
-            if(worker == null)
+            if (worker == null)
                 throw new NotFoundException("Worker with the given id hasn't been found", null);
 
             resource.GiveAccess(worker.Id);

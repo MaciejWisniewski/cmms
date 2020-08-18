@@ -12,7 +12,7 @@ namespace CMMS.Domain.Maintenance.Failures.Rules
         }
 
         public bool IsBroken() => _failureState.Value == FailureState.Resolved.Value;
-        
+
         public string Message => "Cannot finish already finished repair";
     }
 }

@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Autofac.Core;
 using Autofac.Features.Variance;
+using CMMS.Application.Configuration.Validation;
 using FluentValidation;
 using MediatR;
 using MediatR.Pipeline;
-using CMMS.Application.Configuration.Validation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+
 
 namespace CMMS.Infrastructure.Processing
 {

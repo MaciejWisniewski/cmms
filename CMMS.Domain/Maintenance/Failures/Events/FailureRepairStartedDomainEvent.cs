@@ -2,8 +2,6 @@
 using CMMS.Domain.Maintenance.Workers;
 using CMMS.Domain.SeedWork;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CMMS.Domain.Maintenance.Failures.Events
 {

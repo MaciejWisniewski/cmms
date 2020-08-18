@@ -19,7 +19,7 @@ namespace CMMS.Application.Identity.DomainServices
 
             const string sql = "SELECT TOP 1 1 " +
                                "FROM [CMMS].[dbo].[AspNetUsers] AS [User] " +
-                               "WHERE [User].[NormalizedEmail] = @NormalizedEmail " + 
+                               "WHERE [User].[NormalizedEmail] = @NormalizedEmail " +
                                "OR [User].[NormalizedUserName] = @NormalizedUserName";
 
             var customersCount = connection.QuerySingleOrDefault<int?>(sql,

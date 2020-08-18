@@ -37,5 +37,5 @@ namespace CMMS.Application.Maintenance.Failures.StartFailureRepair
             });
         }
     }
-    
+
 }

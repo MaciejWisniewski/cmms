@@ -44,9 +44,9 @@ namespace CMMS.Domain.Identity
         }
 
         public static AppUser Create(
-            string fullName, 
-            string userName, 
-            string email, 
+            string fullName,
+            string userName,
+            string email,
             string phoneNumber,
             string roleName,
             IUserUniquenessChecker userUniquenessChecker)

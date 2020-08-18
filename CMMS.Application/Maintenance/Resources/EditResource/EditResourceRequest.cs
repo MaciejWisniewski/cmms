@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CMMS.Application.Maintenance.Resources.EditResource
+﻿namespace CMMS.Application.Maintenance.Resources.EditResource
 {
     public class EditResourceRequest
     {

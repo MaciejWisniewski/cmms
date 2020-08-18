@@ -16,7 +16,7 @@ namespace CMMS.Domain.Maintenance.Failures.Rules
 
         public bool IsBroken()
         {
-           return  _startWorker != _finishWorker;
+            return _startWorker != _finishWorker;
         }
         public string Message => "A worker who hasn't started the repair cannot finish it";
     }

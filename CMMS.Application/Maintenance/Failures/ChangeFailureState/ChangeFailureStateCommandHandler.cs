@@ -3,9 +3,6 @@ using CMMS.Application.Configuration.Validation;
 using CMMS.Domain.Maintenance.Failures;
 using CMMS.Domain.Maintenance.Workers;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,8 +28,8 @@ namespace CMMS.Application.Maintenance.Failures.ChangeFailureState
             var worker = await _workerRepository.GetByIdAsync(new WorkerId(request.WorkerId));
             if (worker == null)
                 throw new NotFoundException("Worker with the given id hasn't been found", null);
-                
-            FailureState failurState; 
+
+            FailureState failurState;
 
             switch (request.FailureState)
             {

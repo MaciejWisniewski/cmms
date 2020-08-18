@@ -33,7 +33,7 @@ namespace CMMS.Application.Identity.GetUser
                          "LEFT JOIN [CMMS].[dbo].[AspNetRoles] AS [Role] " +
                          "ON [UserRole].[RoleId] = [Role].[Id] " +
                          "WHERE [User].[Id] = @Id AND [User].[IsActive] = 1";
-            var user = await connection.QuerySingleOrDefaultAsync<UserDto>(sql, new { query.Id});
+            var user = await connection.QuerySingleOrDefaultAsync<UserDto>(sql, new { query.Id });
 
             if (user == null)
                 throw new NotFoundException("User with the given id hasn't been found", null);

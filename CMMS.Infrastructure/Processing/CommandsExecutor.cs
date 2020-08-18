@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using CMMS.Application.Configuration.Commands;
 using MediatR;
+using System.Threading.Tasks;
 
 namespace CMMS.Infrastructure.Processing
 {
