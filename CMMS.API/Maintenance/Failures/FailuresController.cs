@@ -30,7 +30,7 @@ namespace CMMS.API.Maintenance.Failures
         }
 
         /// <summary>
-        /// Get all failures registered for resources with the given id that occurred on in the given time range
+        /// Get all failures registered for a resource with the given id that occurred in the given time range
         /// </summary>
         [HttpGet("all/{resourceId}/{from}/{to}")]
         [Authorize]

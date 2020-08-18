@@ -2,6 +2,7 @@
 using CMMS.Application.Maintenance.Services.EditScheduledService;
 using CMMS.Application.Maintenance.Services.FinishService;
 using CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses;
+using CMMS.Application.Maintenance.Services.GetServicesInTimeRangeByResourceId;
 using CMMS.Application.Maintenance.Services.RemoveScheduledService;
 using CMMS.Application.Maintenance.Services.ScheduleService;
 using CMMS.Application.Maintenance.Services.StartService;
@@ -30,9 +31,8 @@ namespace CMMS.API.Maintenance.Services
 
 
         /// <summary>
-        /// 
+        /// Returns all services worker has access to
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [Authorize]
         [ProducesResponseType(typeof(List<ServiceDto>), (int)HttpStatusCode.OK)]
@@ -45,8 +45,22 @@ namespace CMMS.API.Maintenance.Services
             return Ok(services);
         }
 
+        /// <summary>
+        /// Get services scheduled in the given time range for a resource with the given id
+        /// </summary>
+        [HttpGet("all/{resourceId}/{from}/{to}")]
+        [Authorize]
+        [ProducesResponseType(typeof(List<GetServicesInTimeRangeByResourceIdDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetServicesInTimeRangeByResourceId([FromRoute] Guid resourceId, DateTime from, DateTime to)
+        {
+            var services = await _mediator.Send(new GetServicesInTimeRangeByResourceIdQuery(
+                resourceId,
+                from,
+                to));
 
-
+            return Ok(services);
+        }
 
         /// <summary>
         /// Schedule a service.
