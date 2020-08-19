@@ -6,6 +6,7 @@ namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
     {
         public Guid Id { get; set; }
         public Guid ResouceId { get; set; }
+        public string ResourceName { get; set; }
         public Guid TypeId { get; set; }
         public Guid ScheduledWorkerId { get; set; }
         public Guid? ActualWorkerId { get; set; }

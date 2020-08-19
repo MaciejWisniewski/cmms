@@ -8,6 +8,7 @@ namespace CMMS.Domain.Maintenance.Failures
         public static FailureState InProgress => new FailureState("InProgress");
         public static FailureState Resolved => new FailureState("Resolved");
 
+
         public string Value { get; }
 
         private FailureState(string value)

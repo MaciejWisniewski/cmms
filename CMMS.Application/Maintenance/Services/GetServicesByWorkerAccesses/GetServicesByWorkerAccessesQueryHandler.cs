@@ -21,6 +21,7 @@ namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
             var connection = _sqlConnectionFactory.GetOpenConnection();
             string sql = @$"SELECT S.[Id] AS [{nameof(ServiceDto.Id)}],
 	                        S.[ResourceId] AS [{nameof(ServiceDto.ResouceId)}] ,
+							R.[Name] AS [{nameof(ServiceDto.ResourceName)}],
 	                        S.[TypeId] AS [{nameof(ServiceDto.TypeId)}],
 	                        S.[ScheduledWorkerId] AS [{nameof(ServiceDto.ScheduledWorkerId)}],
 	                        S.[ActualWorkerId] AS [{nameof(ServiceDto.ActualWorkerId)}],
@@ -30,6 +31,8 @@ namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
 	                        S.[ActualEndDateTime] AS [{nameof(ServiceDto.ActualEndDateTime)}],
 	                        S.[Description] AS [{nameof(ServiceDto.Description)}]
                         FROM [maintenance].[Services] AS S
+                        INNER JOIN [maintenance].[Resources] AS R
+						ON S.[ResourceId] = R.[Id]
                         WHERE S.[ResourceId] IN (
 		                        SELECT RA.[ResourceId]
 		                        FROM [maintenance].[ResourceAccesses] AS RA
