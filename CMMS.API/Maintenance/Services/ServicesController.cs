@@ -1,6 +1,7 @@
 ﻿using CMMS.API.Configuration;
 using CMMS.Application.Maintenance.Services.EditScheduledService;
 using CMMS.Application.Maintenance.Services.FinishService;
+using CMMS.Application.Maintenance.Services.GetAllServicesInTimeRange;
 using CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses;
 using CMMS.Application.Maintenance.Services.GetServicesInTimeRangeByResourceId;
 using CMMS.Application.Maintenance.Services.RemoveScheduledService;
@@ -41,6 +42,21 @@ namespace CMMS.API.Maintenance.Services
             var accessToken = await HttpContext.GetTokenAsync("access_token");
 
             var services = await _mediator.Send(new GetServicesByWorkerAccessesQuery(JwtTokenHelper.ExtractUserId(accessToken)));
+
+            return Ok(services);
+        }
+
+        /// <summary>
+        /// Get all services scheduled in the given time range
+        /// </summary>
+        [HttpGet("all/{from}/{to}")]
+        [Authorize(Roles = UserRole.Leader)]
+        [ProducesResponseType(typeof(List<GetAllServicesInTimeRangeDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        public async Task<IActionResult> GetAllServicesInTimeRange(DateTime from, DateTime to)
+        {
+            var services = await _mediator.Send(new GetAllServicesInTimeRangeQuery(from, to));
 
             return Ok(services);
         }

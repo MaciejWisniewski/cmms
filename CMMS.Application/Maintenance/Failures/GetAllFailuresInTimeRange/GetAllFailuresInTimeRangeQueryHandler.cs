@@ -31,7 +31,7 @@ namespace CMMS.Application.Maintenance.Failures.GetAllFailuresInTimeRange
                          "JOIN [CMMS].[maintenance].[Resources] AS [Resource] " +
                          "ON [Failure].[ResourceId] = [Resource].[Id] " +
                          "WHERE [Failure].[OccurredOn] BETWEEN @From AND @To " +
-                         "ORDER BY [Failure].[OccurredOn] ASC";
+                         "ORDER BY [Resource].[Name] ASC";
             var failures = await connection.QueryAsync<GetAllFailuresInTimeRangeDto>(sql, new
             {
                 From = query.From,

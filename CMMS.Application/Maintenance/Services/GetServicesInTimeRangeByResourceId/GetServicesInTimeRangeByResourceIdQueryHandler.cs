@@ -23,7 +23,7 @@ namespace CMMS.Application.Maintenance.Services.GetServicesInTimeRangeByResource
             var connection = _sqlConnectionFactory.GetOpenConnection();
             string sql = "SELECT " +
                          $"[Service].[Id] AS [{nameof(GetServicesInTimeRangeByResourceIdDto.Id)}], " +
-                         $"[ServiceType].[Id] AS [{nameof(GetServicesInTimeRangeByResourceIdDto.TypeId)}], " +
+                         $"[Service].[TypeId] AS [{nameof(GetServicesInTimeRangeByResourceIdDto.TypeId)}], " +
                          $"[ServiceType].[Name] AS [{nameof(GetServicesInTimeRangeByResourceIdDto.TypeName)}], " +
                          $"[Service].[ScheduledWorkerId] AS [{nameof(GetServicesInTimeRangeByResourceIdDto.ScheduledWorkerId)}], " +
                          $"[ScheduledWorker].[UserName] AS [{nameof(GetServicesInTimeRangeByResourceIdDto.ScheduledWorkerUserName)}], " +
