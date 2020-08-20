@@ -2,6 +2,7 @@
 using CMMS.Application.Maintenance.Failures;
 using CMMS.Application.Maintenance.Failures.ChangeFailureState;
 using CMMS.Application.Maintenance.Failures.FinishFailureRepair;
+using CMMS.Application.Maintenance.Failures.GetAllFailuresInTimeRange;
 using CMMS.Application.Maintenance.Failures.GetFailuresInTimeRangeByResourceId;
 using CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo;
 using CMMS.Application.Maintenance.Failures.RegisterFailure;
@@ -30,12 +31,28 @@ namespace CMMS.API.Maintenance.Failures
         }
 
         /// <summary>
+        /// Get all failures which occurred in the given time range
+        /// </summary>
+        [HttpGet("all/{from}/{to}")]
+        [Authorize(Roles = UserRole.Leader)]
+        [ProducesResponseType(typeof(List<GetAllFailuresInTimeRangeDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        public async Task<IActionResult> GetAllFailuresInTimeRange(DateTime from, DateTime to)
+        {
+            var failures = await _mediator.Send(new GetAllFailuresInTimeRangeQuery(from, to));
+
+            return Ok(failures);
+        }
+
+        /// <summary>
         /// Get all failures registered for a resource with the given id that occurred in the given time range
         /// </summary>
         [HttpGet("all/{resourceId}/{from}/{to}")]
-        [Authorize]
+        [Authorize(Roles =UserRole.Leader)]
         [ProducesResponseType(typeof(List<GetFailuresInTimeRangeByResourceIdDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         public async Task<IActionResult> GetFailuresInTimeRangeByResourceId([FromRoute] Guid resourceId, DateTime from, DateTime to)
         {
             var failures = await _mediator.Send(new GetFailuresInTimeRangeByResourceIdQuery(

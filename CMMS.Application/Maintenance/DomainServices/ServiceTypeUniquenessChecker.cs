@@ -17,7 +17,7 @@ namespace CMMS.Application.Maintenance.DomainServices
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
 
-            const string sql = "SELECT TOP 1 1" +
+            const string sql = "SELECT TOP 1 1 " +
                                "FROM [CMMS].[maintenance].[ServiceTypes] AS [ServiceType] " +
                                "WHERE [ServiceType].[Name] = @Name";
             var serviceTypesCount = connection.QuerySingleOrDefault<int?>(sql,

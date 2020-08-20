@@ -49,9 +49,10 @@ namespace CMMS.API.Maintenance.Services
         /// Get services scheduled in the given time range for a resource with the given id
         /// </summary>
         [HttpGet("all/{resourceId}/{from}/{to}")]
-        [Authorize]
+        [Authorize(Roles = UserRole.Leader)]
         [ProducesResponseType(typeof(List<GetServicesInTimeRangeByResourceIdDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
         public async Task<IActionResult> GetServicesInTimeRangeByResourceId([FromRoute] Guid resourceId, DateTime from, DateTime to)
         {
             var services = await _mediator.Send(new GetServicesInTimeRangeByResourceIdQuery(
