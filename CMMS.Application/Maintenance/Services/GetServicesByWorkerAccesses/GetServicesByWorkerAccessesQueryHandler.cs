@@ -32,7 +32,8 @@ namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
 	                        S.[ScheduledEndDateTime] AS [{nameof(ServiceDto.ScheduledEndDateTime)}],
 	                        S.[ActualStartDateTime] AS [{nameof(ServiceDto.ActualStartDateTime)}],
 	                        S.[ActualEndDateTime] AS [{nameof(ServiceDto.ActualEndDateTime)}],
-	                        S.[Description] AS [{nameof(ServiceDto.Description)}]
+	                        S.[Description] AS [{nameof(ServiceDto.Description)}],
+							S.[Note] AS [{nameof(ServiceDto.Note)}]
                         FROM [maintenance].[Services] AS S
                         INNER JOIN [maintenance].[Resources] AS R
 						ON S.[ResourceId] = R.[Id]

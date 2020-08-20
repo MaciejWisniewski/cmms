@@ -18,5 +18,6 @@ namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
         public DateTime? ActualStartDateTime { get; set; }
         public DateTime? ActualEndDateTime { get; set; }
         public string Description { get; set; }
+        public string Note { get; set; }
     }
 }
