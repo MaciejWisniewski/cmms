@@ -2,6 +2,7 @@
 using CMMS.Application.Maintenance.Services.EditScheduledService;
 using CMMS.Application.Maintenance.Services.FinishService;
 using CMMS.Application.Maintenance.Services.GetAllServicesInTimeRange;
+using CMMS.Application.Maintenance.Services.GetServiceInProgressByWorkerId;
 using CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses;
 using CMMS.Application.Maintenance.Services.GetServicesInTimeRangeByResourceId;
 using CMMS.Application.Maintenance.Services.RemoveScheduledService;
@@ -45,6 +46,25 @@ namespace CMMS.API.Maintenance.Services
 
             return Ok(services);
         }
+
+
+        /// <summary>
+        /// Return service in progress for worker
+        /// </summary>
+        [HttpGet("inProgress")]
+        [Authorize(Roles = UserRole.User)]
+        [ProducesResponseType(typeof(GetServiceInProgressByWorkerIdDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+        public async Task<IActionResult> GetServiceInProgressByWorkerId()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var service = await _mediator.Send(new GetServiceInProgressByWorkerIdQuery(JwtTokenHelper.ExtractUserId(accessToken)));
+
+            return Ok(service);
+        }
+
 
         /// <summary>
         /// Get all services scheduled in the given time range
