@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo
 {
-    public class GetFailuresWorkerHasAccessToQuery : IQuery<List<FailureDto>>
+    public class GetFailureInProgressByWorkerId : IQuery<List<FailureDto>>
     {
         public Guid WorkerId { get; }
 
-        public GetFailuresWorkerHasAccessToQuery(Guid workerId)
+        public GetFailureInProgressByWorkerId(Guid workerId)
         {
             WorkerId = workerId;
         }

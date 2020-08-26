@@ -46,8 +46,10 @@ namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
                         WHERE S.[ResourceId] IN (
 		                        SELECT RA.[ResourceId]
 		                        FROM [maintenance].[ResourceAccesses] AS RA
-		                        WHERE RA.[WorkerId] = @workerId)";
+		                        WHERE RA.[WorkerId] = @workerId)
+						AND S.[ActualEndDateTime] IS NULL";
             var services = await connection.QueryAsync<ServiceDto>(sql, new { workerId = request.WorkerId });
+
 
             return services.AsList();
         }

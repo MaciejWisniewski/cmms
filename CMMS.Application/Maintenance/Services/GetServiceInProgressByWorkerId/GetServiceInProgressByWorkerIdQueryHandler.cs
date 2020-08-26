@@ -45,7 +45,8 @@ namespace CMMS.Application.Maintenance.Services.GetServiceInProgressByWorkerId
 						ON S.[ScheduledWorkerId] = WS.[Id]
 						LEFT JOIN [maintenance].[Workers] AS WA
 						ON S.[ActualWorkerId] = WA.[Id]
-                        WHERE S.[ActualWorkerId] = @workerId";
+                        WHERE S.[ActualWorkerId] = @workerId
+						AND S.[ActualEndDateTime] IS NULL";
 			return await connection.QueryFirstOrDefaultAsync<GetServiceInProgressByWorkerIdDto>(sql, new { workerId = request.WorkerId });
 		
 		}

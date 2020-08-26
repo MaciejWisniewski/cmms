@@ -3,6 +3,7 @@ using CMMS.Application.Maintenance.Failures;
 using CMMS.Application.Maintenance.Failures.ChangeFailureState;
 using CMMS.Application.Maintenance.Failures.FinishFailureRepair;
 using CMMS.Application.Maintenance.Failures.GetAllFailuresInTimeRange;
+using CMMS.Application.Maintenance.Failures.GetFailureInProgressByWorkerId;
 using CMMS.Application.Maintenance.Failures.GetFailuresInTimeRangeByResourceId;
 using CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo;
 using CMMS.Application.Maintenance.Failures.RegisterFailure;
@@ -72,11 +73,28 @@ namespace CMMS.API.Maintenance.Failures
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetFailuresWorkerHasAccessTo([FromRoute] Guid workerId)
         {
-            var failures = await _mediator.Send(new GetFailuresWorkerHasAccessToQuery(workerId));
+            var failures = await _mediator.Send(new GetFailureInProgressByWorkerId(workerId));
 
             return Ok(failures);
         }
 
+
+
+        /// <summary>
+        /// Get failure in progress 
+        /// </summary>
+        [HttpGet("inProgress")]
+        [Authorize]
+        [ProducesResponseType(typeof(FailureDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetFailureInProgress()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var failure = await _mediator.Send(new GetFailureInProgressByWorkerIdQuery(JwtTokenHelper.ExtractUserId(accessToken)));
+
+            return Ok(failure);
+        }
         /// <summary>
         /// Register detected failure.
         /// </summary>
@@ -153,5 +171,7 @@ namespace CMMS.API.Maintenance.Failures
 
             return Ok();
         }
+
+
     }
 }
