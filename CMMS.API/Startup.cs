@@ -8,7 +8,6 @@ using CMMS.Domain.Failures;
 using CMMS.Domain.Identity;
 using CMMS.Domain.SeedWork;
 using CMMS.Infrastructure;
-using CMMS.Infrastructure.Caching;
 using CMMS.Infrastructure.Database;
 using CMMS.Infrastructure.Emails;
 using CMMS.Infrastructure.SeedWork;
@@ -135,7 +134,6 @@ namespace CMMS.API
             return ApplicationStartup.Initialize(
                 services,
                 _configuration[MaintenanceConnectionString],
-                new MemoryCacheStore(memoryCache, cachingConfiguration),
                 emailSender,
                 emailsSettings,
                 smsMessageSender,

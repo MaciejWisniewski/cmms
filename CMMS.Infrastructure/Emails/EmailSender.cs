@@ -15,7 +15,6 @@ namespace CMMS.Infrastructure.Emails
             mailMessage.From = new MailAddress(message.From);
             mailMessage.To.Add(new MailAddress(message.To));
             mailMessage.Subject = message.Subject;
-            //mailMessage.IsBodyHtml = true; //to make mailMessage body as html  
             mailMessage.Body = message.Content;
 
             smtp.Port = 587;

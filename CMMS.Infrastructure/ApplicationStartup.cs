@@ -4,7 +4,6 @@ using Autofac.Extras.CommonServiceLocator;
 using CMMS.Application.Configuration;
 using CMMS.Application.Configuration.Emails;
 using CMMS.Application.Configuration.SmsMessages;
-using CMMS.Infrastructure.Caching;
 using CMMS.Infrastructure.Database;
 using CMMS.Infrastructure.Domain;
 using CMMS.Infrastructure.Emails;
@@ -29,7 +28,6 @@ namespace CMMS.Infrastructure
         public static IServiceProvider Initialize(
             IServiceCollection services,
             string connectionString,
-            ICacheStore cacheStore,
             IEmailSender emailSender,
             EmailsSettings emailsSettings,
             ISmsMessageSender smsMessageSender,
@@ -42,7 +40,7 @@ namespace CMMS.Infrastructure
                 StartQuartz(connectionString, emailsSettings, smsMessagesSettings, executionContextAccessor);
             }
 
-            services.AddSingleton(cacheStore);
+            //services.AddSingleton(cacheStore);
 
             var serviceProvider = CreateAutofacServiceProvider(
                 services,
@@ -138,7 +136,7 @@ namespace CMMS.Infrastructure
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule("0/15 * * ? * *")
+                    .WithCronSchedule("0/5 * * ? * *")
                     .Build();
 
             scheduler.ScheduleJob(processOutboxJob, trigger).GetAwaiter().GetResult();
@@ -148,7 +146,7 @@ namespace CMMS.Infrastructure
                 TriggerBuilder
                     .Create()
                     .StartNow()
-                    .WithCronSchedule("0/15 * * ? * *")
+                    .WithCronSchedule("0/5 * * ? * *")
                     .Build();
             scheduler.ScheduleJob(processInternalCommandsJob, triggerCommandsProcessing).GetAwaiter().GetResult();
         }
