@@ -5,7 +5,6 @@ using CMMS.Application.Maintenance.Failures.FinishFailureRepair;
 using CMMS.Application.Maintenance.Failures.GetAllFailuresInTimeRange;
 using CMMS.Application.Maintenance.Failures.GetFailureInProgressByWorkerId;
 using CMMS.Application.Maintenance.Failures.GetFailuresInTimeRangeByResourceId;
-using CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo;
 using CMMS.Application.Maintenance.Failures.RegisterFailure;
 using CMMS.Application.Maintenance.Failures.StartFailureRepair;
 using CMMS.Domain.Identity;
@@ -73,7 +72,7 @@ namespace CMMS.API.Maintenance.Failures
         [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetFailuresWorkerHasAccessTo([FromRoute] Guid workerId)
         {
-            var failures = await _mediator.Send(new GetFailureInProgressByWorkerId(workerId));
+            var failures = await _mediator.Send(new GetFailureInProgressByWorkerIdQuery(workerId));
 
             return Ok(failures);
         }
