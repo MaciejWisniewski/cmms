@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
+namespace CMMS.Application.Maintenance.Services.GetServiceInProgressByWorkerId
 {
-    public class ServiceDto
+    public class GetServiceInProgressByWorkerIdDto
     {
         public Guid Id { get; set; }
         public Guid ResouceId { get; set; }

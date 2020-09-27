@@ -32,7 +32,8 @@ namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
 	                        S.[ScheduledEndDateTime] AS [{nameof(ServiceDto.ScheduledEndDateTime)}],
 	                        S.[ActualStartDateTime] AS [{nameof(ServiceDto.ActualStartDateTime)}],
 	                        S.[ActualEndDateTime] AS [{nameof(ServiceDto.ActualEndDateTime)}],
-	                        S.[Description] AS [{nameof(ServiceDto.Description)}]
+	                        S.[Description] AS [{nameof(ServiceDto.Description)}],
+							S.[Note] AS [{nameof(ServiceDto.Note)}]
                         FROM [maintenance].[Services] AS S
                         INNER JOIN [maintenance].[Resources] AS R
 						ON S.[ResourceId] = R.[Id]
@@ -45,8 +46,10 @@ namespace CMMS.Application.Maintenance.Services.GetServicesByWorkerAccesses
                         WHERE S.[ResourceId] IN (
 		                        SELECT RA.[ResourceId]
 		                        FROM [maintenance].[ResourceAccesses] AS RA
-		                        WHERE RA.[WorkerId] = @workerId)";
+		                        WHERE RA.[WorkerId] = @workerId)
+						AND S.[ActualEndDateTime] IS NULL";
             var services = await connection.QueryAsync<ServiceDto>(sql, new { workerId = request.WorkerId });
+
 
             return services.AsList();
         }

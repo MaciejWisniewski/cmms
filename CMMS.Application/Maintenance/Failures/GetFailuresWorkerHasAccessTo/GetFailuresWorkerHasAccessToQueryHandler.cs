@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo
 {
-    public class GetFailuresWorkerHasAccessToQueryHandler : IQueryHandler<GetFailuresWorkerHasAccessToQuery, List<FailureDto>>
+    public class GetFailuresWorkerHasAccessToQueryHandler : IQueryHandler<GetFailureInProgressByWorkerId, List<FailureDto>>
     {
         private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
@@ -16,7 +16,7 @@ namespace CMMS.Application.Maintenance.Failures.GetFailuresWorkerHasAccessTo
             _sqlConnectionFactory = sqlConnectionFactory;
         }
 
-        public async Task<List<FailureDto>> Handle(GetFailuresWorkerHasAccessToQuery query, CancellationToken cancellationToken)
+        public async Task<List<FailureDto>> Handle(GetFailureInProgressByWorkerId query, CancellationToken cancellationToken)
         {
             var connection = _sqlConnectionFactory.GetOpenConnection();
             string sql = "SELECT " +
